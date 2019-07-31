@@ -1,0 +1,175 @@
+{
+  // See https://go.microsoft.com/fwlink/?LinkId=733558
+  // for the documentation about the tasks.json format
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "elixir: Run Elixir script",
+      "command": "elixir",
+      "type": "shell",
+      "args": [
+        "${file}"
+      ],
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "showReuseMessage": false
+      },
+      "problemMatcher": [
+        "$mixCompileError"
+      ]
+    },
+    {
+      "label": "elixir: Launch IEx session",
+      "command": "iex -S mix",
+      "type": "shell",
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "showReuseMessage": false,
+        "group": "dev"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "elixir: Launch Phoenix server",
+      "command": "iex -S mix phx.server",
+      "type": "shell",
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "showReuseMessage": false,
+        "clear": true,
+        "group": "dev"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "elixir: Ecto setup",
+      "command": "mix ecto.setup",
+      "type": "shell",
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "showReuseMessage": false,
+        "clear": true
+      },
+      "problemMatcher": [
+        "$mixCompileError"
+      ]
+    },
+    {
+      "label": "elixir: Ecto reset",
+      "command": "mix ecto.reset",
+      "type": "shell",
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "showReuseMessage": false,
+        "clear": true
+      },
+      "problemMatcher": [
+        "$mixCompileError"
+      ]
+    },
+    {
+      "label": "elixir: DB reset",
+      "command": "mix db.reset",
+      "type": "shell",
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "showReuseMessage": false,
+        "clear": true
+      },
+      "problemMatcher": [
+        "$mixCompileError"
+      ]
+    },
+    {
+      "label": "elixir: Ecto migrate",
+      "command": "mix ecto.migrate",
+      "type": "shell",
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "showReuseMessage": false,
+        "clear": true
+      },
+      "problemMatcher": [
+        "$mixCompileError"
+      ]
+    },
+    {
+      "label": "elixir: Get dependencies",
+      "command": "mix deps.get",
+      "type": "shell",
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "showReuseMessage": false,
+        "clear": true
+      },
+      "problemMatcher": [
+        "$mixCompileError"
+      ]
+    },
+    {
+      "label": "elixir: Run all tests",
+      "command": "mix test",
+      "type": "shell",
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "showReuseMessage": false,
+        "clear": true
+      },
+      "problemMatcher": [
+        "$mixCompileError"
+      ]
+    },
+    {
+      "label": "elixir: Run tests in current file",
+      "command": "mix test ${relativeFile}",
+      "type": "shell",
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "showReuseMessage": false,
+        "clear": true
+      },
+      "problemMatcher": [
+        "$mixCompileError"
+      ]
+    },
+    {
+      "label": "elixir: Run test under cursor",
+      "command": "mix test ${relativeFile}:${lineNumber}",
+      "type": "shell",
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "showReuseMessage": false,
+        "clear": true
+      },
+      "problemMatcher": [
+        "$mixCompileError"
+      ]
+    },
+    {
+      "label": "elixir: Run test watcher",
+      "command": "mix test.watch --stale",
+      "type": "shell",
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "showReuseMessage": false,
+        "clear": true,
+        "group": "dev"
+      },
+      "problemMatcher": [
+        "$mixCompileError"
+      ]
+    }
+  ]
+}
