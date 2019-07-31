@@ -60,7 +60,7 @@
     },
     {
       "label": "elixir: Ecto reset",
-      "command": "mix ecto.reset",
+      "command": "MIX_ENV=test mix ecto.reset && mix ecto.reset",
       "type": "shell",
       "presentation": {
         "reveal": "always",

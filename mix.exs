@@ -45,8 +45,7 @@ defmodule Caffe.MixProject do
       {:commanded_eventstore_adapter, "~> 0.6", runtime: Mix.env() != :test},
       {:commanded_ecto_projections, "~> 0.8"},
       {:vex, "~> 0.8"},
-      {:mix_test_watch, "~> 0.8", only: :dev, runtime: false},
-      {:ex_unit_notifier, "~> 0.1", only: :test}
+      {:mix_test_watch, "~> 0.8", only: :dev, runtime: false}
     ]
   end
 
@@ -57,8 +56,10 @@ defmodule Caffe.MixProject do
   #
   # See the documentation for `Mix` for more info on aliases.
   defp aliases do
+    seed = if Mix.env() != :test, do: ["run priv/repo/seeds.exs"], else: []
+
     [
-      "ecto.setup": ["ecto.create", "ecto.migrate", "run priv/repo/seeds.exs"],
+      "ecto.setup": ["ecto.create", "ecto.migrate"] ++ seed,
       "ecto.reset": ["ecto.drop", "ecto.setup"],
       "event_store.reset": ["event_store.drop", "event_store.create", "event_store.init"],
       "db.reset": ["event_store.reset", "ecto.reset"],

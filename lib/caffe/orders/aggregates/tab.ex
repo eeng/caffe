@@ -9,7 +9,27 @@ defmodule Caffe.Orders.Aggregates.Tab do
 
   def execute(%Tab{}, %OpenTab{}), do: {:error, :tab_already_opened}
 
+  def execute(%Tab{id: id}, %PlaceOrder{tab_id: id, items: []}),
+    do: {:error, :must_order_something}
+
+  def execute(%Tab{id: id}, %PlaceOrder{tab_id: id, items: items}) do
+    items
+    |> Enum.group_by(fn item -> item.is_drink end)
+    |> Enum.map(fn
+      {true, items} -> %DrinksOrdered{tab_id: id, items: items}
+      {false, items} -> %FoodOrdered{tab_id: id, items: items}
+    end)
+  end
+
   def apply(%Tab{}, %TabOpened{tab_id: id}) do
     %Tab{id: id}
+  end
+
+  def apply(%Tab{id: id} = tab, %DrinksOrdered{tab_id: id}) do
+    tab
+  end
+
+  def apply(%Tab{id: id} = tab, %FoodOrdered{tab_id: id}) do
+    tab
   end
 end

@@ -8,6 +8,7 @@ defmodule Caffe.Repo.Migrations.CreateMenuItems do
       add :description, :string
       add :category, :string
       add :price, :integer
+      add :is_drink, :boolean, null: false
 
       timestamps()
     end

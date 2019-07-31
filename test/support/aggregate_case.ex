@@ -21,13 +21,10 @@ defmodule Caffe.AggregateCase do
           |> execute(commands)
 
         actual_events = List.wrap(events)
+        expected_events = List.wrap(expected_events)
 
         assert is_nil(error)
         assert expected_events == actual_events
-      end
-
-      defp assert_event(commands, expected_event) do
-        assert_events([], commands, [expected_event])
       end
 
       defp assert_error(commands, expected_error) do
