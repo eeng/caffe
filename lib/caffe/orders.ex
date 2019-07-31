@@ -6,6 +6,10 @@ defmodule Caffe.Orders do
   alias Caffe.Router
   alias Caffe.Orders.Commands.OpenTab
 
+  @doc """
+  ## Examples
+    Orders.open_tab(%{table_number: 5})
+  """
   def open_tab(args) do
     id = UUID.uuid4()
     command = struct(OpenTab, Map.put(args, :tab_id, id))
@@ -16,7 +20,3 @@ defmodule Caffe.Orders do
     end
   end
 end
-
-"""
-Orders.open_tab(%{table_number: 5})
-"""
