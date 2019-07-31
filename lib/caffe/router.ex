@@ -5,7 +5,7 @@ defmodule Caffe.Router do
   middleware Caffe.Middleware.Logger
   middleware Caffe.Middleware.Validator
 
-  dispatch [OpenTab],
+  dispatch [OpenTab, PlaceOrder],
     to: Tab,
     identity: :tab_id
 end

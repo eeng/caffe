@@ -17,8 +17,9 @@ defmodule Caffe.MenusTest do
 
     test "update_menu_item should save and return the updated item" do
       menu_item = insert!(:menu_item)
-      {:ok, menu_item} = Menus.update_menu_item(menu_item, %{price: 99})
+      {:ok, menu_item} = Menus.update_menu_item(menu_item, %{price: 99, is_drink: true})
       assert menu_item.price == 99
+      assert menu_item.is_drink
     end
 
     test "list_menu_items should return all menu items" do

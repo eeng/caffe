@@ -29,4 +29,8 @@ defmodule Caffe.Menus do
   def get_current_menu do
     %Menu{items: list_menu_items()}
   end
+
+  def get_menu_item(id) do
+    Repo.get(MenuItem, id)
+  end
 end

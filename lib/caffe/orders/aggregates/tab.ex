@@ -21,6 +21,8 @@ defmodule Caffe.Orders.Aggregates.Tab do
     end)
   end
 
+  def execute(%Tab{id: nil}, %PlaceOrder{}), do: {:error, :tab_not_opened}
+
   def apply(%Tab{}, %TabOpened{tab_id: id}) do
     %Tab{id: id}
   end

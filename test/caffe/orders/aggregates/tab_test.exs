@@ -61,5 +61,12 @@ defmodule Caffe.Orders.Aggregates.TabTest do
         {:error, :must_order_something}
       )
     end
+
+    test "tab id should match" do
+      assert_error(
+        %PlaceOrder{tab_id: 123},
+        {:error, :tab_not_opened}
+      )
+    end
   end
 end

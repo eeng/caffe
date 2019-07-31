@@ -15,7 +15,7 @@ defmodule Caffe.Menus.MenuItem do
 
   def changeset(menu_item, attrs) do
     menu_item
-    |> cast(attrs, [:name, :description, :category, :price])
+    |> cast(attrs, [:name, :description, :category, :price, :is_drink])
     |> validate_required([:name, :category, :price])
     |> validate_number(:price, greater_than: 0)
     |> unique_constraint(:name)
