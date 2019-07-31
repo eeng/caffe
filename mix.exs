@@ -40,7 +40,13 @@ defmodule Caffe.MixProject do
       {:postgrex, ">= 0.0.0"},
       {:gettext, "~> 0.11"},
       {:jason, "~> 1.0"},
-      {:plug_cowboy, "~> 2.0"}
+      {:plug_cowboy, "~> 2.0"},
+      {:commanded, "~> 0.19"},
+      {:commanded_eventstore_adapter, "~> 0.6", runtime: Mix.env() != :test},
+      {:commanded_ecto_projections, "~> 0.8"},
+      {:vex, "~> 0.8"},
+      {:mix_test_watch, "~> 0.8", only: :dev, runtime: false},
+      {:ex_unit_notifier, "~> 0.1", only: :test}
     ]
   end
 
@@ -54,6 +60,8 @@ defmodule Caffe.MixProject do
     [
       "ecto.setup": ["ecto.create", "ecto.migrate", "run priv/repo/seeds.exs"],
       "ecto.reset": ["ecto.drop", "ecto.setup"],
+      "event_store.reset": ["event_store.drop", "event_store.create", "event_store.init"],
+      "db.reset": ["event_store.reset", "ecto.reset"],
       test: ["ecto.create --quiet", "ecto.migrate", "test"]
     ]
   end

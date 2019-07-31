@@ -22,6 +22,7 @@ defmodule Caffe.DataCase do
       import Ecto.Changeset
       import Ecto.Query
       import Caffe.DataCase
+      import Caffe.Factory
     end
   end
 
