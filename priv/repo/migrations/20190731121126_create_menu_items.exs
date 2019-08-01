@@ -1,4 +1,4 @@
-defmodule Caffe.Repo.Migrations.CreateMenuItems do
+defmodule Caffe.Repo.Migrations.CreateItems do
   use Ecto.Migration
 
   def change do

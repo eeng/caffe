@@ -1,11 +1,11 @@
 defmodule Caffe.Factory do
   alias Caffe.Repo
-  alias Caffe.Menus.MenuItem
+  alias Caffe.Menu
 
   # Factories
 
   def build(:menu_item) do
-    %MenuItem{id: uuid(), name: "Ham and Egg", category: "Breakfast", price: Decimal.new(10)}
+    %Menu.Item{id: uuid(), name: "Ham and Egg", category: "Breakfast", price: Decimal.new(10)}
   end
 
   def build(:food), do: build(:menu_item, is_drink: false)

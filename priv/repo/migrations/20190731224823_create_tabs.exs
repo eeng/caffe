@@ -8,7 +8,7 @@ defmodule Caffe.Repo.Migrations.CreateTabs do
       timestamps()
     end
 
-    create table(:tabs_items, primary_key: false) do
+    create table(:tab_items, primary_key: false) do
       add :tab_id, references(:tabs, type: :uuid)
       add :menu_item_name, :string
       add :price, :decimal

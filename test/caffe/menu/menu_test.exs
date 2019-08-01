@@ -1,0 +1,30 @@
+defmodule Caffe.MenuTest do
+  use Caffe.DataCase
+
+  alias Caffe.Menu
+
+  describe "menu items service" do
+    test "create_item should insert and return the item" do
+      {:ok, item} = Menu.create_item(%{name: "Salmon", category: "Dishes", price: 10})
+      assert item.id
+      assert item.price == Decimal.new(10)
+    end
+
+    test "create_item should validate the attributes" do
+      {:error, changeset} = Menu.create_item(%{})
+      refute changeset.valid?
+    end
+
+    test "update_item should save and return the updated item" do
+      item = insert!(:menu_item)
+      {:ok, item} = Menu.update_item(item, %{price: 99, is_drink: true})
+      assert item.price == Decimal.new(99)
+      assert item.is_drink
+    end
+
+    test "list_items should return all menu items" do
+      item = insert!(:menu_item)
+      assert Menu.list_items() == [item]
+    end
+  end
+end

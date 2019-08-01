@@ -3,7 +3,7 @@ defmodule Caffe.Orders do
   The Orders bounded context boundary.
   """
 
-  alias Caffe.{Router, Repo, Menus}
+  alias Caffe.{Router, Repo, Menu}
   alias Caffe.Orders.Commands.{OpenTab, PlaceOrder}
   alias Caffe.Orders.Projections.Tab
   alias Caffe.Orders.OrderedItem
@@ -26,8 +26,8 @@ defmodule Caffe.Orders do
   @doc """
   ## Examples
 
-    beer = Repo.get_by Menus.MenuItem, name: "Beer"
-    hamb = Repo.get_by Menus.MenuItem, name: "Hamburger"
+    beer = Repo.get_by Menu.Item, name: "Beer"
+    hamb = Repo.get_by Menu.Item, name: "Hamburger"
     Orders.place_order %{tab_id: tab_id, items: [%{menu_item_id: beer.id}, %{menu_item_id: hamb.id, notes: "well done please"}]}
   """
   def place_order(%{tab_id: tab_id, items: items}) do
@@ -48,7 +48,7 @@ defmodule Caffe.Orders do
   end
 
   defp fetch_item_details(%{menu_item_id: id} = item) do
-    menu_item = Menus.get_menu_item(id)
+    menu_item = Menu.get_item(id)
 
     struct(
       OrderedItem,

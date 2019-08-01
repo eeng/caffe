@@ -5,7 +5,7 @@ defmodule Caffe.Orders.Projections.TabItem do
 
   @primary_key false
 
-  schema "tabs_items" do
+  schema "tab_items" do
     belongs_to :tab, Tab
     field :menu_item_name, :string
     field :status, :string
@@ -19,5 +19,6 @@ defmodule Caffe.Orders.Projections.TabItem do
     struct
     |> cast(params, [:menu_item_name, :price, :quantity, :notes, :status])
     |> validate_required([:menu_item_name, :price, :quantity])
+    |> foreign_key_constraint(:tab_id)
   end
 end

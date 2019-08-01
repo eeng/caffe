@@ -25,7 +25,6 @@ defmodule Caffe.OrdersTest do
       })
 
     assert %Tab{items: [item1, item2]} = Orders.get_tab(tab_id)
-
     assert %TabItem{menu_item_name: "Wine", quantity: 2, notes: nil} = item1
     assert item1.price == Decimal.new(30)
     assert %TabItem{menu_item_name: "Fish", quantity: 1, notes: "ns"} = item2

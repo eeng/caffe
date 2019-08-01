@@ -1,14 +1,14 @@
-alias Caffe.Menus
+alias Caffe.Menu
 
-defmodule DatabaseSeeder do
+defmodule Seeds do
   def create_menu_items(category, items) do
     items
     |> Enum.map(&Map.merge(&1, %{category: category}))
-    |> Enum.each(&Menus.create_menu_item(&1))
+    |> Enum.each(&Menu.create_item(&1))
   end
 end
 
-DatabaseSeeder.create_menu_items("Dishes", [
+Seeds.create_menu_items("Dishes", [
   %{name: "Bourbon Chicken", price: 20},
   %{name: "Roasted Chicken", price: 10.50},
   %{name: "Greek Salad", price: 12.25},
@@ -17,7 +17,7 @@ DatabaseSeeder.create_menu_items("Dishes", [
   %{name: "Spaghetti Bolognese", price: 32}
 ])
 
-DatabaseSeeder.create_menu_items("Drinks", [
+Seeds.create_menu_items("Drinks", [
   %{name: "Beer", price: 20.50, is_drink: true},
   %{name: "White Wine", price: 21, is_drink: true},
   %{name: "Coca Cola", price: 12.25, is_drink: true},

@@ -1,4 +1,4 @@
-defmodule Caffe.Menus.MenuItem do
+defmodule Caffe.Menu.Item do
   use Ecto.Schema
   import Ecto.Changeset
 
