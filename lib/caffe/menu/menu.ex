@@ -7,7 +7,7 @@ defmodule Caffe.Menu do
   alias Caffe.Menu.Item
 
   def create_item(attrs) do
-    %Item{id: UUID.uuid4()}
+    %Item{}
     |> Item.changeset(attrs)
     |> Repo.insert()
   end

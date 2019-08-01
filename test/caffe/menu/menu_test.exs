@@ -5,7 +5,8 @@ defmodule Caffe.MenuTest do
 
   describe "menu items service" do
     test "create_item should insert and return the item" do
-      {:ok, item} = Menu.create_item(%{name: "Salmon", category: "Dishes", price: 10})
+      dishes = insert!(:category)
+      {:ok, item} = Menu.create_item(%{name: "Salmon", category: dishes, price: 10})
       assert item.id
       assert item.price == Decimal.new(10)
     end
@@ -23,8 +24,8 @@ defmodule Caffe.MenuTest do
     end
 
     test "list_items should return all menu items" do
-      item = insert!(:menu_item)
-      assert Menu.list_items() == [item]
+      insert!(:menu_item)
+      assert [%Menu.Item{}] = Menu.list_items()
     end
   end
 end

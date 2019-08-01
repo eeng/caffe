@@ -50,13 +50,12 @@ defmodule Caffe.Orders do
   defp fetch_item_details(%{menu_item_id: id} = item) do
     menu_item = Menu.get_item(id)
 
-    struct(
-      OrderedItem,
-      Map.merge(item, %{
-        is_drink: menu_item.is_drink,
-        menu_item_name: menu_item.name,
-        price: menu_item.price
-      })
+    OrderedItem
+    |> struct(item)
+    |> struct(
+      menu_item_name: menu_item.name,
+      price: menu_item.price,
+      is_drink: menu_item.is_drink
     )
   end
 end

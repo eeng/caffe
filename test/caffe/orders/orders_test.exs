@@ -24,10 +24,13 @@ defmodule Caffe.OrdersTest do
         ]
       })
 
-    assert %Tab{items: [item1, item2]} = Orders.get_tab(tab_id)
-    assert %TabItem{menu_item_name: "Wine", quantity: 2, notes: nil} = item1
-    assert item1.price == Decimal.new(30)
-    assert %TabItem{menu_item_name: "Fish", quantity: 1, notes: "ns"} = item2
+    assert %Tab{items: [%TabItem{} = item1, %TabItem{} = item2]} = Orders.get_tab(tab_id)
+
+    assert %{menu_item_id: wine.id, menu_item_name: "Wine", quantity: 2, notes: nil} ==
+             Map.take(item1, [:menu_item_id, :menu_item_name, :quantity, :notes])
+
+    assert %{menu_item_id: fish.id, price: Decimal.new(40), quantity: 1, notes: "ns"} ==
+             Map.take(item2, [:menu_item_id, :price, :quantity, :notes])
   end
 
   defp open_tab(_context) do

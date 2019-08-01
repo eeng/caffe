@@ -12,9 +12,7 @@ defmodule Caffe.Menu.ItemTest do
 
     test "name is unique" do
       insert!(:menu_item, name: "Chips")
-
       {:error, changeset} = build(:menu_item) |> Item.changeset(%{name: "Chips"}) |> Repo.insert()
-
       assert "has already been taken" in errors_on(changeset).name
     end
 
@@ -23,7 +21,7 @@ defmodule Caffe.Menu.ItemTest do
       assert "can't be blank" in errors_on(changeset).price
 
       changeset = Item.changeset(%Item{}, %{price: -1})
-      assert "must be greater than 0" in errors_on(changeset).price
+      assert "must be greater than or equal to 0" in errors_on(changeset).price
     end
   end
 end
