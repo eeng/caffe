@@ -3,9 +3,10 @@ defmodule Caffe.Orders do
   The Orders bounded context boundary.
   """
 
-  alias Caffe.Router
-  alias Caffe.Menus
+  alias Caffe.{Router, Repo, Menus}
   alias Caffe.Orders.Commands.{OpenTab, PlaceOrder}
+  alias Caffe.Orders.Projection.Tab
+  alias Caffe.Orders.OrderedItem
 
   @doc """
   ## Examples
@@ -37,8 +38,20 @@ defmodule Caffe.Orders do
     |> Router.dispatch(consistency: :strong)
   end
 
+  def get_tab(tab_id) do
+    Tab |> Repo.get(tab_id) |> Repo.preload(:items)
+  end
+
   defp fetch_item_details(%{menu_item_id: id} = item) do
-    stored_details = Menus.get_menu_item(id) |> Map.take([:is_drink, :price])
-    Map.merge(item, stored_details)
+    menu_item = Menus.get_menu_item(id)
+
+    struct(
+      OrderedItem,
+      Map.merge(item, %{
+        is_drink: menu_item.is_drink,
+        menu_item_name: menu_item.name,
+        price: menu_item.price
+      })
+    )
   end
 end

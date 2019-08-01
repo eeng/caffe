@@ -11,9 +11,9 @@ defmodule Caffe.Application do
       # Start the Ecto repository
       Caffe.Repo,
       # Start the endpoint when the application starts
-      CaffeWeb.Endpoint
+      CaffeWeb.Endpoint,
       # Starts a worker by calling: Caffe.Worker.start_link(arg)
-      # {Caffe.Worker, arg},
+      Caffe.Orders.Supervisor
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

@@ -48,8 +48,8 @@ defmodule Caffe.Orders.Aggregates.TabTest do
         %TabOpened{tab_id: @tab_id},
         %PlaceOrder{tab_id: @tab_id, items: [@fish, @wine]},
         [
-          %FoodOrdered{tab_id: @tab_id, items: [@fish]},
-          %DrinksOrdered{tab_id: @tab_id, items: [@wine]}
+          %DrinksOrdered{tab_id: @tab_id, items: [@wine]},
+          %FoodOrdered{tab_id: @tab_id, items: [@fish]}
         ]
       )
     end
@@ -67,6 +67,10 @@ defmodule Caffe.Orders.Aggregates.TabTest do
         %PlaceOrder{tab_id: 123},
         {:error, :tab_not_opened}
       )
+    end
+
+    test "can't place multiple orders" do
+      # TODO
     end
   end
 end

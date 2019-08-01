@@ -2,24 +2,31 @@ defmodule Caffe.OrdersTest do
   use Caffe.EventStoreCase
 
   alias Caffe.Orders
+  alias Caffe.Orders.Projection.{Tab, TabItem}
 
   setup :open_tab
 
   test "open tab", %{tab_id: tab_id} do
     assert tab_id
+    assert Repo.get(Tab, tab_id).table_number == 3
   end
 
   test "place order", %{tab_id: tab_id} do
-    wine = insert!(:menu_item, name: "Wine", is_drink: true)
-    fish = insert!(:menu_item, name: "Fish", is_drink: false)
+    wine = insert!(:drink, name: "Wine", price: 30)
+    fish = insert!(:food, name: "Fish", price: 40)
 
     :ok =
       Orders.place_order(%{
         tab_id: tab_id,
-        items: [%{menu_item_id: wine.id}, %{menu_item_id: fish.id}]
+        items: [
+          %{menu_item_id: wine.id, quantity: 2},
+          %{menu_item_id: fish.id, notes: "ns"}
+        ]
       })
 
-    # TODO check projections
+    assert %Tab{items: [item1, item2]} = Orders.get_tab(tab_id)
+    assert %TabItem{menu_item_name: "Wine", price: 30, quantity: 2, notes: nil} = item1
+    assert %TabItem{menu_item_name: "Fish", price: 40, quantity: 1, notes: "ns"} = item2
   end
 
   defp open_tab(_context) do

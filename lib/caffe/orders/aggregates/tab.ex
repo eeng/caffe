@@ -15,6 +15,7 @@ defmodule Caffe.Orders.Aggregates.Tab do
   def execute(%Tab{id: id}, %PlaceOrder{tab_id: id, items: items}) do
     items
     |> Enum.group_by(fn item -> item.is_drink end)
+    |> Enum.reverse()
     |> Enum.map(fn
       {true, items} -> %DrinksOrdered{tab_id: id, items: items}
       {false, items} -> %FoodOrdered{tab_id: id, items: items}
