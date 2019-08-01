@@ -1,6 +1,6 @@
-defmodule Caffe.Orders.Projection.TabItem do
+defmodule Caffe.Orders.Projections.TabItem do
   use Caffe.Schema
-  alias Caffe.Orders.Projection.Tab
+  alias Caffe.Orders.Projections.Tab
 
   @primary_key false
 

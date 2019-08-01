@@ -5,7 +5,7 @@ defmodule Caffe.Orders do
 
   alias Caffe.{Router, Repo, Menus}
   alias Caffe.Orders.Commands.{OpenTab, PlaceOrder}
-  alias Caffe.Orders.Projection.Tab
+  alias Caffe.Orders.Projections.Tab
   alias Caffe.Orders.OrderedItem
 
   @doc """
@@ -28,7 +28,7 @@ defmodule Caffe.Orders do
 
     beer = Repo.get_by Menus.MenuItem, name: "Beer"
     hamb = Repo.get_by Menus.MenuItem, name: "Hamburger"
-    Orders.place_order %{tab_id: tab_id, items: [%{menu_item_id: beer.id}, %{menu_item_id: hamb.id}]}
+    Orders.place_order %{tab_id: tab_id, items: [%{menu_item_id: beer.id}, %{menu_item_id: hamb.id, notes: "well done please"}]}
   """
   def place_order(%{tab_id: tab_id, items: items}) do
     %PlaceOrder{
@@ -38,6 +38,11 @@ defmodule Caffe.Orders do
     |> Router.dispatch(consistency: :strong)
   end
 
+  @doc """
+  ## Examples
+
+    Orders.get_tab tab_id
+  """
   def get_tab(tab_id) do
     Tab |> Repo.get(tab_id) |> Repo.preload(:items)
   end

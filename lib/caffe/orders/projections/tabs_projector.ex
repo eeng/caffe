@@ -1,10 +1,10 @@
-defmodule Caffe.Orders.Projection.TabsProjector do
+defmodule Caffe.Orders.Projections.TabsProjector do
   use Commanded.Projections.Ecto, name: "Orders.Projection.TabsProjector", consistency: :strong
 
   alias Ecto.Multi
 
   alias Caffe.Orders.Events.{TabOpened, DrinksOrdered, FoodOrdered}
-  alias Caffe.Orders.Projection.{Tab, TabItem}
+  alias Caffe.Orders.Projections.{Tab, TabItem}
 
   project %TabOpened{tab_id: id, table_number: table_number}, fn multi ->
     Multi.insert(multi, :tab, %Tab{id: id, table_number: table_number})

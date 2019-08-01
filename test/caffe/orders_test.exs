@@ -2,7 +2,7 @@ defmodule Caffe.OrdersTest do
   use Caffe.EventStoreCase
 
   alias Caffe.Orders
-  alias Caffe.Orders.Projection.{Tab, TabItem}
+  alias Caffe.Orders.Projections.{Tab, TabItem}
 
   setup :open_tab
 

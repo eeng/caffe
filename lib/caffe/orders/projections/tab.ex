@@ -1,6 +1,6 @@
-defmodule Caffe.Orders.Projection.Tab do
+defmodule Caffe.Orders.Projections.Tab do
   use Caffe.Schema
-  alias Caffe.Orders.Projection.TabItem
+  alias Caffe.Orders.Projections.TabItem
 
   schema "tabs" do
     field :table_number, :integer

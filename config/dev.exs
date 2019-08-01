@@ -68,7 +68,7 @@ config :eventstore,
   column_data_type: "jsonb"
 
 config :eventstore, EventStore.Storage,
-  serializer: EventStore.JsonbSerializer,
+  serializer: Commanded.Serialization.JsonSerializer,
   types: EventStore.PostgresTypes,
   username: "postgres",
   password: "postgres",
