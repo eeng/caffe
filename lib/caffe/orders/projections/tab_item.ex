@@ -1,5 +1,6 @@
 defmodule Caffe.Orders.Projections.TabItem do
   use Caffe.Schema
+  import Ecto.Changeset
   alias Caffe.Orders.Projections.Tab
 
   @primary_key false
@@ -9,8 +10,14 @@ defmodule Caffe.Orders.Projections.TabItem do
     field :menu_item_name, :string
     field :status, :string
     field :notes, :string
-    field :price, :integer
+    field :price, :decimal
     field :quantity, :integer
     timestamps()
+  end
+
+  def changeset(struct, params) do
+    struct
+    |> cast(params, [:menu_item_name, :price, :quantity, :notes, :status])
+    |> validate_required([:menu_item_name, :price, :quantity])
   end
 end

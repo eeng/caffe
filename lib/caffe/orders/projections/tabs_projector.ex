@@ -20,8 +20,12 @@ defmodule Caffe.Orders.Projections.TabsProjector do
 
   defp insert_tab_items(multi, items, tab_id) do
     Enum.reduce(items, multi, fn item, multi ->
-      tab_item = Map.put(struct(TabItem, item), :tab_id, tab_id)
-      Multi.insert(multi, :tab, tab_item)
+      tab_item =
+        %TabItem{}
+        |> TabItem.changeset(item)
+        |> put_change(:tab_id, tab_id)
+
+      Multi.insert(multi, :insert, tab_item)
     end)
   end
 end

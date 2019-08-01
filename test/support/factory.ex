@@ -5,7 +5,7 @@ defmodule Caffe.Factory do
   # Factories
 
   def build(:menu_item) do
-    %MenuItem{id: uuid(), name: "Ham and Egg", category: "Breakfast", price: 10}
+    %MenuItem{id: uuid(), name: "Ham and Egg", category: "Breakfast", price: Decimal.new(10)}
   end
 
   def build(:food), do: build(:menu_item, is_drink: false)

@@ -2,12 +2,12 @@ defmodule Caffe.MenusTest do
   use Caffe.DataCase
 
   alias Caffe.Menus
-  alias Caffe.Menus.MenuItem
 
   describe "menu items service" do
     test "create_menu_item should insert and return the item" do
       {:ok, menu_item} = Menus.create_menu_item(%{name: "Salmon", category: "Dishes", price: 10})
-      assert %MenuItem{name: "Salmon", price: 10} = menu_item
+      assert menu_item.id
+      assert menu_item.price == Decimal.new(10)
     end
 
     test "create_menu_item should validate the attributes" do
@@ -18,7 +18,7 @@ defmodule Caffe.MenusTest do
     test "update_menu_item should save and return the updated item" do
       menu_item = insert!(:menu_item)
       {:ok, menu_item} = Menus.update_menu_item(menu_item, %{price: 99, is_drink: true})
-      assert menu_item.price == 99
+      assert menu_item.price == Decimal.new(99)
       assert menu_item.is_drink
     end
 

@@ -7,7 +7,7 @@ defmodule Caffe.Menus.MenuItem do
     field :name, :string
     field :description, :string
     field :category, :string
-    field :price, :integer
+    field :price, :decimal
     field :is_drink, :boolean, default: false
 
     timestamps()

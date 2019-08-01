@@ -11,7 +11,7 @@ defmodule Caffe.Repo.Migrations.CreateTabs do
     create table(:tabs_items, primary_key: false) do
       add :tab_id, references(:tabs, type: :uuid)
       add :menu_item_name, :string
-      add :price, :integer
+      add :price, :decimal
       # TODO
       add :status, :string
       add :notes, :string
