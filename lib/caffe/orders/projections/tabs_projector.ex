@@ -25,7 +25,7 @@ defmodule Caffe.Orders.Projections.TabsProjector do
         |> TabItem.changeset(item)
         |> put_change(:tab_id, tab_id)
 
-      Multi.insert(multi, :insert, tab_item)
+      Multi.insert(multi, "item_#{item.menu_item_id}", tab_item)
     end)
   end
 end

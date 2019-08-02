@@ -1,4 +1,8 @@
 defmodule Caffe.Schema do
+  @moduledoc """
+  Like Ecto.Schema but with UUID defaults.
+  """
+
   defmacro __using__(_) do
     quote do
       use Ecto.Schema

@@ -12,19 +12,22 @@ defmodule Caffe.OrdersTest do
   end
 
   test "place order", %{tab_id: tab_id} do
-    wine = insert!(:drink, name: "Wine", price: 30)
+    wine = insert!(:drink, name: "Wine")
     fish = insert!(:food, name: "Fish", price: 40)
+    salad = insert!(:food, name: "Salad")
 
     :ok =
       Orders.place_order(%{
         tab_id: tab_id,
         items: [
           %{menu_item_id: wine.id, quantity: 2},
-          %{menu_item_id: fish.id, notes: "ns"}
+          %{menu_item_id: fish.id, notes: "ns"},
+          %{menu_item_id: salad.id}
         ]
       })
 
-    assert %Tab{items: [%TabItem{} = item1, %TabItem{} = item2]} = Orders.get_tab(tab_id)
+    assert %Tab{items: [%TabItem{} = item1, %TabItem{} = item2, %TabItem{} = item3]} =
+             Orders.get_tab(tab_id)
 
     assert %{menu_item_id: wine.id, menu_item_name: "Wine", quantity: 2, notes: nil} ==
              Map.take(item1, [:menu_item_id, :menu_item_name, :quantity, :notes])
