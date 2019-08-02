@@ -22,6 +22,7 @@ defmodule Caffe.Orders.Aggregates.TabTest do
   end
 
   describe "place order" do
+    # TODO the OrderedItem wrapping could be in a PlaceOrder constructor
     @wine %OrderedItem{is_drink: true}
     @beer %OrderedItem{is_drink: true}
     @fish %OrderedItem{is_drink: false}

@@ -4,9 +4,8 @@ defmodule Caffe.Orders do
   """
 
   alias Caffe.{Router, Repo, Menu}
-  alias Caffe.Orders.Commands.{OpenTab, PlaceOrder}
+  alias Caffe.Orders.Commands.{OpenTab, PlaceOrder, OrderedItem}
   alias Caffe.Orders.Projections.Tab
-  alias Caffe.Orders.OrderedItem
 
   @doc """
   ## Examples

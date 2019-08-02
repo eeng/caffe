@@ -16,9 +16,12 @@ defmodule Caffe.Orders.Commands.OpenTab do
       message: "table already has an open tab"
     ]
 
+  def validate_not_already_opened(nil, _command), do: true
+
   def validate_not_already_opened(table_number, _command) do
     case Repo.get_by(Tab, table_number: table_number) do
       nil -> true
+      # TODO why dont delete the tab (and its items) on closed? that way this is not needed (and maybe the status either)
       %Tab{status: "closed"} -> true
       _ -> false
     end
