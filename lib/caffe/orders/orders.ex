@@ -4,7 +4,7 @@ defmodule Caffe.Orders do
   """
 
   alias Caffe.{Router, Repo, Menu}
-  alias Caffe.Orders.Commands.{OpenTab, PlaceOrder, OrderedItem}
+  alias Caffe.Orders.Commands.{OpenTab, PlaceOrder}
   alias Caffe.Orders.Projections.Tab
 
   @doc """
@@ -30,10 +30,10 @@ defmodule Caffe.Orders do
     Orders.place_order %{tab_id: tab_id, items: [%{menu_item_id: beer.id}, %{menu_item_id: hamb.id, notes: "well done please"}]}
   """
   def place_order(%{tab_id: tab_id, items: items}) do
-    %PlaceOrder{
+    PlaceOrder.new(
       tab_id: tab_id,
       items: Enum.map(items, &fetch_item_details/1)
-    }
+    )
     |> Router.dispatch(consistency: :strong)
   end
 
@@ -49,12 +49,10 @@ defmodule Caffe.Orders do
   defp fetch_item_details(%{menu_item_id: id} = item) do
     menu_item = Menu.get_item(id)
 
-    OrderedItem
-    |> struct(item)
-    |> struct(
+    Map.merge(item, %{
       menu_item_name: menu_item.name,
       price: menu_item.price,
       is_drink: menu_item.is_drink
-    )
+    })
   end
 end

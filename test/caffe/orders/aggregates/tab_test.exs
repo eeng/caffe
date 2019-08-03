@@ -22,11 +22,10 @@ defmodule Caffe.Orders.Aggregates.TabTest do
   end
 
   describe "place order" do
-    # TODO the OrderedItem wrapping could be in a PlaceOrder constructor
-    @wine %OrderedItem{is_drink: true}
-    @beer %OrderedItem{is_drink: true}
-    @fish %OrderedItem{is_drink: false}
-    @burger %OrderedItem{is_drink: false}
+    @wine %{is_drink: true}
+    @beer %{is_drink: true}
+    @fish %{is_drink: false}
+    @burger %{is_drink: false}
 
     test "when only drinks are ordered" do
       assert_events(
