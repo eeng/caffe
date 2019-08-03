@@ -18,6 +18,7 @@ defmodule Caffe.Orders.Commands.OpenTab do
 
   def validate_not_already_opened(nil, _command), do: true
 
+  # TODO don't like doing persistance stuff here (on the domain). Also requires a DataCase on the tests
   def validate_not_already_opened(table_number, _command) do
     case Repo.get_by(Tab, table_number: table_number) do
       nil -> true

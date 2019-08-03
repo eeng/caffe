@@ -9,7 +9,7 @@ defmodule Caffe.Orders.Projections.TabItem do
     belongs_to :tab, Tab
     field :menu_item_id, :integer
     field :menu_item_name, :string
-    field :status, :string
+    field :status, :string, default: "pending"
     field :notes, :string
     field :price, :decimal
     field :quantity, :integer

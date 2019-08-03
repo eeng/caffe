@@ -22,6 +22,10 @@ defmodule Caffe.Factory do
     %Orders.Projections.Tab{id: uuid(), table_number: random_int()}
   end
 
+  def build(:tab_item) do
+    %Orders.Projections.TabItem{menu_item_id: 1, menu_item_name: "Food", price: 10, quantity: 1}
+  end
+
   # Convenience API
 
   def build(factory_name, attributes) do
@@ -32,11 +36,15 @@ defmodule Caffe.Factory do
     factory_name |> build(attributes) |> Repo.insert!()
   end
 
+  def params_for(factory_name, attributes \\ []) do
+    build(factory_name, attributes) |> Map.from_struct()
+  end
+
   def uuid do
     UUID.uuid4()
   end
 
   def random_int do
-    System.unique_integer()
+    :rand.uniform(2_147_483_647)
   end
 end

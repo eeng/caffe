@@ -23,7 +23,7 @@ defmodule Caffe.AggregateCase do
         actual_events = List.wrap(events)
         expected_events = List.wrap(expected_events)
 
-        assert is_nil(error)
+        assert error == nil
         assert expected_events == actual_events
       end
 

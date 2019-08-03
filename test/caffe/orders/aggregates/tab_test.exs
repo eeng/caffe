@@ -4,7 +4,7 @@ defmodule Caffe.Orders.Aggregates.TabTest do
 
   @tab_id UUID.uuid4()
 
-  describe "open tab" do
+  describe "OpenTab command" do
     test "should succeed when valid" do
       assert_events(
         %OpenTab{tab_id: @tab_id, table_number: 3},
@@ -21,11 +21,12 @@ defmodule Caffe.Orders.Aggregates.TabTest do
     end
   end
 
-  describe "place order" do
-    @wine %{is_drink: true}
-    @beer %{is_drink: true}
-    @fish %{is_drink: false}
-    @burger %{is_drink: false}
+  describe "PlaceOrder command" do
+    @wine %{menu_item_id: 1, is_drink: true}
+    @beer %{menu_item_id: 2, is_drink: true}
+    @water %{menu_item_id: 5, is_drink: true}
+    @fish %{menu_item_id: 3, is_drink: false}
+    @burger %{menu_item_id: 4, is_drink: false}
 
     test "when only drinks are ordered" do
       assert_events(
@@ -68,5 +69,41 @@ defmodule Caffe.Orders.Aggregates.TabTest do
     end
 
     # TODO can't place multiple orders?
+  end
+
+  describe "MarkDrinksServed command" do
+    test "should emit the DrinksServed event" do
+      assert_events(
+        [
+          %TabOpened{tab_id: @tab_id},
+          %DrinksOrdered{tab_id: @tab_id, items: [@wine, @beer]}
+        ],
+        %MarkDrinkServed{tab_id: @tab_id, item_ids: [@wine.menu_item_id]},
+        %DrinksServed{tab_id: @tab_id, item_ids: [@wine.menu_item_id]}
+      )
+    end
+
+    test "can't serve a drink not ordered" do
+      assert_error(
+        [
+          %TabOpened{tab_id: @tab_id},
+          %DrinksOrdered{tab_id: @tab_id, items: [@wine, @water]}
+        ],
+        %MarkDrinkServed{tab_id: @tab_id, item_ids: [@wine.menu_item_id, @beer.menu_item_id]},
+        {:error, :drinks_not_outstanding}
+      )
+    end
+
+    test "can't serve a drink twice" do
+      assert_error(
+        [
+          %TabOpened{tab_id: @tab_id},
+          %DrinksOrdered{tab_id: @tab_id, items: [@wine]},
+          %DrinksServed{tab_id: @tab_id, item_ids: [@wine.menu_item_id]}
+        ],
+        %MarkDrinkServed{tab_id: @tab_id, item_ids: [@wine.menu_item_id]},
+        {:error, :drinks_not_outstanding}
+      )
+    end
   end
 end

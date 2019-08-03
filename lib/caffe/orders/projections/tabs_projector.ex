@@ -3,7 +3,7 @@ defmodule Caffe.Orders.Projections.TabsProjector do
 
   alias Ecto.Multi
 
-  alias Caffe.Orders.Events.{TabOpened, DrinksOrdered, FoodOrdered}
+  alias Caffe.Orders.Events.{TabOpened, DrinksOrdered, FoodOrdered, DrinksServed}
   alias Caffe.Orders.Projections.{Tab, TabItem}
 
   project %TabOpened{tab_id: id, table_number: table_number}, fn multi ->
@@ -16,6 +16,11 @@ defmodule Caffe.Orders.Projections.TabsProjector do
 
   project %FoodOrdered{tab_id: tab_id, items: items}, fn multi ->
     insert_tab_items(multi, items, tab_id)
+  end
+
+  project %DrinksServed{tab_id: tab_id, item_ids: item_ids}, fn multi ->
+    query = from i in TabItem, where: i.tab_id == ^tab_id and i.menu_item_id in ^item_ids
+    Multi.update_all(multi, :update_status, query, set: [status: "served"])
   end
 
   defp insert_tab_items(multi, items, tab_id) do
