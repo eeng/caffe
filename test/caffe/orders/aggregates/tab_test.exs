@@ -62,15 +62,11 @@ defmodule Caffe.Orders.Aggregates.TabTest do
       )
     end
 
-    test "tab id should match" do
-      assert_error(
-        %PlaceOrder{tab_id: 123},
-        {:error, :tab_not_opened}
-      )
+    test "tab should be opened before" do
+      assert_error(%PlaceOrder{tab_id: 123}, {:error, :tab_not_opened})
+      assert_error(%PlaceOrder{tab_id: nil}, {:error, :tab_not_opened})
     end
 
-    test "can't place multiple orders" do
-      # TODO
-    end
+    # TODO can't place multiple orders?
   end
 end
