@@ -2,10 +2,10 @@ defmodule Caffe.Orders.Commands.OpenTab do
   defstruct [:tab_id, :table_number]
   # TODO waiter?
 
+  use Caffe.Command
   alias __MODULE__
   alias Caffe.Orders.Projections.Tab
   alias Caffe.Repo
-  use Vex.Struct
 
   validates :tab_id, uuid: true
 

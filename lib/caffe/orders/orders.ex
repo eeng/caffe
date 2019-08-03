@@ -14,7 +14,7 @@ defmodule Caffe.Orders do
   """
   def open_tab(args) do
     id = UUID.uuid4()
-    command = struct(OpenTab, Map.put(args, :tab_id, id))
+    command = args |> Map.put(:tab_id, id) |> OpenTab.new()
 
     case Router.dispatch(command, consistency: :strong) do
       :ok -> {:ok, id}
