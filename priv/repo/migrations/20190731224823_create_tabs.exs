@@ -14,7 +14,6 @@ defmodule Caffe.Repo.Migrations.CreateTabs do
       add :menu_item_id, :integer
       add :menu_item_name, :string
       add :price, :decimal
-      # TODO
       add :status, :string
       add :notes, :string
       add :quantity, :integer

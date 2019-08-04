@@ -3,13 +3,17 @@ defmodule Caffe.Orders.Projections.TabItem do
   import Ecto.Changeset
   alias Caffe.Orders.Projections.Tab
 
+  defmodule Status do
+    use Exnumerator, values: ["pending", "preparing", "prepared", "served"]
+  end
+
   @primary_key false
 
   schema "tab_items" do
     belongs_to :tab, Tab
     field :menu_item_id, :integer
     field :menu_item_name, :string
-    field :status, :string, default: "pending"
+    field :status, Status, default: "pending"
     field :notes, :string
     field :price, :decimal
     field :quantity, :integer

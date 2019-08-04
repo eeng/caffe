@@ -45,6 +45,7 @@ defmodule Caffe.MixProject do
       {:commanded_eventstore_adapter, "~> 0.6", runtime: Mix.env() != :test},
       {:commanded_ecto_projections, "~> 0.8"},
       {:vex, "~> 0.8"},
+      {:exnumerator, "~> 1.6"},
       {:mix_test_watch, "~> 0.8", only: :dev, runtime: false}
     ]
   end
