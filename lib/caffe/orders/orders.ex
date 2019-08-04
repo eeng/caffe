@@ -10,7 +10,8 @@ defmodule Caffe.Orders do
     PlaceOrder,
     BeginFoodPreparation,
     MarkFoodPrepared,
-    MarkItemsServed
+    MarkItemsServed,
+    CloseTab
   }
 
   alias Caffe.Orders.Projections.Tab
@@ -48,8 +49,7 @@ defmodule Caffe.Orders do
   @doc """
   ## Examples
 
-    Orders.mark_items_served %{tab_id: tab_id, item_ids: [beer.id]}
-    Orders.mark_items_served %{tab_id: tab_id, item_ids: [hamb.id]}
+    Orders.mark_items_served %{tab_id: tab_id, item_ids: [beer.id, hamb.id]}
   """
   def mark_items_served(args) do
     MarkItemsServed.new(args) |> Router.dispatch(consistency: :strong)
@@ -71,6 +71,15 @@ defmodule Caffe.Orders do
   """
   def mark_food_prepared(args) do
     MarkFoodPrepared.new(args) |> Router.dispatch(consistency: :strong)
+  end
+
+  @doc """
+  ## Examples
+
+    Orders.close_tab %{tab_id: tab_id, amount_paid: "3.75"}
+  """
+  def close_tab(args) do
+    CloseTab.new(args) |> Router.dispatch(consistency: :strong)
   end
 
   @doc """

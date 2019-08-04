@@ -1,5 +1,5 @@
 defmodule Caffe.Orders.Aggregates.Tab do
-  defstruct [:id, :table_number, items: []]
+  defstruct [:id, :table_number, open: true, items: []]
 
   use Caffe.Orders.Aliases
 
@@ -48,6 +48,28 @@ defmodule Caffe.Orders.Aggregates.Tab do
     )
   end
 
+  def execute(%Tab{id: tab_id, open: true} = tab, %CloseTab{tab_id: tab_id} = cmd) do
+    served_value = calculate_served_value(tab)
+
+    cond do
+      Decimal.equal?(served_value, 0) ->
+        {:error, :nothing_to_pay}
+
+      Decimal.cmp(cmd.amount_paid, served_value) == :lt ->
+        {:error, :must_pay_enough}
+
+      true ->
+        %TabClosed{
+          tab_id: tab_id,
+          amount_paid: cmd.amount_paid,
+          order_amount: served_value,
+          tip_amount: Decimal.sub(cmd.amount_paid, served_value)
+        }
+    end
+  end
+
+  def execute(%Tab{open: false}, %CloseTab{}), do: {:error, :already_closed}
+
   def apply(%Tab{}, %TabOpened{tab_id: id}) do
     %Tab{id: id}
   end
@@ -70,6 +92,10 @@ defmodule Caffe.Orders.Aggregates.Tab do
 
   def apply(%Tab{id: id} = tab, %FoodPrepared{tab_id: id, item_ids: item_ids}) do
     update_in(tab.items, &set_items_status(&1, item_ids, "prepared"))
+  end
+
+  def apply(%Tab{id: id} = tab, %TabClosed{tab_id: id}) do
+    put_in(tab.open, false)
   end
 
   defp find_item_by_id(id, items) do
@@ -126,5 +152,12 @@ defmodule Caffe.Orders.Aggregates.Tab do
         item
       end
     end)
+  end
+
+  defp calculate_served_value(%Tab{items: items}) do
+    items
+    |> Enum.filter(&(&1.status == "served"))
+    |> Enum.map(& &1.price)
+    |> Enum.reduce(Decimal.new(0), &Decimal.add/2)
   end
 end

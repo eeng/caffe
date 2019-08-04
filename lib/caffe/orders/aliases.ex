@@ -8,7 +8,8 @@ defmodule Caffe.Orders.Aliases do
         PlaceOrder,
         MarkItemsServed,
         BeginFoodPreparation,
-        MarkFoodPrepared
+        MarkFoodPrepared,
+        CloseTab
       }
 
       alias Caffe.Orders.Events.{
@@ -17,7 +18,8 @@ defmodule Caffe.Orders.Aliases do
         FoodOrdered,
         ItemsServed,
         FoodBeingPrepared,
-        FoodPrepared
+        FoodPrepared,
+        TabClosed
       }
     end
   end

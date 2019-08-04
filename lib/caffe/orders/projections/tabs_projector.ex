@@ -9,7 +9,8 @@ defmodule Caffe.Orders.Projections.TabsProjector do
     FoodOrdered,
     ItemsServed,
     FoodBeingPrepared,
-    FoodPrepared
+    FoodPrepared,
+    TabClosed
   }
 
   alias Caffe.Orders.Projections.{Tab, TabItem}
@@ -36,6 +37,19 @@ defmodule Caffe.Orders.Projections.TabsProjector do
 
   project %FoodPrepared{} = evt, fn multi ->
     update_items_statuses(multi, evt, "prepared")
+  end
+
+  project %TabClosed{tab_id: tab_id} = evt, fn multi ->
+    tab_query = from(t in Tab, where: t.id == ^tab_id)
+
+    Multi.update_all(multi, :update_tab, tab_query,
+      set: [
+        status: "closed",
+        amount_paid: evt.amount_paid,
+        order_amount: evt.order_amount,
+        tip_amount: evt.tip_amount
+      ]
+    )
   end
 
   defp insert_tab_items(multi, items, tab_id) do

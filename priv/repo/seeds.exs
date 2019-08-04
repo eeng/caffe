@@ -6,7 +6,7 @@ sandwiches = %Menu.Category{name: "Sandwiches", position: 1} |> Repo.insert!()
 %Menu.Item{name: "Muffuletta", price: 5.50, category: sandwiches} |> Repo.insert!()
 %Menu.Item{name: "Bánh mì", price: 7, category: sandwiches} |> Repo.insert!()
 %Menu.Item{name: "Vada Pav", price: 4.50, category: sandwiches} |> Repo.insert!()
-%Menu.Item{name: "Hamburger", price: 1.50, category: sandwiches} |> Repo.insert!()
+%Menu.Item{name: "Hamburger", price: 2, category: sandwiches} |> Repo.insert!()
 
 sides = %Menu.Category{name: "Sides", position: 2} |> Repo.insert!()
 %Menu.Item{name: "French Fries", price: 2.50, category: sides} |> Repo.insert!()

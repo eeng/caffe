@@ -6,6 +6,9 @@ defmodule Caffe.Repo.Migrations.CreateTabs do
       add :id, :uuid, primary_key: true
       add :table_number, :integer
       add :status, :string
+      add :amount_paid, :decimal
+      add :order_amount, :decimal
+      add :tip_amount, :decimal
       timestamps()
     end
 

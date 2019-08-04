@@ -6,8 +6,8 @@ defmodule Caffe.Orders.Aggregates.TabTest do
 
   @tab_id UUID.uuid4()
 
-  @wine %OrderedItem{menu_item_id: 1, is_drink: true}
-  @beer %OrderedItem{menu_item_id: 2, is_drink: true}
+  @wine %OrderedItem{menu_item_id: 1, is_drink: true, price: Decimal.new(10)}
+  @beer %OrderedItem{menu_item_id: 2, is_drink: true, price: Decimal.new(20)}
   @water %OrderedItem{menu_item_id: 5, is_drink: true}
   @fish %OrderedItem{menu_item_id: 3, is_drink: false}
   @burger %OrderedItem{menu_item_id: 4, is_drink: false}
@@ -62,7 +62,9 @@ defmodule Caffe.Orders.Aggregates.TabTest do
       assert_error(%PlaceOrder{tab_id: nil}, {:error, :tab_not_opened})
     end
 
-    # TODO can't place multiple orders?
+    test "can't place order if tab was closed" do
+      # TODO
+    end
   end
 
   describe "MarkItemsServed command" do
@@ -130,7 +132,7 @@ defmodule Caffe.Orders.Aggregates.TabTest do
     end
   end
 
-  describe "BeginFoodPreparation" do
+  describe "BeginFoodPreparation comman" do
     test "pending food can be prepared" do
       assert_events(
         [
@@ -187,7 +189,7 @@ defmodule Caffe.Orders.Aggregates.TabTest do
     end
   end
 
-  describe "MarkFoodPrepared" do
+  describe "MarkFoodPrepared command" do
     test "food being prepared can be marked" do
       given = [
         %TabOpened{tab_id: @tab_id},
@@ -225,6 +227,76 @@ defmodule Caffe.Orders.Aggregates.TabTest do
         ],
         %MarkFoodPrepared{tab_id: @tab_id, item_ids: [@fish.menu_item_id]},
         {:error, :item_already_prepared}
+      )
+    end
+  end
+
+  describe "CloseTab command" do
+    test "when the whole order is paid and a tip is provided" do
+      order_amount = Decimal.add(@wine.price, @beer.price)
+
+      assert_events(
+        [
+          %TabOpened{tab_id: @tab_id},
+          %FoodOrdered{tab_id: @tab_id, items: [@wine, @beer]},
+          %ItemsServed{tab_id: @tab_id, item_ids: [@wine.menu_item_id, @beer.menu_item_id]}
+        ],
+        %CloseTab{tab_id: @tab_id, amount_paid: Decimal.add(order_amount, 3)},
+        %TabClosed{
+          tab_id: @tab_id,
+          amount_paid: Decimal.add(order_amount, 3),
+          order_amount: order_amount,
+          tip_amount: Decimal.new(3)
+        }
+      )
+    end
+
+    test "must pay at least the served value" do
+      given = [
+        %TabOpened{tab_id: @tab_id},
+        %FoodOrdered{tab_id: @tab_id, items: [@wine, @beer]},
+        %ItemsServed{tab_id: @tab_id, item_ids: [@wine.menu_item_id]}
+      ]
+
+      assert_error(
+        given,
+        %CloseTab{tab_id: @tab_id, amount_paid: Decimal.sub(@wine.price, Decimal.new(1))},
+        {:error, :must_pay_enough}
+      )
+
+      assert_events(
+        given,
+        %CloseTab{tab_id: @tab_id, amount_paid: @wine.price},
+        %TabClosed{
+          tab_id: @tab_id,
+          amount_paid: @wine.price,
+          order_amount: @wine.price,
+          tip_amount: Decimal.new(0)
+        }
+      )
+    end
+
+    test "can't pay if there is nothing to pay" do
+      assert_error(
+        [
+          %TabOpened{tab_id: @tab_id},
+          %DrinksOrdered{tab_id: @tab_id, items: [@wine]}
+        ],
+        %CloseTab{tab_id: @tab_id, amount_paid: @wine.price},
+        {:error, :nothing_to_pay}
+      )
+    end
+
+    test "can't pay if already payed" do
+      assert_error(
+        [
+          %TabOpened{tab_id: @tab_id},
+          %DrinksOrdered{tab_id: @tab_id, items: [@wine]},
+          %ItemsServed{tab_id: @tab_id, item_ids: [@wine.menu_item_id]},
+          %TabClosed{tab_id: @tab_id}
+        ],
+        %CloseTab{tab_id: @tab_id, amount_paid: @wine.price},
+        {:error, :already_closed}
       )
     end
   end
