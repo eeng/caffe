@@ -89,30 +89,34 @@ defmodule Caffe.Orders.Aggregates.Tab do
     end
   end
 
-  defp validate_mark_item_served(%{is_drink: true, status: "pending"}), do: :ok
-  defp validate_mark_item_served(%{is_drink: false, status: "prepared"}), do: :ok
-  defp validate_mark_item_served(%{status: "served"}), do: {:error, :item_already_served}
-  defp validate_mark_item_served(%{is_drink: false}), do: {:error, :food_must_be_prepared}
-  defp validate_mark_item_served(nil), do: {:error, :item_not_ordered}
+  defp validate_mark_item_served(item) do
+    case item do
+      %{is_drink: true, status: "pending"} -> :ok
+      %{is_drink: false, status: "prepared"} -> :ok
+      %{status: "served"} -> {:error, :item_already_served}
+      %{is_drink: false} -> {:error, :food_must_be_prepared}
+      nil -> {:error, :item_not_ordered}
+    end
+  end
 
-  defp validate_begin_food_preparation(%{is_drink: true}),
-    do: {:error, :drinks_dont_need_preparation}
+  defp validate_begin_food_preparation(item) do
+    case item do
+      %{is_drink: true} -> {:error, :drinks_dont_need_preparation}
+      %{is_drink: false, status: "pending"} -> :ok
+      %{is_drink: false} -> {:error, :item_already_prepared}
+      nil -> {:error, :item_not_ordered}
+    end
+  end
 
-  defp validate_begin_food_preparation(%{is_drink: false, status: "pending"}), do: :ok
-  defp validate_begin_food_preparation(%{is_drink: false}), do: {:error, :item_already_prepared}
-  defp validate_begin_food_preparation(nil), do: {:error, :item_not_ordered}
-
-  defp validate_mark_food_prepared(%{is_drink: true}),
-    do: {:error, :drinks_dont_need_preparation}
-
-  defp validate_mark_food_prepared(%{is_drink: false, status: "preparing"}), do: :ok
-
-  defp validate_mark_food_prepared(%{is_drink: false, status: "pending"}),
-    do: {:error, :must_begin_preparation_beforehand}
-
-  defp validate_mark_food_prepared(%{is_drink: false}), do: {:error, :item_already_prepared}
-
-  defp validate_mark_food_prepared(nil), do: {:error, :item_not_ordered}
+  defp validate_mark_food_prepared(item) do
+    case item do
+      %{is_drink: true} -> {:error, :drinks_dont_need_preparation}
+      %{is_drink: false, status: "preparing"} -> :ok
+      %{is_drink: false, status: "pending"} -> {:error, :must_begin_preparation_beforehand}
+      %{is_drink: false} -> {:error, :item_already_prepared}
+      nil -> {:error, :item_not_ordered}
+    end
+  end
 
   defp set_items_status(all_items, ids_to_update, status) do
     Enum.map(all_items, fn item ->
