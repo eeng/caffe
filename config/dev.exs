@@ -64,8 +64,7 @@ config :phoenix, :stacktrace_depth, 20
 # Initialize plugs at runtime for faster development compilation
 config :phoenix, :plug_init_mode, :runtime
 
-config :eventstore,
-  column_data_type: "jsonb"
+config :eventstore, column_data_type: "jsonb"
 
 config :eventstore, EventStore.Storage,
   serializer: Commanded.Serialization.JsonSerializer,
@@ -76,3 +75,5 @@ config :eventstore, EventStore.Storage,
   hostname: "localhost",
   pool_size: 10,
   pool_overflow: 5
+
+config :mix_test_watch, clear: true

@@ -2,6 +2,8 @@ defmodule Caffe.Orders.Aggregates.TabTest do
   use Caffe.AggregateCase, aggregate: Caffe.Orders.Aggregates.Tab
   use Caffe.Orders.Aliases
 
+  alias Caffe.Orders.Commands.OrderedItem
+
   @tab_id UUID.uuid4()
 
   describe "OpenTab command" do
@@ -22,11 +24,11 @@ defmodule Caffe.Orders.Aggregates.TabTest do
   end
 
   describe "PlaceOrder command" do
-    @wine %{menu_item_id: 1, is_drink: true}
-    @beer %{menu_item_id: 2, is_drink: true}
-    @water %{menu_item_id: 5, is_drink: true}
-    @fish %{menu_item_id: 3, is_drink: false}
-    @burger %{menu_item_id: 4, is_drink: false}
+    @wine %OrderedItem{menu_item_id: 1, is_drink: true}
+    @beer %OrderedItem{menu_item_id: 2, is_drink: true}
+    @water %OrderedItem{menu_item_id: 5, is_drink: true}
+    @fish %OrderedItem{menu_item_id: 3, is_drink: false}
+    @burger %OrderedItem{menu_item_id: 4, is_drink: false}
 
     test "when only drinks are ordered" do
       assert_events(
@@ -71,38 +73,57 @@ defmodule Caffe.Orders.Aggregates.TabTest do
     # TODO can't place multiple orders?
   end
 
-  describe "MarkDrinksServed command" do
-    test "should emit the DrinksServed event" do
+  describe "MarkItemsServed command" do
+    test "drinks can be served immediately" do
       assert_events(
         [
           %TabOpened{tab_id: @tab_id},
           %DrinksOrdered{tab_id: @tab_id, items: [@wine, @beer]}
         ],
-        %MarkDrinkServed{tab_id: @tab_id, item_ids: [@wine.menu_item_id]},
-        %DrinksServed{tab_id: @tab_id, item_ids: [@wine.menu_item_id]}
+        %MarkItemsServed{tab_id: @tab_id, item_ids: [@wine.menu_item_id]},
+        %ItemsServed{tab_id: @tab_id, item_ids: [@wine.menu_item_id]}
       )
     end
 
-    test "can't serve a drink not ordered" do
+    test "food must be prepared first" do
+      assert_error(
+        [
+          %TabOpened{tab_id: @tab_id},
+          %FoodOrdered{tab_id: @tab_id, items: [@fish]}
+        ],
+        %MarkItemsServed{tab_id: @tab_id, item_ids: [@fish.menu_item_id]},
+        {:error, :food_must_be_prepared}
+      )
+    end
+
+    test "can't serve an item not ordered" do
       assert_error(
         [
           %TabOpened{tab_id: @tab_id},
           %DrinksOrdered{tab_id: @tab_id, items: [@wine, @water]}
         ],
-        %MarkDrinkServed{tab_id: @tab_id, item_ids: [@wine.menu_item_id, @beer.menu_item_id]},
-        {:error, :drinks_not_outstanding}
+        %MarkItemsServed{tab_id: @tab_id, item_ids: [@wine.menu_item_id, @beer.menu_item_id]},
+        {:error, :item_not_ordered}
       )
     end
 
-    test "can't serve a drink twice" do
+    test "can't serve an item twice" do
+      given = [
+        %TabOpened{tab_id: @tab_id},
+        %DrinksOrdered{tab_id: @tab_id, items: [@wine, @beer]},
+        %ItemsServed{tab_id: @tab_id, item_ids: [@wine.menu_item_id]}
+      ]
+
       assert_error(
-        [
-          %TabOpened{tab_id: @tab_id},
-          %DrinksOrdered{tab_id: @tab_id, items: [@wine]},
-          %DrinksServed{tab_id: @tab_id, item_ids: [@wine.menu_item_id]}
-        ],
-        %MarkDrinkServed{tab_id: @tab_id, item_ids: [@wine.menu_item_id]},
-        {:error, :drinks_not_outstanding}
+        given,
+        %MarkItemsServed{tab_id: @tab_id, item_ids: [@wine.menu_item_id]},
+        {:error, :item_already_served}
+      )
+
+      assert_events(
+        given,
+        %MarkItemsServed{tab_id: @tab_id, item_ids: [@beer.menu_item_id]},
+        %ItemsServed{tab_id: @tab_id, item_ids: [@beer.menu_item_id]}
       )
     end
   end
