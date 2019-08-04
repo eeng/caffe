@@ -57,14 +57,6 @@ defmodule Caffe.Orders.Aggregates.TabTest do
       )
     end
 
-    test "must order something" do
-      assert_error(
-        %TabOpened{tab_id: @tab_id},
-        %PlaceOrder{tab_id: @tab_id, items: []},
-        {:error, :must_order_something}
-      )
-    end
-
     test "tab should be opened before" do
       assert_error(%PlaceOrder{tab_id: 123}, {:error, :tab_not_opened})
       assert_error(%PlaceOrder{tab_id: nil}, {:error, :tab_not_opened})

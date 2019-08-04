@@ -11,9 +11,6 @@ defmodule Caffe.Orders.Aggregates.Tab do
 
   def execute(%Tab{id: nil}, %PlaceOrder{}), do: {:error, :tab_not_opened}
 
-  def execute(%Tab{id: id}, %PlaceOrder{tab_id: id, items: []}),
-    do: {:error, :must_order_something}
-
   def execute(%Tab{id: id}, %PlaceOrder{tab_id: id, items: items}) do
     items
     |> Enum.group_by(fn item -> item.is_drink end)
