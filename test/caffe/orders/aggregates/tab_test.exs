@@ -63,7 +63,14 @@ defmodule Caffe.Orders.Aggregates.TabTest do
     end
 
     test "can't place order if tab was closed" do
-      # TODO
+      assert_error(
+        [
+          %TabOpened{tab_id: @tab_id},
+          %TabClosed{tab_id: @tab_id}
+        ],
+        %PlaceOrder{tab_id: @tab_id, items: [@wine]},
+        {:error, :tab_closed}
+      )
     end
   end
 
@@ -238,7 +245,7 @@ defmodule Caffe.Orders.Aggregates.TabTest do
       assert_events(
         [
           %TabOpened{tab_id: @tab_id},
-          %FoodOrdered{tab_id: @tab_id, items: [@wine, @beer]},
+          %DrinksOrdered{tab_id: @tab_id, items: [@wine, @beer]},
           %ItemsServed{tab_id: @tab_id, item_ids: [@wine.menu_item_id, @beer.menu_item_id]}
         ],
         %CloseTab{tab_id: @tab_id, amount_paid: Decimal.add(order_amount, 3)},
@@ -254,7 +261,7 @@ defmodule Caffe.Orders.Aggregates.TabTest do
     test "must pay at least the served value" do
       given = [
         %TabOpened{tab_id: @tab_id},
-        %FoodOrdered{tab_id: @tab_id, items: [@wine, @beer]},
+        %DrinksOrdered{tab_id: @tab_id, items: [@wine, @beer]},
         %ItemsServed{tab_id: @tab_id, item_ids: [@wine.menu_item_id]}
       ]
 
@@ -296,7 +303,7 @@ defmodule Caffe.Orders.Aggregates.TabTest do
           %TabClosed{tab_id: @tab_id}
         ],
         %CloseTab{tab_id: @tab_id, amount_paid: @wine.price},
-        {:error, :already_closed}
+        {:error, :tab_closed}
       )
     end
   end

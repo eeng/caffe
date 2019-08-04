@@ -9,6 +9,8 @@ defmodule Caffe.Orders.Aggregates.Tab do
 
   def execute(%Tab{}, %OpenTab{}), do: {:error, :tab_already_opened}
 
+  def execute(%Tab{open: false}, _), do: {:error, :tab_closed}
+
   def execute(%Tab{id: nil}, %PlaceOrder{}), do: {:error, :tab_not_opened}
 
   def execute(%Tab{id: id}, %PlaceOrder{tab_id: id, items: items}) do
@@ -67,8 +69,6 @@ defmodule Caffe.Orders.Aggregates.Tab do
         }
     end
   end
-
-  def execute(%Tab{open: false}, %CloseTab{}), do: {:error, :already_closed}
 
   def apply(%Tab{}, %TabOpened{tab_id: id}) do
     %Tab{id: id}
