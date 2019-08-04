@@ -4,13 +4,21 @@ defmodule Caffe.Orders do
   """
 
   alias Caffe.{Router, Repo, Menu}
-  alias Caffe.Orders.Commands.{OpenTab, PlaceOrder}
+
+  alias Caffe.Orders.Commands.{
+    OpenTab,
+    PlaceOrder,
+    BeginFoodPreparation,
+    MarkFoodPrepared,
+    MarkItemsServed
+  }
+
   alias Caffe.Orders.Projections.Tab
 
   @doc """
   ## Examples
 
-    {:ok, tab_id} = Orders.open_tab %{table_number: 5}
+    {:ok, tab_id} = Orders.open_tab %{table_number: 8}
   """
   def open_tab(args) do
     id = UUID.uuid4()
@@ -35,6 +43,34 @@ defmodule Caffe.Orders do
       items: Enum.map(items, &fetch_item_details/1)
     )
     |> Router.dispatch(consistency: :strong)
+  end
+
+  @doc """
+  ## Examples
+
+    Orders.mark_items_served %{tab_id: tab_id, item_ids: [beer.id]}
+    Orders.mark_items_served %{tab_id: tab_id, item_ids: [hamb.id]}
+  """
+  def mark_items_served(args) do
+    MarkItemsServed.new(args) |> Router.dispatch(consistency: :strong)
+  end
+
+  @doc """
+  ## Examples
+
+    Orders.begin_food_preparation %{tab_id: tab_id, item_ids: [hamb.id]}
+  """
+  def begin_food_preparation(args) do
+    BeginFoodPreparation.new(args) |> Router.dispatch(consistency: :strong)
+  end
+
+  @doc """
+  ## Examples
+
+    Orders.mark_food_prepared %{tab_id: tab_id, item_ids: [hamb.id]}
+  """
+  def mark_food_prepared(args) do
+    MarkFoodPrepared.new(args) |> Router.dispatch(consistency: :strong)
   end
 
   @doc """

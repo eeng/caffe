@@ -1,4 +1,4 @@
-defmodule Caffe.Orders.Commands.MarkItemsServed do
+defmodule Caffe.Orders.Commands.MarkFoodPrepared do
   defstruct [:tab_id, :item_ids]
 
   use Caffe.Command

@@ -3,7 +3,15 @@ defmodule Caffe.Orders.Projections.TabsProjector do
 
   alias Ecto.Multi
 
-  alias Caffe.Orders.Events.{TabOpened, DrinksOrdered, FoodOrdered, ItemsServed}
+  alias Caffe.Orders.Events.{
+    TabOpened,
+    DrinksOrdered,
+    FoodOrdered,
+    ItemsServed,
+    FoodBeingPrepared,
+    FoodPrepared
+  }
+
   alias Caffe.Orders.Projections.{Tab, TabItem}
 
   project %TabOpened{tab_id: id, table_number: table_number}, fn multi ->
@@ -18,9 +26,16 @@ defmodule Caffe.Orders.Projections.TabsProjector do
     insert_tab_items(multi, items, tab_id)
   end
 
-  project %ItemsServed{tab_id: tab_id, item_ids: item_ids}, fn multi ->
-    query = from i in TabItem, where: i.tab_id == ^tab_id and i.menu_item_id in ^item_ids
-    Multi.update_all(multi, :update_status, query, set: [status: "served"])
+  project %ItemsServed{} = evt, fn multi ->
+    update_items_statuses(multi, evt, "served")
+  end
+
+  project %FoodBeingPrepared{} = evt, fn multi ->
+    update_items_statuses(multi, evt, "preparing")
+  end
+
+  project %FoodPrepared{} = evt, fn multi ->
+    update_items_statuses(multi, evt, "prepared")
   end
 
   defp insert_tab_items(multi, items, tab_id) do
@@ -32,5 +47,10 @@ defmodule Caffe.Orders.Projections.TabsProjector do
 
       Multi.insert(multi, "item_#{item.menu_item_id}", tab_item)
     end)
+  end
+
+  defp update_items_statuses(multi, %{tab_id: tab_id, item_ids: item_ids}, status) do
+    query = from i in TabItem, where: i.tab_id == ^tab_id and i.menu_item_id in ^item_ids
+    Multi.update_all(multi, :update_status, query, set: [status: status])
   end
 end
