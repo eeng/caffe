@@ -41,4 +41,8 @@ defmodule Caffe.CommandCase do
     |> Vex.errors()
     |> Caffe.Middleware.Validator.merge_errors()
   end
+
+  def has_error_on?(struct, field) do
+    struct |> errors_on() |> Map.has_key?(field)
+  end
 end

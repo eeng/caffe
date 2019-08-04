@@ -10,7 +10,8 @@ defmodule Caffe.Orders.Commands.OrderedItem do
     quantity: 1
   ]
 
-  use Caffe.Constructor
+  use Caffe.Command
 
-  # TODO how to validate this in the place order command
+  validates :quantity, number: [greater_than: 0]
+  validates :notes, length: [max: 100]
 end

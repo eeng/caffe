@@ -5,7 +5,11 @@ defmodule Caffe.Orders.Commands.PlaceOrder do
   alias Caffe.Orders.Commands.OrderedItem
 
   validates :tab_id, uuid: true
-  validates :items, by: &is_list/1
+
+  validates :items,
+    by: &is_list/1,
+    length: [min: 1],
+    association: [message: "invalid ordered item"]
 
   def new(args \\ %{}) do
     %{items: items} = command = super(args)
