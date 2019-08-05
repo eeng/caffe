@@ -83,15 +83,15 @@ defmodule Caffe.Orders.Aggregates.Tab do
   end
 
   def apply(%Tab{id: id} = tab, %ItemsServed{tab_id: id, item_ids: item_ids}) do
-    update_in(tab.items, &set_items_status(&1, item_ids, "served"))
+    set_items_status(tab, item_ids, "served")
   end
 
   def apply(%Tab{id: id} = tab, %FoodBeingPrepared{tab_id: id, item_ids: item_ids}) do
-    update_in(tab.items, &set_items_status(&1, item_ids, "preparing"))
+    set_items_status(tab, item_ids, "preparing")
   end
 
   def apply(%Tab{id: id} = tab, %FoodPrepared{tab_id: id, item_ids: item_ids}) do
-    update_in(tab.items, &set_items_status(&1, item_ids, "prepared"))
+    set_items_status(tab, item_ids, "prepared")
   end
 
   def apply(%Tab{id: id} = tab, %TabClosed{tab_id: id}) do
@@ -144,14 +144,9 @@ defmodule Caffe.Orders.Aggregates.Tab do
     end
   end
 
-  defp set_items_status(all_items, ids_to_update, status) do
-    Enum.map(all_items, fn item ->
-      if Enum.member?(ids_to_update, item.menu_item_id) do
-        put_in(item.status, status)
-      else
-        item
-      end
-    end)
+  defp set_items_status(tab, ids_to_update, status) do
+    should_change? = fn item -> Enum.member?(ids_to_update, item.menu_item_id) end
+    put_in(tab, [Access.key(:items), Access.filter(should_change?), Access.key(:status)], status)
   end
 
   defp calculate_served_value(%Tab{items: items}) do
