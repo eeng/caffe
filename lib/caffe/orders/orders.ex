@@ -52,7 +52,7 @@ defmodule Caffe.Orders do
     Orders.mark_items_served %{tab_id: tab_id, item_ids: [beer.id, hamb.id]}
   """
   def mark_items_served(args) do
-    MarkItemsServed.new(args) |> Router.dispatch(consistency: :strong)
+    MarkItemsServed.new(args) |> Router.dispatch()
   end
 
   @doc """
@@ -61,7 +61,7 @@ defmodule Caffe.Orders do
     Orders.begin_food_preparation %{tab_id: tab_id, item_ids: [hamb.id]}
   """
   def begin_food_preparation(args) do
-    BeginFoodPreparation.new(args) |> Router.dispatch(consistency: :strong)
+    BeginFoodPreparation.new(args) |> Router.dispatch()
   end
 
   @doc """
@@ -70,7 +70,7 @@ defmodule Caffe.Orders do
     Orders.mark_food_prepared %{tab_id: tab_id, item_ids: [hamb.id]}
   """
   def mark_food_prepared(args) do
-    MarkFoodPrepared.new(args) |> Router.dispatch(consistency: :strong)
+    MarkFoodPrepared.new(args) |> Router.dispatch()
   end
 
   @doc """

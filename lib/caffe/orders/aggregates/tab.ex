@@ -1,5 +1,5 @@
 defmodule Caffe.Orders.Aggregates.Tab do
-  defstruct [:id, :table_number, open: true, items: []]
+  defstruct [:id, open: true, items: []]
 
   use Caffe.Orders.Aliases
 
