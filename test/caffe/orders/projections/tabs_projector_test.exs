@@ -45,6 +45,7 @@ defmodule Caffe.Orders.Projections.TabsProjectorTest do
   end
 
   def item_statuses_of_tab(tab_id) do
-    from(i in TabItem, select: i.status, where: i.tab_id == ^tab_id) |> Repo.all()
+    from(i in TabItem, select: i.status, where: i.tab_id == ^tab_id, order_by: i.menu_item_id)
+    |> Repo.all()
   end
 end
