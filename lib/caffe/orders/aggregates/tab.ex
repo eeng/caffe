@@ -54,7 +54,7 @@ defmodule Caffe.Orders.Aggregates.Tab do
     served_value = calculate_served_value(tab)
 
     cond do
-      Decimal.equal?(served_value, 0) ->
+      Decimal.equal?(served_value, 0) && Decimal.cmp(cmd.amount_paid, 0) == :gt ->
         {:error, :nothing_to_pay}
 
       Decimal.cmp(cmd.amount_paid, served_value) == :lt ->

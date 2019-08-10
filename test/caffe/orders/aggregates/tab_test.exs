@@ -283,6 +283,20 @@ defmodule Caffe.Orders.Aggregates.TabTest do
       )
     end
 
+    # TODO perhaps this should only be allowed to the stuff
+    test "an open tab with nothing served can be closed" do
+      assert_events(
+        [%TabOpened{tab_id: @tab_id}],
+        %CloseTab{tab_id: @tab_id, amount_paid: Decimal.new(0)},
+        %TabClosed{
+          tab_id: @tab_id,
+          amount_paid: Decimal.new(0),
+          order_amount: Decimal.new(0),
+          tip_amount: Decimal.new(0)
+        }
+      )
+    end
+
     test "can't pay if there is nothing to pay" do
       assert_error(
         [
