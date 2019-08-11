@@ -1,4 +1,5 @@
 defmodule Caffe.CommandCase do
+  # TODO this should not need to have the whole db setup. It's only needed for the open_tab test that need db access. Instead we should use DateCase there but then the errors_on would not work. Think of an alternative way, maybe with embedded schemas for the commands
   @moduledoc """
   This module defines the setup for tests requiring
   access to the application's command layer.

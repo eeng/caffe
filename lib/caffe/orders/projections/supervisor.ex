@@ -1,4 +1,4 @@
-defmodule Caffe.Orders.Supervisor do
+defmodule Caffe.Orders.Projections.Supervisor do
   use Supervisor
 
   def start_link(args) do
