@@ -4,7 +4,7 @@ defmodule Caffe.Factory do
   # Factories
 
   def build(:category) do
-    %Menu.Category{name: "Sandwich #{random_int()}"}
+    %Menu.Category{name: "Sandwich #{sequence()}"}
   end
 
   def build(:menu_item) do
@@ -19,7 +19,7 @@ defmodule Caffe.Factory do
   def build(:drink), do: build(:menu_item, is_drink: true)
 
   def build(:tab) do
-    %Orders.Projections.Tab{id: uuid(), table_number: random_int()}
+    %Orders.Projections.Tab{id: uuid(), table_number: sequence()}
   end
 
   def build(:tab_item) do
@@ -44,7 +44,7 @@ defmodule Caffe.Factory do
     UUID.uuid4()
   end
 
-  def random_int do
-    :rand.uniform(2_147_483_647)
+  def sequence do
+    :erlang.unique_integer([:positive, :monotonic])
   end
 end
