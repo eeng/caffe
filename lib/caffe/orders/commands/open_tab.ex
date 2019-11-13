@@ -6,6 +6,7 @@ defmodule Caffe.Orders.Commands.OpenTab do
   alias __MODULE__
   alias Caffe.Orders.Projections.Tab
   alias Caffe.Repo
+  import Ecto.Query
 
   validates :tab_id, uuid: true
 
@@ -19,10 +20,10 @@ defmodule Caffe.Orders.Commands.OpenTab do
   def validate_not_already_opened(nil, _command), do: true
 
   def validate_not_already_opened(table_number, _command) do
-    case Repo.get_by(Tab, table_number: table_number) do
-      nil -> true
-      %Tab{status: "closed"} -> true
-      _ -> false
-    end
+    # TODO use an enum?
+    opened_tabs_count =
+      Repo.one(from Tab, where: [table_number: ^table_number, status: "opened"], select: count())
+
+    opened_tabs_count == 0
   end
 end

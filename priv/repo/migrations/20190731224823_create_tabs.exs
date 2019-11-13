@@ -12,6 +12,8 @@ defmodule Caffe.Repo.Migrations.CreateTabs do
       timestamps()
     end
 
+    create index(:tabs, [:table_number, :status])
+
     create table(:tab_items, primary_key: false) do
       add :tab_id, references(:tabs, type: :uuid)
       add :menu_item_id, :integer
