@@ -1,14 +1,14 @@
 defmodule Caffe.ProjectorCase do
   use ExUnit.CaseTemplate
 
-  using projector: projector do
+  using projector: projector, async: _ do
     quote bind_quoted: [projector: projector] do
       @projector_module projector
       @projector_name @projector_module
                       |> to_string
                       |> String.replace("Elixir.Caffe.", "")
 
-      use Caffe.DataCase
+      use Caffe.DataCase, async: true
 
       alias Caffe.Repo
       import Caffe.Factory

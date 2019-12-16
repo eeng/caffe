@@ -1,5 +1,5 @@
 defmodule Caffe.Orders.Projections.TabsProjectorTest do
-  use Caffe.ProjectorCase, projector: Caffe.Orders.Projections.TabsProjector
+  use Caffe.ProjectorCase, projector: Caffe.Orders.Projections.TabsProjector, async: true
 
   alias Caffe.Orders.Events.{ItemsServed, DrinksOrdered, TabClosed}
   alias Caffe.Orders.Projections.{Tab, TabItem}

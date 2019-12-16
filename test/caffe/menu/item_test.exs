@@ -1,5 +1,5 @@
 defmodule Caffe.Menu.ItemTest do
-  use Caffe.DataCase
+  use Caffe.DataCase, async: true
 
   alias Caffe.Menu.Item
   alias Caffe.Repo
