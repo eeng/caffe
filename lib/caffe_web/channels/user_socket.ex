@@ -1,3 +1,4 @@
+# TODO needed?
 defmodule CaffeWeb.UserSocket do
   use Phoenix.Socket
 

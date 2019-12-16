@@ -29,6 +29,7 @@ defmodule CaffeWeb.Endpoint do
     pass: ["*/*"],
     json_decoder: Phoenix.json_library()
 
+  # TODO needed?
   plug Plug.MethodOverride
   plug Plug.Head
 

@@ -46,6 +46,7 @@ defmodule Caffe.MixProject do
       {:commanded_ecto_projections, "~> 0.8"},
       {:vex, "~> 0.8"},
       {:exnumerator, "~> 1.6"},
+      {:absinthe_plug, "~> 1.4"},
       {:mix_test_watch, "~> 0.8", only: :dev, runtime: false}
     ]
   end

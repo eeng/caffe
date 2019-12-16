@@ -4,7 +4,7 @@ defmodule Caffe.Menu do
   """
 
   alias Caffe.Repo
-  alias Caffe.Menu.Item
+  alias Caffe.Menu.{Item, Category}
 
   def create_item(attrs) do
     %Item{}
@@ -23,10 +23,14 @@ defmodule Caffe.Menu do
   end
 
   def list_items do
-    Repo.all(Item)
+    Repo.all(Item) |> Repo.preload(:category)
   end
 
   def get_item(id) do
     Repo.get(Item, id)
+  end
+
+  def list_categories do
+    Repo.all(Category)
   end
 end
