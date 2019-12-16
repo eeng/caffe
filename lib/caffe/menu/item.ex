@@ -14,10 +14,10 @@ defmodule Caffe.Menu.Item do
 
   def changeset(menu_item, attrs) do
     menu_item
-    |> cast(attrs, [:name, :description, :price, :is_drink])
+    |> cast(attrs, [:name, :description, :price, :is_drink, :category_id])
     |> validate_required([:name, :price])
     |> validate_number(:price, greater_than_or_equal_to: 0)
     |> unique_constraint(:name)
-    |> foreign_key_constraint(:category)
+    |> foreign_key_constraint(:category_id)
   end
 end

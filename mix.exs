@@ -57,10 +57,9 @@ defmodule Caffe.MixProject do
   #
   # See the documentation for `Mix` for more info on aliases.
   defp aliases do
-    seed = if Mix.env() != :test, do: ["run priv/repo/seeds.exs"], else: []
-
     [
-      "ecto.setup": ["ecto.create", "ecto.migrate"] ++ seed,
+      "ecto.seed": ["run priv/repo/seeds.exs"],
+      "ecto.setup": ["ecto.create", "ecto.migrate", "ecto.seed"],
       "ecto.reset": ["ecto.drop", "ecto.setup"],
       "event_store.reset": ["event_store.drop", "event_store.create", "event_store.init"],
       "db.reset": ["event_store.reset", "ecto.reset"],
