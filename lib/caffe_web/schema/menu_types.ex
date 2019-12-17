@@ -9,7 +9,7 @@ defmodule CaffeWeb.Schema.MenuTypes do
     field :id, :id
     field :name, :string
     field :description, :string
-    field :price, :float
+    field :price, :decimal
     field :category, :category, resolve: dataloader(Menu.Category)
   end
 

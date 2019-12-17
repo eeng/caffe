@@ -8,6 +8,15 @@ defmodule CaffeWeb.Schema do
     import_fields :menu_queries
   end
 
+  scalar :decimal do
+    parse fn
+      %{value: value}, _ -> Decimal.parse(value)
+      _, _ -> :error
+    end
+
+    serialize &to_string/1
+  end
+
   def context(ctx) do
     loader =
       Dataloader.new()
