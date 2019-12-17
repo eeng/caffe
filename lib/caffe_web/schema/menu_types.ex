@@ -34,6 +34,7 @@ defmodule CaffeWeb.Schema.MenuTypes do
   end
 
   input_object :menu_item_input do
+    field :id, :id
     field :name, non_null(:string)
     field :description, :string
     field :price, non_null(:decimal)
@@ -42,9 +43,9 @@ defmodule CaffeWeb.Schema.MenuTypes do
   end
 
   object :menu_mutations do
-    field :create_menu_item, :menu_item do
+    field :save_menu_item, :menu_item do
       arg :input, non_null(:menu_item_input)
-      resolve &Resolvers.Menu.create_item/3
+      resolve &Resolvers.Menu.save_item/3
     end
 
     field :delete_menu_item, :boolean do

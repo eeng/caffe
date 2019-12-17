@@ -6,22 +6,25 @@ defmodule Caffe.Menu do
   alias Caffe.Repo
   alias Caffe.Menu.{Item, Category}
 
-  def create_item(attrs) do
-    %Item{}
-    |> Item.changeset(attrs)
-    |> Repo.insert()
-  end
+  @doc """
+  Creates or update the menu item
+  """
+  def save_item(attrs) do
+    case (attrs[:id] && get_item(attrs[:id])) || {:ok, %Item{}} do
+      {:ok, item} ->
+        item
+        |> Item.changeset(attrs)
+        |> Repo.insert_or_update()
 
-  def update_item(%Item{} = item, attrs) do
-    item
-    |> Item.changeset(attrs)
-    |> Repo.update()
+      error ->
+        error
+    end
   end
 
   def delete_item(id) do
-    case Repo.get(Item, id) do
-      nil -> {:error, "not found"}
-      item -> Repo.delete(item)
+    case get_item(id) do
+      {:ok, item} -> Repo.delete(item)
+      error -> error
     end
   end
 
@@ -30,7 +33,12 @@ defmodule Caffe.Menu do
   end
 
   def get_item(id) do
-    Repo.get(Item, id)
+    case id && Repo.get(Item, id) do
+      nil -> {:error, :not_found}
+      item -> {:ok, item}
+    end
+  rescue
+    Ecto.Query.CastError -> {:error, :not_found}
   end
 
   def list_categories do

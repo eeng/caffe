@@ -60,20 +60,20 @@ defmodule CaffeWeb.Schema.MenuTypesTest do
            }
   end
 
-  describe "createMenuItem mutation" do
+  describe "saveMenuItem mutation" do
     setup do
       [deserts: insert!(:category, name: "Deserts")]
     end
 
     @query """
     mutation ($menuItem: MenuItemInput!) {
-      createMenuItem(input: $menuItem) {
+      saveMenuItem(input: $menuItem) {
         name
         price
       }
     }
     """
-    test "with valid data", %{deserts: deserts} do
+    test "creating with valid data", %{deserts: deserts} do
       menu_item = %{
         "name" => "Ice Cream",
         "price" => "10.99",
@@ -84,7 +84,7 @@ defmodule CaffeWeb.Schema.MenuTypesTest do
 
       assert json_response(conn, 200) == %{
                "data" => %{
-                 "createMenuItem" => %{
+                 "saveMenuItem" => %{
                    "name" => menu_item["name"],
                    "price" => menu_item["price"]
                  }
@@ -92,7 +92,7 @@ defmodule CaffeWeb.Schema.MenuTypesTest do
              }
     end
 
-    test "with invalid data", %{deserts: deserts} do
+    test "creating with invalid data", %{deserts: deserts} do
       menu_item = %{
         "name" => "",
         "price" => "10.99",
@@ -110,6 +110,48 @@ defmodule CaffeWeb.Schema.MenuTypesTest do
       menu_item = %{"price" => 456}
       conn = build_conn() |> post("/api", query: @query, variables: %{"menuItem" => menu_item})
       assert %{"errors" => [_]} = json_response(conn, 200)
+    end
+
+    test "updating with valid data", %{deserts: deserts} do
+      fries = insert!(:menu_item, name: "Fries")
+
+      menu_item = %{
+        "id" => to_string(fries.id),
+        "name" => "French Fries",
+        # TODO should not be necesary
+        "price" => "10.99",
+        # TODO should not be necesary
+        "categoryId" => deserts.id
+      }
+
+      conn = build_conn() |> post("/api", query: @query, variables: %{"menuItem" => menu_item})
+
+      assert %{
+               "data" => %{
+                 "saveMenuItem" => %{
+                   "name" => "French Fries"
+                 }
+               }
+             } = json_response(conn, 200)
+
+      assert Menu.Item |> Repo.all() |> length == 1
+    end
+
+    test "updating non-existant item" do
+      menu_item = %{
+        "id" => "0",
+        # TODO should not be necesary
+        "name" => "French Fries",
+        "price" => "10.99",
+        "categoryId" => 1
+      }
+
+      conn = build_conn() |> post("/api", query: @query, variables: %{"menuItem" => menu_item})
+
+      assert %{
+               "data" => %{"saveMenuItem" => nil},
+               "errors" => [%{"message" => "Menu item not found"}]
+             } = json_response(conn, 200)
     end
   end
 

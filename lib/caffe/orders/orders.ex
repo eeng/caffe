@@ -92,7 +92,11 @@ defmodule Caffe.Orders do
   end
 
   defp fetch_item_details(%{menu_item_id: id} = item) do
-    menu_item = Menu.get_item(id)
+    menu_item =
+      case Menu.get_item(id) do
+        {:ok, item} -> item
+        _ -> nil
+      end
 
     Map.merge(item, %{
       menu_item_name: menu_item.name,

@@ -7,13 +7,16 @@ defmodule CaffeWeb.Resolvers.Menu do
     {:ok, Caffe.Menu.list_categories()}
   end
 
-  def create_item(_parent, %{input: params}, _resolution) do
-    case Caffe.Menu.create_item(params) do
+  def save_item(_parent, %{input: params}, _resolution) do
+    case Caffe.Menu.save_item(params) do
       {:ok, _} = success ->
         success
 
+      {:error, :not_found} ->
+        {:error, message: "Menu item not found"}
+
       {:error, changeset} ->
-        {:error, message: "Could not create menu item", details: error_details(changeset)}
+        {:error, message: "Could not save menu item", details: error_details(changeset)}
     end
   end
 
@@ -24,7 +27,7 @@ defmodule CaffeWeb.Resolvers.Menu do
     end
   end
 
-  defp error_details(changeset) do
+  defp error_details(%Ecto.Changeset{} = changeset) do
     Ecto.Changeset.traverse_errors(changeset, fn {msg, _} -> msg end)
   end
 end
