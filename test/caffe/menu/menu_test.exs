@@ -24,8 +24,10 @@ defmodule Caffe.MenuTest do
     end
 
     test "list_items should return all menu items" do
-      insert!(:menu_item)
-      assert [%Menu.Item{}] = Menu.list_items()
+      insert!(:menu_item, name: "Chicken")
+      insert!(:menu_item, name: "Beef")
+
+      assert ["Chicken", "Beef"] == Enum.map(Menu.list_items(), & &1.name)
     end
   end
 end

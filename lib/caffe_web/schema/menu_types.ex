@@ -10,6 +10,7 @@ defmodule CaffeWeb.Schema.MenuTypes do
     field :name, :string
     field :description, :string
     field :price, :decimal
+    field :is_drink, :boolean
     field :category, :category, resolve: dataloader(Menu.Category)
   end
 
@@ -29,6 +30,26 @@ defmodule CaffeWeb.Schema.MenuTypes do
     @desc "Get all menu categories"
     field :categories, list_of(:category) do
       resolve &Resolvers.Menu.list_categories/3
+    end
+  end
+
+  input_object :menu_item_input do
+    field :name, non_null(:string)
+    field :description, :string
+    field :price, non_null(:decimal)
+    field :is_drink, :boolean
+    field :category_id, non_null(:integer)
+  end
+
+  object :menu_mutations do
+    field :create_menu_item, :menu_item do
+      arg :input, non_null(:menu_item_input)
+      resolve &Resolvers.Menu.create_item/3
+    end
+
+    field :delete_menu_item, :boolean do
+      arg :id, non_null(:id)
+      resolve &Resolvers.Menu.delete_item/3
     end
   end
 end

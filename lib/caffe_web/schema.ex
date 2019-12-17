@@ -8,9 +8,13 @@ defmodule CaffeWeb.Schema do
     import_fields :menu_queries
   end
 
+  mutation do
+    import_fields :menu_mutations
+  end
+
   scalar :decimal do
     parse fn
-      %{value: value}, _ -> Decimal.parse(value)
+      %{value: value}, _ when is_binary(value) -> Decimal.parse(value)
       _, _ -> :error
     end
 

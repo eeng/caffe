@@ -18,8 +18,11 @@ defmodule Caffe.Menu do
     |> Repo.update()
   end
 
-  def delete_item(%Item{} = item) do
-    Repo.delete(item)
+  def delete_item(id) do
+    case Repo.get(Item, id) do
+      nil -> {:error, "not found"}
+      item -> Repo.delete(item)
+    end
   end
 
   def list_items do

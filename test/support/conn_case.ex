@@ -20,6 +20,7 @@ defmodule CaffeWeb.ConnCase do
       # Import conveniences for testing with connections
       use Phoenix.ConnTest
       alias CaffeWeb.Router.Helpers, as: Routes
+      alias Caffe.Repo
       import Caffe.Factory
 
       # The default endpoint for testing
