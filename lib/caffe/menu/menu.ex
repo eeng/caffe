@@ -23,7 +23,7 @@ defmodule Caffe.Menu do
   end
 
   def list_items do
-    Repo.all(Item) |> Repo.preload(:category)
+    Repo.all(Item)
   end
 
   def get_item(id) do
@@ -32,5 +32,13 @@ defmodule Caffe.Menu do
 
   def list_categories do
     Repo.all(Category)
+  end
+
+  def data() do
+    Dataloader.Ecto.new(Repo, query: &query/2)
+  end
+
+  def query(queryable, _params) do
+    queryable
   end
 end

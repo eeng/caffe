@@ -1,19 +1,23 @@
 defmodule CaffeWeb.Schema.MenuTypes do
   use Absinthe.Schema.Notation
+  import Absinthe.Resolution.Helpers, only: [dataloader: 1]
+
   alias CaffeWeb.Resolvers
+  alias Caffe.Menu
 
   object :menu_item do
     field :id, :id
     field :name, :string
     field :description, :string
     field :price, :float
-    field :category, :category
+    field :category, :category, resolve: dataloader(Menu.Category)
   end
 
   object :category do
     field :id, :id
     field :name, :string
     field :position, :integer
+    field :items, list_of(:menu_item), resolve: dataloader(Menu.Item)
   end
 
   object :menu_queries do

@@ -47,6 +47,7 @@ defmodule Caffe.MixProject do
       {:vex, "~> 0.8"},
       {:exnumerator, "~> 1.6"},
       {:absinthe_plug, "~> 1.4"},
+      {:dataloader, "~> 1.0.0"},
       {:mix_test_watch, "~> 0.8", only: :dev, runtime: false}
     ]
   end
