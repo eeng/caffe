@@ -39,7 +39,7 @@ defmodule Caffe.MenuTest do
       insert!(:menu_item, name: "Chicken")
       insert!(:menu_item, name: "Beef")
 
-      assert ["Chicken", "Beef"] == Enum.map(Menu.list_items(), & &1.name)
+      assert ["Beef", "Chicken"] == Menu.list_items() |> Enum.map(& &1.name) |> Enum.sort()
     end
   end
 

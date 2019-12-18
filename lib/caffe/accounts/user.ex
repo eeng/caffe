@@ -17,11 +17,16 @@ defmodule Caffe.Accounts.User do
     user
     |> cast(attrs, [:username, :password, :fullname, :role])
     |> validate_required([:username, :password, :fullname, :role])
+    |> validate_inclusion(:role, roles())
     |> unique_constraint(:username)
     |> encrypt_password
   end
 
   defp encrypt_password(changeset) do
     update_change(changeset, :password, &Password.hash/1)
+  end
+
+  def roles do
+    ~w[admin chef waitstaff customer]
   end
 end
