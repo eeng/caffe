@@ -4,6 +4,7 @@ defmodule CaffeWeb.Schema do
   alias CaffeWeb.Schema.Middleware
 
   import_types CaffeWeb.Schema.MenuTypes
+  import_types CaffeWeb.Schema.AccountsTypes
 
   query do
     import_fields :menu_queries
@@ -11,6 +12,7 @@ defmodule CaffeWeb.Schema do
 
   mutation do
     import_fields :menu_mutations
+    import_fields :accounts_mutations
   end
 
   scalar :decimal do
