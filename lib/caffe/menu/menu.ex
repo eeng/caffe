@@ -6,15 +6,18 @@ defmodule Caffe.Menu do
   alias Caffe.Repo
   alias Caffe.Menu.{Item, Category}
 
-  @doc """
-  Creates or update the menu item
-  """
-  def save_item(attrs) do
-    case (attrs[:id] && get_item(attrs[:id])) || {:ok, %Item{}} do
+  def create_item(attrs) do
+    %Item{}
+    |> Item.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  def update_item(attrs) do
+    case get_item(attrs[:id]) do
       {:ok, item} ->
         item
         |> Item.changeset(attrs)
-        |> Repo.insert_or_update()
+        |> Repo.update()
 
       error ->
         error

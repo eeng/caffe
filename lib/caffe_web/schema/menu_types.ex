@@ -33,19 +33,24 @@ defmodule CaffeWeb.Schema.MenuTypes do
     end
   end
 
-  input_object :menu_item_input do
-    field :id, :id
-    field :name, non_null(:string)
-    field :description, :string
-    field :price, non_null(:decimal)
-    field :is_drink, :boolean
-    field :category_id, non_null(:integer)
-  end
-
   object :menu_mutations do
-    field :save_menu_item, :menu_item do
-      arg :input, non_null(:menu_item_input)
-      resolve &Resolvers.Menu.save_item/3
+    field :create_menu_item, :menu_item do
+      arg :name, non_null(:string)
+      arg :description, :string
+      arg :price, non_null(:decimal)
+      arg :is_drink, :boolean
+      arg :category_id, non_null(:integer)
+      resolve &Resolvers.Menu.create_item/3
+    end
+
+    field :update_menu_item, :menu_item do
+      arg :id, non_null(:id)
+      arg :name, :string
+      arg :description, :string
+      arg :price, :decimal
+      arg :is_drink, :boolean
+      arg :category_id, :integer
+      resolve &Resolvers.Menu.update_item/3
     end
 
     field :delete_menu_item, :boolean do
