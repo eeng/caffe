@@ -8,23 +8,23 @@ defmodule Caffe.Seeds do
   end
 
   defp create_users do
-    upsert_all_by(:username, [
+    upsert_all_by(:email, [
       %User{
-        username: "apocalypse",
-        fullname: "Apocalypse the Admin",
+        email: "apocalypse@xmen.com",
         password: Password.hash("secret"),
+        name: "Apocalypse the Admin",
         role: "admin"
       },
       %User{
-        username: "charles",
-        fullname: "Charles the Chef",
+        email: "charles@xmen.com",
         password: Password.hash("secret"),
+        name: "Charles the Chef",
         role: "chef"
       },
       %User{
-        username: "wolverine",
-        fullname: "Wolverine the Waiter",
+        email: "wolverine@xmen.com",
         password: Password.hash("secret"),
+        name: "Wolverine the Waiter",
         role: "waitstaff"
       }
     ])

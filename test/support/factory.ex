@@ -27,7 +27,7 @@ defmodule Caffe.Factory do
   end
 
   def build(:user) do
-    %Accounts.User{username: "max", password: "secret", role: "admin", fullname: "Max"}
+    %Accounts.User{email: "max@acme.com", password: "secret", role: "admin", name: "Max"}
   end
 
   # Convenience API

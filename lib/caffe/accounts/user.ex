@@ -5,8 +5,8 @@ defmodule Caffe.Accounts.User do
   alias Caffe.Accounts.Password
 
   schema "users" do
-    field :fullname, :string
-    field :username, :string
+    field :name, :string
+    field :email, :string
     field :password, :string
     field :role, :string
 
@@ -15,10 +15,11 @@ defmodule Caffe.Accounts.User do
 
   def changeset(user, attrs) do
     user
-    |> cast(attrs, [:username, :password, :fullname, :role])
-    |> validate_required([:username, :password, :fullname, :role])
+    |> cast(attrs, [:email, :password, :name, :role])
+    |> validate_required([:email, :password, :name, :role])
+    |> validate_format(:email, ~r/^[A-Za-z0-9._%+-+']+@[A-Za-z0-9.-]+\.[A-Za-z]+$/)
     |> validate_inclusion(:role, roles())
-    |> unique_constraint(:username)
+    |> unique_constraint(:email)
     |> encrypt_password
   end
 

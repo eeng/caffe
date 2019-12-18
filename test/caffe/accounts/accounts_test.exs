@@ -13,21 +13,19 @@ defmodule Caffe.AccountsTest do
 
   describe "autheticate" do
     setup do
-      [
-        user:
-          params_for(:user, username: "alice", password: "secret123")
-          |> Accounts.create_user()
-      ]
+      valid_attrs = params_for(:user, email: "alice@acme.com", password: "secret123")
+      [user: Accounts.create_user(valid_attrs)]
     end
 
     test "valid credentials" do
-      assert {:ok, %User{username: "alice"}} = Accounts.authenticate("alice", "secret123")
+      assert {:ok, %User{email: "alice@acme.com"}} =
+               Accounts.authenticate("alice@acme.com", "secret123")
     end
 
     test "invalid credentials" do
-      assert {:error, :invalid_credentials} = Accounts.authenticate("alice", "Secret123")
-      assert {:error, :invalid_credentials} = Accounts.authenticate("bob", "secret123")
-      assert {:error, :invalid_credentials} = Accounts.authenticate("alice", "")
+      assert {:error, :invalid_credentials} = Accounts.authenticate("alice@acme.com", "Secret123")
+      assert {:error, :invalid_credentials} = Accounts.authenticate("bob@acme.com", "secret123")
+      assert {:error, :invalid_credentials} = Accounts.authenticate("alice@acme.com", "")
     end
   end
 end

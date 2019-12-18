@@ -10,8 +10,8 @@ defmodule Caffe.Accounts do
     %User{} |> User.changeset(attrs) |> Repo.insert()
   end
 
-  def authenticate(username, password) do
-    user = Repo.get_by(User, username: username)
+  def authenticate(email, password) do
+    user = Repo.get_by(User, email: email)
 
     with %{password: digest} <- user,
          true <- Password.valid?(password, digest) do

@@ -5,9 +5,14 @@ defmodule Caffe.Accounts.UserTest do
   alias Caffe.Accounts.User
 
   describe "validations" do
+    test "email should be present and have the correct format" do
+      assert {:email, "can't be blank"} in errors_on(User, %{email: ""})
+      assert {:email, "has invalid format"} in errors_on(User, %{email: "nop"})
+      refute {:email, "has invalid format"} in errors_on(User, %{email: "yes@a.com"})
+    end
+
     test "role should be one of the predefined ones" do
-      changeset = %User{} |> User.changeset(%{role: "other"})
-      assert "is invalid" in errors_on(changeset).role
+      assert {:role, "is invalid"} in errors_on(User, %{role: "other"})
     end
   end
 end

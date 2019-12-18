@@ -1,17 +1,17 @@
 defmodule Caffe.Support.Validation do
-  @doc """
-  A helper that transforms changeset errors into a map of messages.
+  def errors_on(module, params) do
+    errors_on(module.changeset(struct(module), params))
+  end
 
-      assert {:error, changeset} = Accounts.create_user(%{password: "short"})
-      assert "password is too short" in errors_on(changeset).password
-      assert %{password: ["password is too short"]} = errors_on(changeset)
-
-  """
   def errors_on(changeset) do
-    Ecto.Changeset.traverse_errors(changeset, fn {message, opts} ->
-      Regex.replace(~r"%{(\w+)}", message, fn _, key ->
-        opts |> Keyword.get(String.to_existing_atom(key), key) |> to_string()
-      end)
+    Enum.map(changeset.errors, fn {field, {msg, opts}} ->
+      {field, interpolate_message(msg, opts)}
+    end)
+  end
+
+  defp interpolate_message(msg, opts) do
+    Enum.reduce(opts, msg, fn {key, value}, acc ->
+      String.replace(acc, "%{#{key}}", to_string(value))
     end)
   end
 end
