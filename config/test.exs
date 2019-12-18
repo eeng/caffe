@@ -22,3 +22,7 @@ config :commanded,
 
 config :commanded, Commanded.EventStore.Adapters.InMemory,
   serializer: Commanded.Serialization.JsonSerializer
+
+config :argon2_elixir,
+  t_cost: 1,
+  m_cost: 8

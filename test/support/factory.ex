@@ -1,5 +1,5 @@
 defmodule Caffe.Factory do
-  alias Caffe.{Repo, Menu, Orders}
+  alias Caffe.{Repo, Menu, Orders, Accounts}
 
   # Factories
 
@@ -24,6 +24,10 @@ defmodule Caffe.Factory do
 
   def build(:tab_item) do
     %Orders.Projections.TabItem{menu_item_id: 1, menu_item_name: "Food", price: 10, quantity: 1}
+  end
+
+  def build(:user) do
+    %Accounts.User{username: "max", password: "secret", role: "admin", fullname: "Max"}
   end
 
   # Convenience API
