@@ -4,6 +4,13 @@ defmodule Caffe.AccountsTest do
   alias Caffe.Accounts
   alias Caffe.Accounts.User
 
+  describe "create_user" do
+    test "should store the password encrypted" do
+      {:ok, user} = params_for(:user) |> Map.put(:password, "secret") |> Accounts.create_user()
+      assert user.password != "secret"
+    end
+  end
+
   describe "autheticate" do
     setup do
       [

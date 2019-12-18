@@ -1,7 +1,36 @@
 defmodule Caffe.Seeds do
   alias Caffe.{Repo, Menu}
+  alias Caffe.Accounts.{User, Password}
 
   def run do
+    create_users()
+    create_menu()
+  end
+
+  defp create_users do
+    upsert_all_by(:username, [
+      %User{
+        username: "alice",
+        fullname: "Alice the Admin",
+        password: Password.hash("secret"),
+        role: "admin"
+      },
+      %User{
+        username: "charly",
+        fullname: "Charly the Chef",
+        password: Password.hash("secret"),
+        role: "chef"
+      },
+      %User{
+        username: "will",
+        fullname: "Will the Waiter",
+        password: Password.hash("secret"),
+        role: "waitstaff"
+      }
+    ])
+  end
+
+  defp create_menu do
     sandwiches = %Menu.Category{name: "Sandwiches", position: 1} |> upsert_by(:name)
     %Menu.Item{name: "Reuben", price: 4.50, category: sandwiches} |> upsert_by(:name)
     %Menu.Item{name: "Croque Monsieur", price: 6.25, category: sandwiches} |> upsert_by(:name)
@@ -35,5 +64,9 @@ defmodule Caffe.Seeds do
       on_conflict: :replace_all_except_primary_key,
       conflict_target: conflict_target
     )
+  end
+
+  defp upsert_all_by(field, records) do
+    Enum.each(records, &upsert_by(&1, field))
   end
 end

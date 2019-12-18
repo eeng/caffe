@@ -3,9 +3,8 @@ defmodule Caffe.Accounts do
   The Accounts bounded context
   """
 
-  alias Comeonin.Ecto.Password
   alias Caffe.Repo
-  alias Caffe.Accounts.User
+  alias Caffe.Accounts.{User, Password}
 
   def create_user(attrs) do
     %User{} |> User.changeset(attrs) |> Repo.insert()

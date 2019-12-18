@@ -48,7 +48,6 @@ defmodule Caffe.MixProject do
       {:exnumerator, "~> 1.6"},
       {:absinthe_plug, "~> 1.4"},
       {:dataloader, "~> 1.0.0"},
-      {:comeonin_ecto_password, "~> 3.0.0"},
       {:argon2_elixir, "~> 2.0"},
       {:mix_test_watch, "~> 0.8", only: :dev, runtime: false}
     ]

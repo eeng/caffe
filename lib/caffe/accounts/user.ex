@@ -2,10 +2,12 @@ defmodule Caffe.Accounts.User do
   use Ecto.Schema
   import Ecto.Changeset
 
+  alias Caffe.Accounts.Password
+
   schema "users" do
     field :fullname, :string
     field :username, :string
-    field :password, Comeonin.Ecto.Password
+    field :password, :string
     field :role, :string
 
     timestamps()
@@ -15,5 +17,11 @@ defmodule Caffe.Accounts.User do
     user
     |> cast(attrs, [:username, :password, :fullname, :role])
     |> validate_required([:username, :password, :fullname, :role])
+    |> unique_constraint(:username)
+    |> encrypt_password
+  end
+
+  defp encrypt_password(changeset) do
+    update_change(changeset, :password, &Password.hash/1)
   end
 end
