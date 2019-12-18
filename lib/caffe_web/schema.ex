@@ -1,6 +1,7 @@
 defmodule CaffeWeb.Schema do
   use Absinthe.Schema
   alias Caffe.Menu
+  alias CaffeWeb.Schema.Middleware
 
   import_types CaffeWeb.Schema.MenuTypes
 
@@ -32,5 +33,13 @@ defmodule CaffeWeb.Schema do
 
   def plugins do
     [Absinthe.Middleware.Dataloader] ++ Absinthe.Plugin.defaults()
+  end
+
+  def middleware(middleware, _field, %{identifier: :mutation}) do
+    middleware ++ [Middleware.ChangesetErrors]
+  end
+
+  def middleware(middleware, _field, _object) do
+    middleware
   end
 end

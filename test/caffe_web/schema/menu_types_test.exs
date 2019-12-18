@@ -111,7 +111,7 @@ defmodule CaffeWeb.Schema.MenuTypesTest do
 
       assert %{
                "errors" => [
-                 %{"details" => %{"name" => ["can't be blank"]}}
+                 %{"message" => "validation_error", "details" => %{"name" => ["can't be blank"]}}
                ]
              } = json_response(conn, 200)
 
@@ -161,29 +161,36 @@ defmodule CaffeWeb.Schema.MenuTypesTest do
 
       assert %{
                "data" => %{"updateMenuItem" => nil},
-               "errors" => [%{"message" => "Menu item not found"}]
+               "errors" => [%{"message" => "not_found"}]
              } = json_response(conn, 200)
     end
   end
 
-  @query """
-  mutation ($id: ID) {
-    deleteMenuItem(id: $id)
-  }
-  """
-  test "deleteMenuItem mutation" do
-    cheese = insert!(:menu_item, name: "Cheese")
+  describe "deleteMenuItem mutation" do
+    @query """
+    mutation ($id: ID) {
+      deleteMenuItem(id: $id) { id }
+    }
+    """
+    test "existing menu item" do
+      cheese = insert!(:menu_item, name: "Cheese")
 
-    conn = build_conn() |> post("/api", query: @query, variables: %{"id" => cheese.id})
-    assert json_response(conn, 200) == %{"data" => %{"deleteMenuItem" => true}}
+      conn = build_conn() |> post("/api", query: @query, variables: %{"id" => cheese.id})
 
-    assert Menu.Item |> Repo.all() == []
+      assert json_response(conn, 200) == %{
+               "data" => %{"deleteMenuItem" => %{"id" => to_string(cheese.id)}}
+             }
 
-    conn = build_conn() |> post("/api", query: @query, variables: %{"id" => 456})
+      assert Menu.Item |> Repo.all() == []
+    end
 
-    assert %{
-             "data" => %{"deleteMenuItem" => nil},
-             "errors" => [%{"message" => "Menu item not found"}]
-           } = json_response(conn, 200)
+    test "non-existing menu item" do
+      conn = build_conn() |> post("/api", query: @query, variables: %{"id" => 456})
+
+      assert %{
+               "data" => %{"deleteMenuItem" => nil},
+               "errors" => [%{"message" => "not_found"}]
+             } = json_response(conn, 200)
+    end
   end
 end

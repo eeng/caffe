@@ -8,36 +8,14 @@ defmodule CaffeWeb.Resolvers.Menu do
   end
 
   def create_item(_parent, params, _resolution) do
-    case Caffe.Menu.create_item(params) do
-      {:ok, _} = success ->
-        success
-
-      {:error, changeset} ->
-        {:error, message: "Could not create menu item", details: error_details(changeset)}
-    end
+    Caffe.Menu.create_item(params)
   end
 
   def update_item(_parent, params, _resolution) do
-    case Caffe.Menu.update_item(params) do
-      {:ok, _} = success ->
-        success
-
-      {:error, :not_found} ->
-        {:error, message: "Menu item not found"}
-
-      {:error, changeset} ->
-        {:error, message: "Could not update menu item", details: error_details(changeset)}
-    end
+    Caffe.Menu.update_item(params)
   end
 
   def delete_item(_parent, %{id: id}, _resolution) do
-    case Caffe.Menu.delete_item(id) do
-      {:ok, _} -> {:ok, true}
-      {:error, _} -> {:error, "Menu item not found"}
-    end
-  end
-
-  defp error_details(%Ecto.Changeset{} = changeset) do
-    Ecto.Changeset.traverse_errors(changeset, fn {msg, _} -> msg end)
+    Caffe.Menu.delete_item(id)
   end
 end

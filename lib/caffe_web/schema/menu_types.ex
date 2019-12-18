@@ -2,8 +2,8 @@ defmodule CaffeWeb.Schema.MenuTypes do
   use Absinthe.Schema.Notation
   import Absinthe.Resolution.Helpers, only: [dataloader: 1]
 
-  alias CaffeWeb.Resolvers
   alias Caffe.Menu
+  alias CaffeWeb.Resolvers
 
   object :menu_item do
     field :id, :id
@@ -53,7 +53,7 @@ defmodule CaffeWeb.Schema.MenuTypes do
       resolve &Resolvers.Menu.update_item/3
     end
 
-    field :delete_menu_item, :boolean do
+    field :delete_menu_item, :menu_item do
       arg :id, non_null(:id)
       resolve &Resolvers.Menu.delete_item/3
     end
