@@ -5,10 +5,17 @@ defmodule Caffe.Middleware.Validator do
   import Pipeline
 
   def before_dispatch(%Pipeline{command: command} = pipeline) do
-    if Vex.valid?(command) do
-      pipeline
-    else
-      handle_validation_failure(pipeline)
+    changeset = build_changeset(command)
+
+    case Ecto.Changeset.apply_action(changeset, :insert) do
+      {:ok, command} ->
+        # Replace the command as the new one may have fields casted, defaults assigned, etc.
+        pipeline |> Map.put(:command, command)
+
+      {:error, changeset} ->
+        pipeline
+        |> respond({:error, :validation_failure, transform_errors(changeset)})
+        |> halt()
     end
   end
 
@@ -20,19 +27,16 @@ defmodule Caffe.Middleware.Validator do
     pipeline
   end
 
-  defp handle_validation_failure(%Pipeline{command: command} = pipeline) do
-    errors = command |> Vex.errors() |> merge_errors()
-
-    pipeline
-    |> respond({:error, :validation_failure, errors})
-    |> halt()
+  # All commands must implement a changeset/2 function for this to work
+  defp build_changeset(command) do
+    command.__struct__.changeset(struct(command.__struct__), Map.from_struct(command))
   end
 
-  def merge_errors(errors) do
-    Enum.group_by(
-      errors,
-      fn {_, field, _, _message} -> field end,
-      fn {_, _field, _, message} -> message end
-    )
+  defp transform_errors(changeset) do
+    Ecto.Changeset.traverse_errors(changeset, fn {msg, opts} ->
+      Enum.reduce(opts, msg, fn {key, value}, acc ->
+        String.replace(acc, "%{#{key}}", to_string(value))
+      end)
+    end)
   end
 end

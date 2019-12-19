@@ -1,8 +1,15 @@
 defmodule Caffe.Orders.Commands.MarkItemsServed do
-  defstruct [:tab_id, :item_ids]
-
   use Caffe.Command
 
-  validates :tab_id, uuid: true
-  validates :item_ids, by: &is_list/1, length: [min: 1]
+  embedded_schema do
+    field :tab_id, :binary_id
+    field :item_ids, {:array, :integer}
+  end
+
+  def changeset(schema, params) do
+    schema
+    |> cast(params, [:tab_id, :item_ids])
+    |> validate_required([:tab_id])
+    |> validate_length(:item_ids, min: 1)
+  end
 end

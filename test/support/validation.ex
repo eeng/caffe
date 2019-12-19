@@ -4,14 +4,14 @@ defmodule Caffe.Support.Validation do
   end
 
   def errors_on(changeset) do
-    Enum.map(changeset.errors, fn {field, {msg, opts}} ->
-      {field, interpolate_message(msg, opts)}
+    Ecto.Changeset.traverse_errors(changeset, fn {msg, opts} ->
+      Enum.reduce(opts, msg, fn {key, value}, acc ->
+        String.replace(acc, "%{#{key}}", to_string(value))
+      end)
     end)
   end
 
-  defp interpolate_message(msg, opts) do
-    Enum.reduce(opts, msg, fn {key, value}, acc ->
-      String.replace(acc, "%{#{key}}", to_string(value))
-    end)
+  def error_fields_on(module, params) do
+    errors_on(module, params) |> Map.keys()
   end
 end

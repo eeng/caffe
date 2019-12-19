@@ -1,17 +1,24 @@
 defmodule Caffe.Orders.Commands.OrderedItem do
+  use Ecto.Schema
+  import Ecto.Changeset
+
   @derive Jason.Encoder
-  defstruct [
-    :menu_item_id,
-    :menu_item_name,
-    :is_drink,
-    :price,
-    :notes,
-    status: "pending",
-    quantity: 1
-  ]
+  @primary_key false
 
-  use Caffe.Command
+  embedded_schema do
+    field :menu_item_id, :integer
+    field :menu_item_name, :string
+    field :is_drink, :boolean
+    field :price, :decimal
+    field :notes, :string
+    field :status, :string, default: "pending"
+    field :quantity, :integer, default: 1
+  end
 
-  validates :quantity, number: [greater_than: 0]
-  validates :notes, length: [max: 100]
+  def changeset(schema, params) do
+    schema
+    |> cast(params, ~w[menu_item_id menu_item_name is_drink price notes status quantity]a)
+    |> validate_number(:quantity, greater_than: 0)
+    |> validate_length(:notes, max: 100)
+  end
 end

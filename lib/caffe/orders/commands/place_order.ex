@@ -1,18 +1,17 @@
 defmodule Caffe.Orders.Commands.PlaceOrder do
-  defstruct [:tab_id, :items]
-
   use Caffe.Command
+
   alias Caffe.Orders.Commands.OrderedItem
 
-  validates :tab_id, uuid: true
+  embedded_schema do
+    field :tab_id, :binary_id
+    embeds_many :items, OrderedItem
+  end
 
-  validates :items,
-    by: &is_list/1,
-    length: [min: 1],
-    association: [message: "invalid ordered item"]
-
-  def new(args \\ %{}) do
-    %{items: items} = command = super(args)
-    %{command | items: Enum.map(items, &OrderedItem.new/1)}
+  def changeset(schema, params) do
+    schema
+    |> cast(params, [:tab_id])
+    |> validate_required([:tab_id])
+    |> cast_embed(:items, with: &OrderedItem.changeset/2, required: true)
   end
 end

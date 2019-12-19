@@ -59,6 +59,11 @@ defmodule Caffe.OrdersTest do
     assert %Tab{status: "closed"} = Repo.get(Tab, tab_id)
   end
 
+  test "should validate commands" do
+    assert {:error, :validation_failure, %{table_number: ["can't be blank"]}} =
+             Orders.open_tab(%{table_number: nil})
+  end
+
   defp open_tab(_context) do
     {:ok, tab_id} = Orders.open_tab(%{table_number: 3})
     %{tab_id: tab_id}
