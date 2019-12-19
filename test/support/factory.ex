@@ -27,7 +27,16 @@ defmodule Caffe.Factory do
   end
 
   def build(:user) do
-    %Accounts.User{email: "max@acme.com", password: "secret", role: "admin", name: "Max"}
+    %Accounts.User{
+      email: "max@acme.com",
+      password: Accounts.Password.hash("secret"),
+      role: "admin",
+      name: "Max"
+    }
+  end
+
+  def build(:user, attributes) do
+    build(:user) |> struct(attributes) |> Map.update!(:password, &Accounts.Password.hash/1)
   end
 
   # Convenience API

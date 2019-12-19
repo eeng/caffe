@@ -13,8 +13,7 @@ defmodule Caffe.AccountsTest do
 
   describe "autheticate" do
     setup do
-      valid_attrs = params_for(:user, email: "alice@acme.com", password: "secret123")
-      [user: Accounts.create_user(valid_attrs)]
+      [user: insert!(:user, email: "alice@acme.com", password: "secret123")]
     end
 
     test "valid credentials" do

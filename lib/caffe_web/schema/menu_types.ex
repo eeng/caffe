@@ -1,7 +1,6 @@
 defmodule CaffeWeb.Schema.MenuTypes do
   use Absinthe.Schema.Notation
   import Absinthe.Resolution.Helpers, only: [dataloader: 1]
-
   alias Caffe.Menu
   alias CaffeWeb.Resolvers
 
