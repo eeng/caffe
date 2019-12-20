@@ -14,7 +14,7 @@ defmodule Caffe.Middleware.Validator do
 
       {:error, changeset} ->
         pipeline
-        |> respond({:error, :validation_failure, transform_errors(changeset)})
+        |> respond({:error, {:invalid_command, transform_errors(changeset)}})
         |> halt()
     end
   end

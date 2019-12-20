@@ -41,7 +41,7 @@ defmodule Caffe.AggregateCase do
       end
 
       # Execute one or more commands against an aggregate
-      defp execute(aggregate, commands) do
+      def execute(aggregate, commands) do
         commands
         |> List.wrap()
         |> Enum.reduce({aggregate, [], nil}, fn

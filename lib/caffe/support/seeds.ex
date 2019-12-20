@@ -26,6 +26,12 @@ defmodule Caffe.Seeds do
         password: Password.hash("secret"),
         name: "Wolverine the Waiter",
         role: "waitstaff"
+      },
+      %User{
+        email: "cyclops@xmen.com",
+        password: Password.hash("secret"),
+        name: "Cyclops the Customer",
+        role: "customer"
       }
     ])
   end

@@ -7,9 +7,10 @@ defmodule Caffe.Repo.Migrations.CreateOrders do
       add :customer_id, references(:users)
       add :customer_name, :string
       add :status, :string
-      add :amount_paid, :decimal
-      add :order_amount, :decimal
-      add :tip_amount, :decimal
+      add :amount_paid, :decimal, null: false
+      add :order_amount, :decimal, null: false
+      add :tip_amount, :decimal, null: false
+      add :notes, :string
       timestamps()
     end
 
@@ -19,9 +20,7 @@ defmodule Caffe.Repo.Migrations.CreateOrders do
       add :menu_item_name, :string
       add :price, :decimal
       add :status, :string
-      add :notes, :string
       add :quantity, :integer
-      timestamps()
     end
   end
 end

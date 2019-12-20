@@ -60,7 +60,7 @@ defmodule Caffe.OrdersTest do
   end
 
   test "should validate commands" do
-    assert {:error, :validation_failure, %{table_number: ["can't be blank"]}} =
+    assert {:error, {:invalid_command, %{table_number: ["can't be blank"]}}} =
              Orders.open_tab(%{table_number: nil})
   end
 

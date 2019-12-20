@@ -13,9 +13,10 @@ defmodule Caffe.Ordering.Projections.Order do
     belongs_to :customer, User
     field :customer_name, :string
     field :status, Status, default: "pending"
-    field :amount_paid, :decimal
-    field :order_amount, :decimal
-    field :tip_amount, :decimal
+    field :amount_paid, :decimal, default: 0
+    field :order_amount, :decimal, default: 0
+    field :tip_amount, :decimal, default: 0
+    field :notes, :string
     has_many :items, Item
     timestamps()
   end
@@ -28,7 +29,8 @@ defmodule Caffe.Ordering.Projections.Order do
       :status,
       :amount_paid,
       :order_amount,
-      :tip_amount
+      :tip_amount,
+      :notes
     ])
     |> cast_assoc(:items, with: &Item.changeset/2)
   end

@@ -4,6 +4,7 @@ defmodule CaffeWeb.Schema.AccountsTypes do
   alias CaffeWeb.Schema.Middleware
 
   object :user do
+    field :id, :id
     field :email, non_null(:string)
     field :password, non_null(:string)
     field :role, non_null(:role)

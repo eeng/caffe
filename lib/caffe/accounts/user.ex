@@ -5,7 +5,7 @@ defmodule Caffe.Accounts.User do
   alias Caffe.Accounts.Password
 
   defmodule Role do
-    use Exnumerator, values: ~w[admin chef waitstaff customer]
+    use Exnumerator, values: ~w[admin chef waitstaff cashier customer]
   end
 
   schema "users" do

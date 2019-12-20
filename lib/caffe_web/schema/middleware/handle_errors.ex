@@ -1,4 +1,5 @@
-defmodule CaffeWeb.Schema.Middleware.ChangesetErrors do
+# TODO rename
+defmodule CaffeWeb.Schema.Middleware.HandleErrors do
   @behaviour Absinthe.Middleware
   @dialyzer :no_undefined_callbacks
 
@@ -10,6 +11,13 @@ defmodule CaffeWeb.Schema.Middleware.ChangesetErrors do
     [
       message: "validation_error",
       details: Caffe.Middleware.Validator.transform_errors(changeset)
+    ]
+  end
+
+  defp transform_error({:invalid_command, errors}) do
+    [
+      message: "validation_error",
+      details: errors
     ]
   end
 

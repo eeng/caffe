@@ -3,8 +3,7 @@ defmodule CaffeWeb.Schema do
   alias Caffe.Menu
   alias CaffeWeb.Schema.Middleware
 
-  import_types CaffeWeb.Schema.MenuTypes
-  import_types CaffeWeb.Schema.AccountsTypes
+  import_types CaffeWeb.Schema.{AccountsTypes, MenuTypes, OrderingTypes}
 
   query do
     import_fields :accounts_queries
@@ -14,6 +13,7 @@ defmodule CaffeWeb.Schema do
   mutation do
     import_fields :accounts_mutations
     import_fields :menu_mutations
+    import_fields :ordering_mutations
   end
 
   scalar :decimal do
@@ -39,7 +39,7 @@ defmodule CaffeWeb.Schema do
   end
 
   def middleware(middleware, _field, %{identifier: :mutation}) do
-    middleware ++ [Middleware.ChangesetErrors]
+    middleware ++ [Middleware.HandleErrors]
   end
 
   def middleware(middleware, _field, _object) do

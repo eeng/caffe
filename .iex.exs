@@ -1,3 +1,3 @@
-alias Caffe.{Repo, Menu, Orders, Accounts}
+alias Caffe.{Repo, Menu, Ordering, Accounts}
 
 import Ecto.Query
