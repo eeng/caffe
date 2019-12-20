@@ -9,7 +9,7 @@ defmodule CaffeWeb.Schema.Middleware.ChangesetErrors do
   defp transform_error(%Ecto.Changeset{} = changeset) do
     [
       message: "validation_error",
-      details: Ecto.Changeset.traverse_errors(changeset, fn {msg, _} -> msg end)
+      details: Caffe.Middleware.Validator.transform_errors(changeset)
     ]
   end
 

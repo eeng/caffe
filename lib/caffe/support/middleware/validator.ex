@@ -32,7 +32,7 @@ defmodule Caffe.Middleware.Validator do
     command.__struct__.changeset(struct(command.__struct__), Map.from_struct(command))
   end
 
-  defp transform_errors(changeset) do
+  def transform_errors(changeset) do
     Ecto.Changeset.traverse_errors(changeset, fn {msg, opts} ->
       Enum.reduce(opts, msg, fn {key, value}, acc ->
         String.replace(acc, "%{#{key}}", to_string(value))
