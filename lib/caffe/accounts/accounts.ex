@@ -10,6 +10,13 @@ defmodule Caffe.Accounts do
     %User{} |> User.changeset(attrs) |> Repo.insert()
   end
 
+  def get_user(id) do
+    case Repo.get(User, id) do
+      nil -> {:error, :not_found}
+      user -> {:ok, user}
+    end
+  end
+
   def authenticate(email, password) do
     user = Repo.get_by(User, email: email)
 

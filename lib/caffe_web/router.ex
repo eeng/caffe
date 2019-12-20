@@ -3,6 +3,7 @@ defmodule CaffeWeb.Router do
 
   pipeline :api do
     plug :accepts, ["json"]
+    plug CaffeWeb.Schema.Context
   end
 
   scope "/api" do
