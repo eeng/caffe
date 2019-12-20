@@ -17,6 +17,10 @@ defmodule Caffe.Accounts do
     end
   end
 
+  def list_users do
+    Repo.all(User)
+  end
+
   def authenticate(email, password) do
     user = Repo.get_by(User, email: email)
 

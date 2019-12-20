@@ -7,12 +7,13 @@ defmodule CaffeWeb.Schema do
   import_types CaffeWeb.Schema.AccountsTypes
 
   query do
+    import_fields :accounts_queries
     import_fields :menu_queries
   end
 
   mutation do
-    import_fields :menu_mutations
     import_fields :accounts_mutations
+    import_fields :menu_mutations
   end
 
   scalar :decimal do

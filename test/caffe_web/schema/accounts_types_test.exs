@@ -39,4 +39,30 @@ defmodule CaffeWeb.Schema.AccountsTypesTest do
              } = json_response(conn, 200)
     end
   end
+
+  @query """
+    { users { name } }
+  """
+  describe "users query" do
+    test "admins can list users" do
+      user = insert!(:user, role: "admin", name: "Max")
+      conn = build_conn() |> auth_user(user) |> post("/api", query: @query)
+
+      assert %{
+               "data" => %{"users" => [%{"name" => "Max"}]}
+             } == json_response(conn, 200)
+    end
+
+    test "other users are not authorized" do
+      user = insert!(:user, role: "customer")
+
+      conn = build_conn() |> auth_user(user) |> post("/api", query: @query)
+      assert %{"errors" => [%{"message" => "unauthorized"}]} = json_response(conn, 200)
+    end
+
+    test "non authenticated requests are not authorized" do
+      conn = build_conn() |> post("/api", query: @query)
+      assert %{"errors" => [%{"message" => "unauthorized"}]} = json_response(conn, 200)
+    end
+  end
 end

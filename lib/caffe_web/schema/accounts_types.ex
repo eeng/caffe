@@ -1,6 +1,7 @@
 defmodule CaffeWeb.Schema.AccountsTypes do
   use Absinthe.Schema.Notation
   alias CaffeWeb.Resolvers
+  alias CaffeWeb.Schema.Middleware
 
   object :user do
     field :email, non_null(:string)
@@ -19,6 +20,13 @@ defmodule CaffeWeb.Schema.AccountsTypes do
   object :session do
     field :token, :string
     field :user, :user
+  end
+
+  object :accounts_queries do
+    field :users, list_of(:user) do
+      middleware Middleware.Authorize, "admin"
+      resolve &Resolvers.Accounts.list_users/3
+    end
   end
 
   object :accounts_mutations do

@@ -36,8 +36,8 @@ defmodule CaffeWeb.Schema.MenuTypesTest do
   }
   """
   test "categories query" do
-    deserts = insert!(:category, name: "Deserts")
-    insert!(:menu_item, name: "Tiramisu", category: deserts)
+    desserts = insert!(:category, name: "desserts")
+    insert!(:menu_item, name: "Tiramisu", category: desserts)
 
     salads = insert!(:category, name: "Salads")
     insert!(:menu_item, name: "Ceasar", category: salads)
@@ -48,7 +48,7 @@ defmodule CaffeWeb.Schema.MenuTypesTest do
              "data" => %{
                "categories" => [
                  %{
-                   "name" => "Deserts",
+                   "name" => "desserts",
                    "items" => [%{"name" => "Tiramisu"}]
                  },
                  %{
@@ -60,27 +60,30 @@ defmodule CaffeWeb.Schema.MenuTypesTest do
            }
   end
 
+  @query """
+  mutation ($name: String, $price: Decimal, $categoryId: Int) {
+    createMenuItem(name: $name, price: $price, categoryId: $categoryId) {
+      name
+      price
+    }
+  }
+  """
   describe "createMenuItem mutation" do
     setup do
-      [deserts: insert!(:category, name: "Deserts")]
+      [
+        desserts: insert!(:category, name: "desserts"),
+        conn: build_conn() |> auth_user(insert!(:user, role: "admin"))
+      ]
     end
 
-    @query """
-    mutation ($name: String, $price: Decimal, $categoryId: Int) {
-      createMenuItem(name: $name, price: $price, categoryId: $categoryId) {
-        name
-        price
-      }
-    }
-    """
-    test "valid data", %{deserts: deserts} do
+    test "valid data", %{conn: conn, desserts: desserts} do
       menu_item = %{
         "name" => "Ice Cream",
         "price" => "10.99",
-        "categoryId" => deserts.id
+        "categoryId" => desserts.id
       }
 
-      conn = build_conn() |> post("/api", query: @query, variables: menu_item)
+      conn = post(conn, "/api", query: @query, variables: menu_item)
 
       assert json_response(conn, 200) == %{
                "data" => %{
@@ -92,22 +95,14 @@ defmodule CaffeWeb.Schema.MenuTypesTest do
              }
     end
 
-    @query """
-    mutation ($name: String, $price: Decimal, $categoryId: Int) {
-      createMenuItem(name: $name, price: $price, categoryId: $categoryId) {
-        name
-        price
-      }
-    }
-    """
-    test "invalid data", %{deserts: deserts} do
+    test "invalid data", %{conn: conn, desserts: desserts} do
       menu_item = %{
         "name" => "",
         "price" => "10.99",
-        "categoryId" => deserts.id
+        "categoryId" => desserts.id
       }
 
-      conn = build_conn() |> post("/api", query: @query, variables: menu_item)
+      conn = post(conn, "/api", query: @query, variables: menu_item)
 
       assert %{
                "errors" => [
@@ -119,15 +114,30 @@ defmodule CaffeWeb.Schema.MenuTypesTest do
       conn = build_conn() |> post("/api", query: @query, variables: menu_item)
       assert %{"errors" => [_]} = json_response(conn, 200)
     end
+
+    test "only admins can create items", %{desserts: desserts} do
+      menu_item = %{
+        "name" => "Ice Cream",
+        "price" => "10.99",
+        "categoryId" => desserts.id
+      }
+
+      conn = build_conn() |> post("/api", query: @query, variables: menu_item)
+      assert %{"errors" => [%{"message" => "unauthorized"}]} = json_response(conn, 200)
+    end
   end
 
   describe "updateMenuItem mutation" do
+    setup do
+      [conn: build_conn() |> auth_user(insert!(:user, role: "admin"))]
+    end
+
     @query """
     mutation ($id: ID, $name: String, $price: Decimal) {
       updateMenuItem(id: $id, name: $name, price: $price) { name, price }
     }
     """
-    test "valid data" do
+    test "valid data", %{conn: conn} do
       fries = insert!(:menu_item, name: "Fries", price: 9.99)
 
       menu_item = %{
@@ -136,7 +146,7 @@ defmodule CaffeWeb.Schema.MenuTypesTest do
         "price" => "10.99"
       }
 
-      conn = build_conn() |> post("/api", query: @query, variables: menu_item)
+      conn = post(conn, "/api", query: @query, variables: menu_item)
 
       assert %{
                "data" => %{
@@ -155,9 +165,9 @@ defmodule CaffeWeb.Schema.MenuTypesTest do
       updateMenuItem(id: $id) { name }
     }
     """
-    test "non-existant item" do
+    test "non-existant item", %{conn: conn} do
       menu_item = %{"id" => "0"}
-      conn = build_conn() |> post("/api", query: @query, variables: menu_item)
+      conn = post(conn, "/api", query: @query, variables: menu_item)
 
       assert %{
                "data" => %{"updateMenuItem" => nil},
@@ -166,16 +176,20 @@ defmodule CaffeWeb.Schema.MenuTypesTest do
     end
   end
 
+  @query """
+  mutation ($id: ID) {
+    deleteMenuItem(id: $id) { id }
+  }
+  """
   describe "deleteMenuItem mutation" do
-    @query """
-    mutation ($id: ID) {
-      deleteMenuItem(id: $id) { id }
-    }
-    """
-    test "existing menu item" do
+    setup do
+      [conn: build_conn() |> auth_user(insert!(:user, role: "admin"))]
+    end
+
+    test "existing menu item", %{conn: conn} do
       cheese = insert!(:menu_item, name: "Cheese")
 
-      conn = build_conn() |> post("/api", query: @query, variables: %{"id" => cheese.id})
+      conn = post(conn, "/api", query: @query, variables: %{"id" => cheese.id})
 
       assert json_response(conn, 200) == %{
                "data" => %{"deleteMenuItem" => %{"id" => to_string(cheese.id)}}
@@ -184,8 +198,8 @@ defmodule CaffeWeb.Schema.MenuTypesTest do
       assert Menu.Item |> Repo.all() == []
     end
 
-    test "non-existing menu item" do
-      conn = build_conn() |> post("/api", query: @query, variables: %{"id" => 456})
+    test "non-existing menu item", %{conn: conn} do
+      conn = post(conn, "/api", query: @query, variables: %{"id" => 456})
 
       assert %{
                "data" => %{"deleteMenuItem" => nil},
