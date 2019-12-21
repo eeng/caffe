@@ -5,7 +5,8 @@ defmodule Caffe.Ordering.Projections.Order do
   alias Caffe.Accounts.User
 
   defmodule Status do
-    use Exnumerator, values: ["pending", "paid"]
+    # TODO add ready_to_serve/ship statuses
+    use Exnumerator, values: ["pending", "closed"]
   end
 
   @primary_key {:id, :binary_id, autogenerate: false}

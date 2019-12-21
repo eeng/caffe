@@ -49,6 +49,42 @@ defmodule Caffe.Ordering do
     end
   end
 
+  @doc """
+  ## Examples
+
+    Ordering.mark_items_served %{order_id: order_id, item_ids: [beer.id, hamb.id]}
+  """
+  def mark_items_served(args) do
+    Commands.MarkItemsServed.new(args) |> Router.dispatch()
+  end
+
+  @doc """
+  ## Examples
+
+    Ordering.begin_food_preparation %{order_id: order_id, item_ids: [hamb.id]}
+  """
+  def begin_food_preparation(args) do
+    Commands.BeginFoodPreparation.new(args) |> Router.dispatch()
+  end
+
+  @doc """
+  ## Examples
+
+    Ordering.mark_food_prepared %{order_id: order_id, item_ids: [hamb.id]}
+  """
+  def mark_food_prepared(args) do
+    Commands.MarkFoodPrepared.new(args) |> Router.dispatch()
+  end
+
+  @doc """
+  ## Examples
+
+    Ordering.pay_order %{order_id: order_id, amount_paid: "3.75"}
+  """
+  def pay_order(args) do
+    Commands.PayOrder.new(args) |> Router.dispatch(consistency: :strong)
+  end
+
   def get_order(id) do
     Repo.get(Order, id) |> Repo.preload(:items)
   end

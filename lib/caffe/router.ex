@@ -22,7 +22,11 @@ defmodule Caffe.Router do
 
   dispatch(
     [
-      Commands.PlaceOrder
+      Commands.PlaceOrder,
+      Commands.BeginFoodPreparation,
+      Commands.MarkFoodPrepared,
+      Commands.MarkItemsServed,
+      Commands.PayOrder
     ],
     to: Order,
     identity: :order_id

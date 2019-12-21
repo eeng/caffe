@@ -1,5 +1,5 @@
 defmodule Caffe.Factory do
-  alias Caffe.{Repo, Menu, Orders, Accounts}
+  alias Caffe.{Repo, Menu, Orders, Ordering, Accounts}
 
   # Factories
 
@@ -26,6 +26,10 @@ defmodule Caffe.Factory do
     %Orders.Projections.TabItem{menu_item_id: 1, menu_item_name: "Food", price: 10, quantity: 1}
   end
 
+  def build(:order) do
+    %Ordering.Projections.Order{id: uuid()}
+  end
+
   def build(:user) do
     %Accounts.User{
       email: "max@acme.com",
@@ -34,6 +38,9 @@ defmodule Caffe.Factory do
       name: "Max"
     }
   end
+
+  # TODO build :customer
+  # TODO build :admin
 
   def build(:user, attributes) do
     build(:user) |> struct(attributes) |> Map.update!(:password, &Accounts.Password.hash/1)

@@ -40,6 +40,19 @@ defmodule Caffe.AggregateCase do
         assert error == expected_error
       end
 
+      def assert_result(commands, expected_result) do
+        assert_result([], commands, expected_result)
+      end
+
+      def assert_result(initial_events, commands, expected_result) do
+        {_aggregate, events_or_error} =
+          %@aggregate_module{}
+          |> evolve(initial_events)
+          |> execute2(commands)
+
+        assert expected_result == events_or_error
+      end
+
       # Execute one or more commands against an aggregate
       def execute(aggregate, commands) do
         commands
@@ -53,6 +66,25 @@ defmodule Caffe.AggregateCase do
 
           _command, {aggregate, _events, _error} = reply ->
             reply
+        end)
+      end
+
+      @doc """
+      Execute one o more commands against an aggregate.
+      Returns a tuple with the new aggregate and the events or error produced.
+      """
+      def execute2(aggregate, commands) do
+        commands
+        |> List.wrap()
+        |> Enum.reduce({aggregate, nil}, fn
+          _command, {_aggregate, {:error, _}} = reply ->
+            reply
+
+          command, {aggregate, _} ->
+            case @aggregate_module.execute(aggregate, command) do
+              {:error, reason} = error -> {aggregate, error}
+              events -> {evolve(aggregate, events), events}
+            end
         end)
       end
 
