@@ -28,9 +28,6 @@ defmodule Caffe.MenuTest do
     test "with non-existent id" do
       assert {:error, :not_found} =
                params_for(:menu_item) |> Map.put(:id, -1) |> Menu.update_item()
-
-      assert {:error, :not_found} =
-               params_for(:menu_item) |> Map.put(:id, "asdf") |> Menu.update_item()
     end
   end
 
@@ -52,8 +49,6 @@ defmodule Caffe.MenuTest do
 
     test "with non-existent id" do
       {:error, :not_found} = Menu.get_item(0)
-      {:error, :not_found} = Menu.get_item("asdf")
-      {:error, :not_found} = Menu.get_item(nil)
     end
   end
 end

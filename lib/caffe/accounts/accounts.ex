@@ -11,10 +11,7 @@ defmodule Caffe.Accounts do
   end
 
   def get_user(id) do
-    case Repo.get(User, id) do
-      nil -> {:error, :not_found}
-      user -> {:ok, user}
-    end
+    Repo.fetch(User, id)
   end
 
   def list_users do

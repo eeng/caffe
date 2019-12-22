@@ -36,12 +36,7 @@ defmodule Caffe.Menu do
   end
 
   def get_item(id) do
-    case id && Repo.get(Item, id) do
-      nil -> {:error, :not_found}
-      item -> {:ok, item}
-    end
-  rescue
-    Ecto.Query.CastError -> {:error, :not_found}
+    Repo.fetch(Item, id)
   end
 
   def list_categories do
