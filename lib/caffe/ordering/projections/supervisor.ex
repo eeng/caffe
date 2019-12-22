@@ -1,4 +1,4 @@
-defmodule Caffe.Orders.Projections.Supervisor do
+defmodule Caffe.Ordering.Projections.Supervisor do
   use Supervisor
 
   def start_link(args) do
@@ -7,7 +7,6 @@ defmodule Caffe.Orders.Projections.Supervisor do
 
   def init(_) do
     children = [
-      Caffe.Orders.Projections.TabsProjector,
       Caffe.Ordering.Projections.OrdersProjector
     ]
 

@@ -13,7 +13,7 @@ defmodule Caffe.Application do
       # Start the endpoint when the application starts
       CaffeWeb.Endpoint,
       # Starts a worker by calling: Caffe.Worker.start_link(arg)
-      Caffe.Orders.Projections.Supervisor
+      Caffe.Ordering.Projections.Supervisor
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

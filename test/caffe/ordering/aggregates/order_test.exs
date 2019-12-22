@@ -1,4 +1,4 @@
-defmodule Caffe.Orders.Aggregates.OrderTest do
+defmodule Caffe.Ordering.Aggregates.OrderTest do
   use Caffe.AggregateCase, aggregate: Caffe.Ordering.Aggregates.Order
 
   alias Caffe.Ordering.Aggregates.Order

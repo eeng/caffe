@@ -1,5 +1,5 @@
 defmodule Caffe.Factory do
-  alias Caffe.{Repo, Menu, Orders, Ordering, Accounts}
+  alias Caffe.{Repo, Menu, Ordering, Accounts}
 
   # Factories
 
@@ -17,14 +17,6 @@ defmodule Caffe.Factory do
 
   def build(:food), do: build(:menu_item, is_drink: false)
   def build(:drink), do: build(:menu_item, is_drink: true)
-
-  def build(:tab) do
-    %Orders.Projections.Tab{id: uuid(), table_number: sequence()}
-  end
-
-  def build(:tab_item) do
-    %Orders.Projections.TabItem{menu_item_id: 1, menu_item_name: "Food", price: 10, quantity: 1}
-  end
 
   def build(:order) do
     %Ordering.Projections.Order{id: uuid()}
