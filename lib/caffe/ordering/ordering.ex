@@ -21,7 +21,8 @@ defmodule Caffe.Ordering do
 
     command =
       params
-      |> Map.merge(%{order_id: id, user_id: user.id})
+      |> Map.put(:order_id, id)
+      |> assign_user(user)
       |> update_in([:items, Access.all()], &fetch_item_details/1)
       |> assign_customer_id(user)
       |> Commands.PlaceOrder.new()
@@ -53,8 +54,8 @@ defmodule Caffe.Ordering do
 
     Ordering.mark_items_served %{order_id: order_id, item_ids: [beer.id, hamb.id]}
   """
-  def mark_items_served(args) do
-    Commands.MarkItemsServed.new(args) |> Router.dispatch()
+  def mark_items_served(params, user) do
+    params |> assign_user(user) |> Commands.MarkItemsServed.new() |> Router.dispatch()
   end
 
   @doc """
@@ -62,8 +63,8 @@ defmodule Caffe.Ordering do
 
     Ordering.begin_food_preparation %{order_id: order_id, item_ids: [hamb.id]}
   """
-  def begin_food_preparation(args) do
-    Commands.BeginFoodPreparation.new(args) |> Router.dispatch()
+  def begin_food_preparation(params, user) do
+    params |> assign_user(user) |> Commands.BeginFoodPreparation.new() |> Router.dispatch()
   end
 
   @doc """
@@ -71,8 +72,8 @@ defmodule Caffe.Ordering do
 
     Ordering.mark_food_prepared %{order_id: order_id, item_ids: [hamb.id]}
   """
-  def mark_food_prepared(args) do
-    Commands.MarkFoodPrepared.new(args) |> Router.dispatch()
+  def mark_food_prepared(params, user) do
+    params |> assign_user(user) |> Commands.MarkFoodPrepared.new() |> Router.dispatch()
   end
 
   @doc """
@@ -80,8 +81,15 @@ defmodule Caffe.Ordering do
 
     Ordering.pay_order %{order_id: order_id, amount_paid: "3.75"}
   """
-  def pay_order(args) do
-    Commands.PayOrder.new(args) |> Router.dispatch(consistency: :strong)
+  def pay_order(params, user) do
+    params
+    |> assign_user(user)
+    |> Commands.PayOrder.new()
+    |> Router.dispatch(consistency: :strong)
+  end
+
+  defp assign_user(params, %User{id: user_id}) do
+    Map.put(params, :user_id, user_id)
   end
 
   def get_order(id) do

@@ -23,16 +23,21 @@ defmodule Caffe.Factory do
   end
 
   def build(:user) do
+    number = sequence()
+
     %Accounts.User{
-      email: "max@acme.com",
+      email: "user#{number}@acme.com",
       password: Accounts.Password.hash("secret"),
       role: "admin",
-      name: "Max"
+      name: "User #{number}"
     }
   end
 
-  def build(:customer), do: build(:user, role: "customer")
   def build(:admin), do: build(:user, role: "admin")
+  def build(:customer), do: build(:user, role: "customer")
+  def build(:cashier), do: build(:user, role: "cashier")
+  def build(:chef), do: build(:user, role: "chef")
+  def build(:waitstaff), do: build(:user, role: "waitstaff")
 
   def build(:user, attributes) do
     build(:user) |> struct(attributes) |> Map.update!(:password, &Accounts.Password.hash/1)
