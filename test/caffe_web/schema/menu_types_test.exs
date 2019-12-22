@@ -72,7 +72,7 @@ defmodule CaffeWeb.Schema.MenuTypesTest do
     setup do
       [
         desserts: insert!(:category, name: "desserts"),
-        conn: build_conn() |> auth_user(insert!(:user, role: "admin"))
+        conn: build_conn() |> auth_user(insert!(:admin))
       ]
     end
 
@@ -129,7 +129,7 @@ defmodule CaffeWeb.Schema.MenuTypesTest do
 
   describe "updateMenuItem mutation" do
     setup do
-      [conn: build_conn() |> auth_user(insert!(:user, role: "admin"))]
+      [conn: build_conn() |> auth_user(insert!(:admin))]
     end
 
     @query """
@@ -183,7 +183,7 @@ defmodule CaffeWeb.Schema.MenuTypesTest do
   """
   describe "deleteMenuItem mutation" do
     setup do
-      [conn: build_conn() |> auth_user(insert!(:user, role: "admin"))]
+      [conn: build_conn() |> auth_user(insert!(:admin))]
     end
 
     test "existing menu item", %{conn: conn} do

@@ -5,7 +5,7 @@ defmodule Caffe.OrderingTest do
 
   describe "placing an order" do
     test "as a customer" do
-      %{id: customer_id} = insert!(:user, role: "customer")
+      %{id: customer_id} = insert!(:customer)
 
       wine = insert!(:drink, name: "Wine")
       fish = insert!(:food, name: "Fish", price: 40)
@@ -44,7 +44,7 @@ defmodule Caffe.OrderingTest do
   end
 
   test "cooking, serving and paying an order" do
-    user = insert!(:user, role: "customer")
+    user = insert!(:customer)
     wine = insert!(:drink, name: "Wine", price: 10)
     fish = insert!(:food, name: "Fish", price: 20)
 

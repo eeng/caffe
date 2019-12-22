@@ -31,8 +31,8 @@ defmodule Caffe.Factory do
     }
   end
 
-  # TODO build :customer
-  # TODO build :admin
+  def build(:customer), do: build(:user, role: "customer")
+  def build(:admin), do: build(:user, role: "admin")
 
   def build(:user, attributes) do
     build(:user) |> struct(attributes) |> Map.update!(:password, &Accounts.Password.hash/1)

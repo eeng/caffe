@@ -1,4 +1,3 @@
-# TODO rename
 defmodule CaffeWeb.Schema.Middleware.HandleErrors do
   @behaviour Absinthe.Middleware
   @dialyzer :no_undefined_callbacks

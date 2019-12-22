@@ -11,7 +11,7 @@ defmodule CaffeWeb.Schema.OrderingTypesTest do
   """
   describe "place_order mutation" do
     setup do
-      [customer: insert!(:user, role: "customer")]
+      [customer: insert!(:customer)]
     end
 
     test "valid order placed by a customer", %{customer: customer} do
