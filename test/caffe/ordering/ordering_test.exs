@@ -5,19 +5,21 @@ defmodule Caffe.OrderingTest do
 
   describe "placing an order" do
     test "as a customer" do
-      %{id: customer_id} = insert!(:customer)
+      %{id: customer_id} = user = insert!(:customer)
 
       wine = insert!(:drink, name: "Wine")
       fish = insert!(:food, name: "Fish", price: 40)
 
       {:ok, order} =
-        Ordering.place_order(%{
-          user_id: customer_id,
-          items: [
-            %{menu_item_id: wine.id, quantity: 2},
-            %{menu_item_id: fish.id}
-          ]
-        })
+        Ordering.place_order(
+          %{
+            items: [
+              %{menu_item_id: wine.id, quantity: 2},
+              %{menu_item_id: fish.id}
+            ]
+          },
+          user
+        )
 
       assert %Order{customer_id: ^customer_id, items: [item1, item2]} = order
 
@@ -29,15 +31,17 @@ defmodule Caffe.OrderingTest do
     end
 
     test "as an employee" do
-      %{id: employee_id} = insert!(:user, role: "cashier")
+      user = insert!(:user, role: "cashier")
       wine = insert!(:drink, name: "Wine")
 
       {:ok, order} =
-        Ordering.place_order(%{
-          user_id: employee_id,
-          customer_name: "Mary",
-          items: [%{menu_item_id: wine.id}]
-        })
+        Ordering.place_order(
+          %{
+            customer_name: "Mary",
+            items: [%{menu_item_id: wine.id}]
+          },
+          user
+        )
 
       assert %Order{customer_id: nil, customer_name: "Mary", items: [_]} = order
     end
@@ -49,10 +53,10 @@ defmodule Caffe.OrderingTest do
     fish = insert!(:food, name: "Fish", price: 20)
 
     {:ok, %{id: order_id}} =
-      Ordering.place_order(%{
-        user_id: user.id,
-        items: [%{menu_item_id: wine.id}, %{menu_item_id: fish.id}]
-      })
+      Ordering.place_order(
+        %{items: [%{menu_item_id: wine.id}, %{menu_item_id: fish.id}]},
+        user
+      )
 
     :ok = Ordering.mark_items_served(%{order_id: order_id, item_ids: [wine.id]})
     :ok = Ordering.begin_food_preparation(%{order_id: order_id, item_ids: [fish.id]})
