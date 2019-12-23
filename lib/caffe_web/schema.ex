@@ -16,6 +16,10 @@ defmodule CaffeWeb.Schema do
     import_fields :ordering_mutations
   end
 
+  subscription do
+    import_fields :ordering_subscriptions
+  end
+
   scalar :decimal do
     parse fn
       %{value: value}, _ when is_binary(value) -> Decimal.parse(value)

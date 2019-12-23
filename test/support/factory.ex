@@ -9,7 +9,7 @@ defmodule Caffe.Factory do
 
   def build(:menu_item) do
     %Menu.Item{
-      name: "Ham and Egg",
+      name: "Menu #{sequence()}",
       price: Decimal.new(10),
       category: build(:category)
     }

@@ -4,6 +4,7 @@ defmodule Caffe.Ordering.Projections.Order do
   alias Caffe.Ordering.Projections.Item
   alias Caffe.Accounts.User
 
+  # TODO rename to State
   defmodule Status do
     # TODO add ready_to_serve/ship statuses
     use Exnumerator, values: ["pending", "closed"]

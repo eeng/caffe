@@ -33,4 +33,16 @@ defmodule CaffeWeb.Schema.OrderingTypes do
       resolve &Resolvers.Ordering.place_order/3
     end
   end
+
+  object :ordering_subscriptions do
+    field :new_order, :order do
+      config fn _args, %{context: context} ->
+        case context[:current_user] do
+          %{role: "customer", id: id} -> {:ok, topic: id}
+          %{role: _} -> {:ok, topic: "*"}
+          _ -> {:error, :unauthorized}
+        end
+      end
+    end
+  end
 end

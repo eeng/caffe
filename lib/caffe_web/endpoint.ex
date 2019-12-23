@@ -1,5 +1,6 @@
 defmodule CaffeWeb.Endpoint do
   use Phoenix.Endpoint, otp_app: :caffe
+  use Absinthe.Phoenix.Endpoint
 
   socket "/socket", CaffeWeb.UserSocket,
     websocket: true,
