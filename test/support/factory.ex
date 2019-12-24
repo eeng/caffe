@@ -43,14 +43,28 @@ defmodule Caffe.Factory do
     build(:user) |> struct(attributes) |> Map.update!(:password, &Accounts.Password.hash/1)
   end
 
-  # Convenience API
-
-  def build(factory_name, attributes) do
+  def build(factory_name, attributes) when is_atom(factory_name) do
     factory_name |> build() |> struct(attributes)
   end
 
-  def insert!(factory_name, attributes \\ []) do
+  def build(quantity, factory_name, attributes \\ []) when is_integer(quantity) do
+    Enum.map(1..quantity, fn _ -> build(factory_name, attributes) end)
+  end
+
+  def insert!(quantity, factory_name, attributes) when is_integer(quantity) do
+    Enum.map(1..quantity, fn _ -> insert!(factory_name, attributes) end)
+  end
+
+  def insert!(quantity, factory_name) when is_integer(quantity) do
+    insert!(quantity, factory_name, %{})
+  end
+
+  def insert!(factory_name, attributes) when is_atom(factory_name) do
     factory_name |> build(attributes) |> Repo.insert!()
+  end
+
+  def insert!(factory_name) when is_atom(factory_name) do
+    insert!(factory_name, %{})
   end
 
   def params_for(factory_name, attributes \\ []) do

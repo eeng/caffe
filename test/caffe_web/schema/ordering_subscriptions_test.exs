@@ -25,8 +25,7 @@ defmodule CaffeWeb.Schema.OrderingSubscriptionsTest do
     end
 
     test "customers can't see other customer orders" do
-      cust1 = insert!(:customer)
-      cust2 = insert!(:customer)
+      [cust1, cust2] = insert!(2, :customer)
       subscribe_as(cust1, @subscription)
 
       place_order(cust1)
