@@ -23,15 +23,15 @@ defmodule Caffe.Ordering.Projections.OrdersProjector do
   end
 
   project %ItemsServed{} = evt, fn multi ->
-    update_items_statuses(multi, evt, "served")
+    update_items_state(multi, evt, "served")
   end
 
   project %FoodBeingPrepared{} = evt, fn multi ->
-    update_items_statuses(multi, evt, "preparing")
+    update_items_state(multi, evt, "preparing")
   end
 
   project %FoodPrepared{} = evt, fn multi ->
-    update_items_statuses(multi, evt, "prepared")
+    update_items_state(multi, evt, "prepared")
   end
 
   project %OrderPaid{order_id: order_id} = evt, fn multi ->
@@ -39,7 +39,7 @@ defmodule Caffe.Ordering.Projections.OrdersProjector do
       Order
       |> Repo.get(order_id)
       |> Order.changeset(%{
-        status: "closed",
+        state: "closed",
         amount_paid: evt.amount_paid,
         order_amount: evt.order_amount,
         tip_amount: evt.tip_amount
@@ -48,8 +48,8 @@ defmodule Caffe.Ordering.Projections.OrdersProjector do
     Multi.update(multi, :update, changeset)
   end
 
-  defp update_items_statuses(multi, %{order_id: order_id, item_ids: item_ids}, status) do
+  defp update_items_state(multi, %{order_id: order_id, item_ids: item_ids}, state) do
     query = from i in Item, where: i.order_id == ^order_id and i.menu_item_id in ^item_ids
-    Multi.update_all(multi, :update, query, set: [status: status])
+    Multi.update_all(multi, :update, query, set: [state: state])
   end
 end

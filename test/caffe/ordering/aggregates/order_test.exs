@@ -24,10 +24,10 @@ defmodule Caffe.Ordering.Aggregates.OrderTest do
 
   setup do
     [
-      wine: %{menu_item_id: 1, is_drink: true, status: "pending", price: Decimal.new(10)},
-      beer: %{menu_item_id: 2, is_drink: true, status: "pending", price: Decimal.new(20)},
-      fish: %{menu_item_id: 5, is_drink: false, status: "pending"},
-      burger: %{menu_item_id: 6, is_drink: false, status: "pending"}
+      wine: %{menu_item_id: 1, is_drink: true, state: "pending", price: Decimal.new(10)},
+      beer: %{menu_item_id: 2, is_drink: true, state: "pending", price: Decimal.new(20)},
+      fish: %{menu_item_id: 5, is_drink: false, state: "pending"},
+      burger: %{menu_item_id: 6, is_drink: false, state: "pending"}
     ]
   end
 
@@ -44,7 +44,7 @@ defmodule Caffe.Ordering.Aggregates.OrderTest do
               menu_item_name: nil,
               quantity: 1,
               is_drink: true,
-              status: "pending",
+              state: "pending",
               price: Decimal.new(10)
             }
           ],
@@ -101,7 +101,7 @@ defmodule Caffe.Ordering.Aggregates.OrderTest do
     end
 
     test "can't serve an item not ordered", %{wine: wine, beer: beer} do
-      water = %{menu_item_id: 9, is_drink: true, status: "pending"}
+      water = %{menu_item_id: 9, is_drink: true, state: "pending"}
 
       assert_result(
         %OrderPlaced{order_id: @order_id, items: [wine, water]},

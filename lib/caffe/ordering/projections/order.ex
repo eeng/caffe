@@ -4,9 +4,7 @@ defmodule Caffe.Ordering.Projections.Order do
   alias Caffe.Ordering.Projections.Item
   alias Caffe.Accounts.User
 
-  # TODO rename to State
-  defmodule Status do
-    # TODO add ready_to_serve/ship statuses
+  defmodule State do
     use Exnumerator, values: ["pending", "closed"]
   end
 
@@ -14,7 +12,7 @@ defmodule Caffe.Ordering.Projections.Order do
   schema "orders" do
     belongs_to :customer, User
     field :customer_name, :string
-    field :status, Status, default: "pending"
+    field :state, State, default: "pending"
     field :amount_paid, :decimal, default: 0
     field :order_amount, :decimal, default: 0
     field :tip_amount, :decimal, default: 0
@@ -28,7 +26,7 @@ defmodule Caffe.Ordering.Projections.Order do
     |> cast(params, [
       :customer_id,
       :customer_name,
-      :status,
+      :state,
       :amount_paid,
       :order_amount,
       :tip_amount,
