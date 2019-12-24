@@ -42,7 +42,7 @@ defmodule CaffeWeb.Schema.OrderingSubscriptionsTest do
 
     defp place_order(user) do
       Absinthe.run(@mutation, CaffeWeb.Schema,
-        context: %{current_user: user},
+        context: %{current_user: user, pubsub: CaffeWeb.Endpoint},
         variables: %{"items" => [%{"menu_item_id" => insert!(:drink).id, "quantity" => 1}]}
       )
     end

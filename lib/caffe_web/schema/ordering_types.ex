@@ -43,6 +43,8 @@ defmodule CaffeWeb.Schema.OrderingTypes do
           _ -> {:error, :unauthorized}
         end
       end
+
+      trigger :place_order, topic: fn order -> [order.customer_id, "*"] end
     end
   end
 end
