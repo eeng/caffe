@@ -1,7 +1,7 @@
 defmodule Caffe.Ordering.Projections.OrdersProjectorTest do
   use Caffe.ProjectorCase, projector: Caffe.Ordering.Projections.OrdersProjector, async: true
 
-  alias Caffe.Ordering.Events.{ItemsServed, OrderPaid}
+  alias Caffe.Ordering.Events.{ItemsServed, OrderPaid, OrderCancelled}
   alias Caffe.Ordering.Projections.{Order, Item}
 
   test "ItemsServed event should change the serve tab item state of that order" do
@@ -26,7 +26,7 @@ defmodule Caffe.Ordering.Projections.OrdersProjectorTest do
              })
 
     assert %{
-             state: "closed",
+             state: "paid",
              amount_paid: Decimal.new(10),
              order_amount: Decimal.new(7),
              tip_amount: Decimal.new(3)
@@ -42,5 +42,11 @@ defmodule Caffe.Ordering.Projections.OrdersProjectorTest do
       order_by: i.menu_item_id
     )
     |> Repo.all()
+  end
+
+  test "CancelOrder should change the order state" do
+    %{id: order_id} = insert!(:order)
+    assert :ok = handle_event(%OrderCancelled{order_id: order_id})
+    assert %{state: "cancelled"} = Repo.get(Order, order_id)
   end
 end

@@ -32,6 +32,12 @@ defmodule CaffeWeb.Schema.OrderingTypes do
       middleware Middleware.Authorize, :any
       resolve &Resolvers.Ordering.place_order/3
     end
+
+    field :cancel_order, :string do
+      arg :order_id, :id
+      middleware Middleware.Authorize, :any
+      resolve &Resolvers.Ordering.cancel_order/3
+    end
   end
 
   object :ordering_subscriptions do

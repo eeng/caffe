@@ -1,4 +1,4 @@
 defmodule Caffe.Ordering.Events.FoodBeingPrepared do
   @derive Jason.Encoder
-  defstruct [:order_id, :item_ids]
+  defstruct [:order_id, :user_id, :item_ids]
 end

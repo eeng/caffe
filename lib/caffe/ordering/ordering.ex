@@ -14,7 +14,7 @@ defmodule Caffe.Ordering do
     user = Repo.get_by Accounts.User, email: "apocalypse@xmen.com"
     beer = Repo.get_by Menu.Item, name: "Beer"
     hamb = Repo.get_by Menu.Item, name: "Hamburger"
-    Ordering.place_order %{items: [%{menu_item_id: beer.id}, %{menu_item_id: hamb.id}], notes: "well done please"}, user
+    {:ok, %{id: order_id}} = Ordering.place_order %{items: [%{menu_item_id: beer.id}, %{menu_item_id: hamb.id}], notes: "well done please"}, user
   """
   def place_order(params, user) do
     id = UUID.uuid4()
@@ -52,7 +52,7 @@ defmodule Caffe.Ordering do
   @doc """
   ## Examples
 
-    Ordering.mark_items_served %{order_id: order_id, item_ids: [beer.id, hamb.id]}
+    Ordering.mark_items_served %{order_id: order_id, item_ids: [beer.id, hamb.id]}, user
   """
   def mark_items_served(params, user) do
     params |> assign_user(user) |> Commands.MarkItemsServed.new() |> Router.dispatch()
@@ -61,7 +61,7 @@ defmodule Caffe.Ordering do
   @doc """
   ## Examples
 
-    Ordering.begin_food_preparation %{order_id: order_id, item_ids: [hamb.id]}
+    Ordering.begin_food_preparation %{order_id: order_id, item_ids: [hamb.id]}, user
   """
   def begin_food_preparation(params, user) do
     params |> assign_user(user) |> Commands.BeginFoodPreparation.new() |> Router.dispatch()
@@ -70,7 +70,7 @@ defmodule Caffe.Ordering do
   @doc """
   ## Examples
 
-    Ordering.mark_food_prepared %{order_id: order_id, item_ids: [hamb.id]}
+    Ordering.mark_food_prepared %{order_id: order_id, item_ids: [hamb.id]}, user
   """
   def mark_food_prepared(params, user) do
     params |> assign_user(user) |> Commands.MarkFoodPrepared.new() |> Router.dispatch()
@@ -79,13 +79,22 @@ defmodule Caffe.Ordering do
   @doc """
   ## Examples
 
-    Ordering.pay_order %{order_id: order_id, amount_paid: "3.75"}
+    Ordering.pay_order %{order_id: order_id, amount_paid: "3.75"}, user
   """
   def pay_order(params, user) do
     params
     |> assign_user(user)
     |> Commands.PayOrder.new()
     |> Router.dispatch(consistency: :strong)
+  end
+
+  @doc """
+  ## Examples
+
+    Ordering.cancel_order %{order_id: order_id}, user
+  """
+  def cancel_order(params, user) do
+    params |> assign_user(user) |> Commands.CancelOrder.new() |> Router.dispatch()
   end
 
   defp assign_user(params, %User{id: user_id}) do

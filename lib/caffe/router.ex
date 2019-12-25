@@ -13,7 +13,8 @@ defmodule Caffe.Router do
       Commands.BeginFoodPreparation,
       Commands.MarkFoodPrepared,
       Commands.MarkItemsServed,
-      Commands.PayOrder
+      Commands.PayOrder,
+      Commands.CancelOrder
     ],
     to: Order,
     identity: :order_id

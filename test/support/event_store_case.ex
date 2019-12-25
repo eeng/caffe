@@ -3,8 +3,6 @@ defmodule Caffe.EventStoreCase do
 
   using do
     quote do
-      use Caffe.DataCase
-
       import Commanded.Assertions.EventAssertions
     end
   end

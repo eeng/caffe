@@ -1,5 +1,7 @@
 defmodule Caffe.OrderingTest do
+  use Caffe.DataCase
   use Caffe.EventStoreCase
+
   alias Caffe.Ordering
   alias Caffe.Ordering.Projections.Order
 
@@ -12,12 +14,7 @@ defmodule Caffe.OrderingTest do
 
       {:ok, order} =
         Ordering.place_order(
-          %{
-            items: [
-              %{menu_item_id: wine.id, quantity: 2},
-              %{menu_item_id: fish.id}
-            ]
-          },
+          %{items: [%{menu_item_id: wine.id, quantity: 2}, %{menu_item_id: fish.id}]},
           user
         )
 

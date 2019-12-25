@@ -8,7 +8,8 @@ defmodule Caffe.Ordering.Aggregates.Order do
     BeginFoodPreparation,
     MarkFoodPrepared,
     MarkItemsServed,
-    PayOrder
+    PayOrder,
+    CancelOrder
   }
 
   alias Caffe.Ordering.Events.{
@@ -16,8 +17,11 @@ defmodule Caffe.Ordering.Aggregates.Order do
     FoodBeingPrepared,
     FoodPrepared,
     ItemsServed,
-    OrderPaid
+    OrderPaid,
+    OrderCancelled
   }
+
+  def execute(%Order{state: "closed"}, _), do: {:error, :order_closed}
 
   def execute(%Order{id: nil}, %PlaceOrder{} = command) do
     command
@@ -32,7 +36,7 @@ defmodule Caffe.Ordering.Aggregates.Order do
   def execute(%Order{id: order_id} = order, %MarkItemsServed{order_id: order_id} = cmd) do
     execute_validating_multiple_items(
       order,
-      cmd.item_ids,
+      cmd,
       &validate_mark_item_served/1,
       ItemsServed
     )
@@ -41,7 +45,7 @@ defmodule Caffe.Ordering.Aggregates.Order do
   def execute(%Order{id: order_id} = order, %BeginFoodPreparation{order_id: order_id} = cmd) do
     execute_validating_multiple_items(
       order,
-      cmd.item_ids,
+      cmd,
       &validate_begin_food_preparation/1,
       FoodBeingPrepared
     )
@@ -50,17 +54,16 @@ defmodule Caffe.Ordering.Aggregates.Order do
   def execute(%Order{id: order_id} = order, %MarkFoodPrepared{order_id: order_id} = cmd) do
     execute_validating_multiple_items(
       order,
-      cmd.item_ids,
+      cmd,
       &validate_mark_food_prepared/1,
       FoodPrepared
     )
   end
 
   def execute(
-        %Order{id: order_id, state: state, total_amount: order_amount},
-        %PayOrder{order_id: order_id, amount_paid: amount_paid}
-      )
-      when state != "closed" do
+        %Order{id: order_id, total_amount: order_amount},
+        %PayOrder{order_id: order_id, amount_paid: amount_paid, user_id: user_id}
+      ) do
     cond do
       Decimal.cmp(amount_paid, order_amount) == :lt ->
         {:error, :must_pay_enough}
@@ -70,14 +73,22 @@ defmodule Caffe.Ordering.Aggregates.Order do
           order_id: order_id,
           amount_paid: amount_paid,
           order_amount: order_amount,
-          tip_amount: Decimal.sub(amount_paid, order_amount)
+          tip_amount: Decimal.sub(amount_paid, order_amount),
+          user_id: user_id
         }
     end
   end
 
-  def execute(%Order{state: "closed"}, _), do: {:error, :order_closed}
+  def execute(%Order{id: order_id}, %CancelOrder{order_id: order_id, user_id: user_id}) do
+    %OrderCancelled{order_id: order_id, user_id: user_id}
+  end
 
-  defp execute_validating_multiple_items(order, item_ids, validation_fn, event_module) do
+  defp execute_validating_multiple_items(
+         order,
+         %{item_ids: item_ids, user_id: user_id},
+         validation_fn,
+         event_module
+       ) do
     errors =
       item_ids
       |> Enum.map(&find_item_by_id(&1, order.items))
@@ -85,7 +96,7 @@ defmodule Caffe.Ordering.Aggregates.Order do
       |> Enum.reject(&(&1 == :ok))
 
     case errors do
-      [] -> struct(event_module, %{order_id: order.id, item_ids: item_ids})
+      [] -> struct(event_module, %{order_id: order.id, item_ids: item_ids, user_id: user_id})
       [error | _] -> error
     end
   end
@@ -156,6 +167,10 @@ defmodule Caffe.Ordering.Aggregates.Order do
   end
 
   def apply(%Order{id: id} = order, %OrderPaid{order_id: id}) do
+    put_in(order.state, "closed")
+  end
+
+  def apply(%Order{id: id} = order, %OrderCancelled{order_id: id}) do
     put_in(order.state, "closed")
   end
 

@@ -14,7 +14,8 @@ defmodule Caffe.Ordering.Projections.OrdersProjector do
     ItemsServed,
     FoodBeingPrepared,
     FoodPrepared,
-    OrderPaid
+    OrderPaid,
+    OrderCancelled
   }
 
   project %OrderPlaced{order_id: order_id} = command, fn multi ->
@@ -39,13 +40,18 @@ defmodule Caffe.Ordering.Projections.OrdersProjector do
       Order
       |> Repo.get(order_id)
       |> Order.changeset(%{
-        state: "closed",
+        state: "paid",
         amount_paid: evt.amount_paid,
         order_amount: evt.order_amount,
         tip_amount: evt.tip_amount
       })
 
     Multi.update(multi, :update, changeset)
+  end
+
+  project %OrderCancelled{order_id: order_id}, fn multi ->
+    query = from o in Order, where: o.id == ^order_id
+    Multi.update_all(multi, :update, query, set: [state: "cancelled"])
   end
 
   defp update_items_state(multi, %{order_id: order_id, item_ids: item_ids}, state) do

@@ -9,7 +9,8 @@ defmodule Caffe.Ordering.Aggregates.OrderTest do
     BeginFoodPreparation,
     MarkFoodPrepared,
     MarkItemsServed,
-    PayOrder
+    PayOrder,
+    CancelOrder
   }
 
   alias Caffe.Ordering.Events.{
@@ -17,7 +18,8 @@ defmodule Caffe.Ordering.Aggregates.OrderTest do
     ItemsServed,
     FoodBeingPrepared,
     FoodPrepared,
-    OrderPaid
+    OrderPaid,
+    OrderCancelled
   }
 
   @order_id UUID.uuid4()
@@ -36,7 +38,7 @@ defmodule Caffe.Ordering.Aggregates.OrderTest do
       wine = %OrderedItem{menu_item_id: 1, is_drink: true, price: Decimal.new(10)}
 
       assert_result(
-        %PlaceOrder{items: [wine]},
+        %PlaceOrder{items: [wine], user_id: 6},
         %OrderPlaced{
           items: [
             %{
@@ -48,7 +50,8 @@ defmodule Caffe.Ordering.Aggregates.OrderTest do
               price: Decimal.new(10)
             }
           ],
-          order_amount: Decimal.new(10)
+          order_amount: Decimal.new(10),
+          user_id: 6
         }
       )
     end
@@ -78,8 +81,8 @@ defmodule Caffe.Ordering.Aggregates.OrderTest do
     test "drinks can be served immediately", %{wine: wine, beer: beer} do
       assert_result(
         %OrderPlaced{order_id: @order_id, items: [wine, beer]},
-        %MarkItemsServed{order_id: @order_id, item_ids: [wine.menu_item_id]},
-        %ItemsServed{order_id: @order_id, item_ids: [wine.menu_item_id]}
+        %MarkItemsServed{order_id: @order_id, item_ids: [wine.menu_item_id], user_id: 3},
+        %ItemsServed{order_id: @order_id, item_ids: [wine.menu_item_id], user_id: 3}
       )
     end
 
@@ -186,12 +189,13 @@ defmodule Caffe.Ordering.Aggregates.OrderTest do
 
       assert_result(
         %OrderPlaced{order_id: @order_id, items: [wine, beer], order_amount: order_amount},
-        %PayOrder{order_id: @order_id, amount_paid: Decimal.add(order_amount, 3)},
+        %PayOrder{order_id: @order_id, amount_paid: Decimal.add(order_amount, 3), user_id: 5},
         %OrderPaid{
           order_id: @order_id,
           amount_paid: Decimal.add(order_amount, 3),
           order_amount: order_amount,
-          tip_amount: Decimal.new(3)
+          tip_amount: Decimal.new(3),
+          user_id: 5
         }
       )
     end
@@ -211,6 +215,38 @@ defmodule Caffe.Ordering.Aggregates.OrderTest do
           %OrderPaid{order_id: @order_id, amount_paid: wine.price}
         ],
         %PayOrder{order_id: @order_id, amount_paid: wine.price},
+        {:error, :order_closed}
+      )
+    end
+  end
+
+  describe "CancelOrder command" do
+    test "should emit the OrderCancelled event" do
+      assert_result(
+        %OrderPlaced{order_id: @order_id},
+        %CancelOrder{order_id: @order_id, user_id: 5},
+        %OrderCancelled{order_id: @order_id, user_id: 5}
+      )
+    end
+
+    test "can't cancel a paid order", %{wine: wine} do
+      assert_result(
+        [
+          %OrderPlaced{order_id: @order_id, order_amount: wine.price},
+          %OrderPaid{order_id: @order_id, amount_paid: wine.price}
+        ],
+        %CancelOrder{order_id: @order_id},
+        {:error, :order_closed}
+      )
+    end
+
+    test "can't cancel an already cancelled order" do
+      assert_result(
+        [
+          %OrderPlaced{order_id: @order_id},
+          %OrderCancelled{order_id: @order_id}
+        ],
+        %CancelOrder{order_id: @order_id},
         {:error, :order_closed}
       )
     end
