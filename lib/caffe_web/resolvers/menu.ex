@@ -1,5 +1,7 @@
 defmodule CaffeWeb.Resolvers.Menu do
   alias Caffe.Menu
+  alias Caffe.Menu.AuthPolicy
+  alias Caffe.Support.Authorizer
 
   def list_items(_parent, _args, _resolution) do
     {:ok, Menu.list_items()}
@@ -9,15 +11,21 @@ defmodule CaffeWeb.Resolvers.Menu do
     {:ok, Menu.list_categories()}
   end
 
-  def create_item(_parent, params, _resolution) do
-    Menu.create_item(params)
+  def create_item(_parent, params, %{context: context}) do
+    with :ok <- Authorizer.authorize(AuthPolicy, :create_menu_item, context[:current_user]) do
+      Menu.create_item(params)
+    end
   end
 
-  def update_item(_parent, params, _resolution) do
-    Menu.update_item(params)
+  def update_item(_parent, params, %{context: context}) do
+    with :ok <- Authorizer.authorize(AuthPolicy, :update_menu_item, context[:current_user]) do
+      Menu.update_item(params)
+    end
   end
 
-  def delete_item(_parent, %{id: id}, _resolution) do
-    Menu.delete_item(id)
+  def delete_item(_parent, %{id: id}, %{context: context}) do
+    with :ok <- Authorizer.authorize(AuthPolicy, :delete_menu_item, context[:current_user]) do
+      Menu.delete_item(id)
+    end
   end
 end

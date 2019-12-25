@@ -1,10 +1,13 @@
 defmodule CaffeWeb.Resolvers.Accounts do
+  alias CaffeWeb.Support.Authentication
   alias Caffe.Accounts
+  alias Caffe.Accounts.AuthPolicy
+  alias Caffe.Support.Authorizer
 
   def login(_parent, %{email: email, password: password}, _resolution) do
     case Accounts.authenticate(email, password) do
       {:ok, user} ->
-        token = CaffeWeb.Support.Authentication.sign(%{user_id: user.id})
+        token = Authentication.sign(%{user_id: user.id})
         {:ok, %{token: token, user: user}}
 
       error ->
@@ -12,7 +15,9 @@ defmodule CaffeWeb.Resolvers.Accounts do
     end
   end
 
-  def list_users(_parent, _params, _resolution) do
-    {:ok, Accounts.list_users()}
+  def list_users(_parent, _params, %{context: context}) do
+    with :ok <- Authorizer.authorize(AuthPolicy, :list_users, context[:current_user]) do
+      {:ok, Accounts.list_users()}
+    end
   end
 end

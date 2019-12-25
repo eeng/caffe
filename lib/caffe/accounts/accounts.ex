@@ -1,6 +1,6 @@
 defmodule Caffe.Accounts do
   @moduledoc """
-  The Accounts bounded context
+  The Accounts bounded context. Implemented with a CQRS/ES approach.
   """
 
   alias Caffe.Repo

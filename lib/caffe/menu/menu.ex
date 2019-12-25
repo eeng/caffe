@@ -1,6 +1,6 @@
 defmodule Caffe.Menu do
   @moduledoc """
-  The Menu bounded context boundary.
+  The Menu bounded context boundary. Implemented with a CRUD approach.
   """
 
   alias Caffe.Repo

@@ -115,7 +115,7 @@ defmodule CaffeWeb.Schema.MenuTypesTest do
       assert %{"errors" => [_]} = json_response(conn, 200)
     end
 
-    test "only admins can create items", %{desserts: desserts} do
+    test "should authorize request", %{desserts: desserts} do
       menu_item = %{
         "name" => "Ice Cream",
         "price" => "10.99",
