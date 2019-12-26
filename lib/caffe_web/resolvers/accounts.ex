@@ -1,8 +1,7 @@
 defmodule CaffeWeb.Resolvers.Accounts do
   alias CaffeWeb.Support.Authentication
   alias Caffe.Accounts
-  alias Caffe.Accounts.AuthPolicy
-  alias Caffe.Support.Authorizer
+  alias Caffe.Authorization.Authorizer
 
   def login(_parent, %{email: email, password: password}, _resolution) do
     case Accounts.authenticate(email, password) do
@@ -16,7 +15,7 @@ defmodule CaffeWeb.Resolvers.Accounts do
   end
 
   def list_users(_parent, _params, %{context: context}) do
-    with :ok <- Authorizer.authorize(AuthPolicy, :list_users, context[:current_user]) do
+    with :ok <- Authorizer.authorize(:list_users, context[:current_user]) do
       {:ok, Accounts.list_users()}
     end
   end
