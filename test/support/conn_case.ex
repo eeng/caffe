@@ -26,9 +26,13 @@ defmodule CaffeWeb.ConnCase do
       # The default endpoint for testing
       @endpoint CaffeWeb.Endpoint
 
-      defp auth_user(conn, user) do
+      def auth_user(conn, user) do
         token = CaffeWeb.Support.Authentication.sign(%{user_id: user.id})
         put_req_header(conn, "authorization", "Bearer #{token}")
+      end
+
+      def build_conn(user) do
+        build_conn() |> auth_user(user)
       end
     end
   end
