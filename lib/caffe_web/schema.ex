@@ -42,11 +42,16 @@ defmodule CaffeWeb.Schema do
     [Absinthe.Middleware.Dataloader] ++ Absinthe.Plugin.defaults()
   end
 
-  def middleware(middleware, _field, %{identifier: :mutation}) do
+  def middleware(middleware, field, object) do
+    middleware
+    |> apply(:errors, field, object)
+  end
+
+  defp apply(middleware, :errors, _field, %{identifier: :mutation}) do
     middleware ++ [Middleware.HandleErrors]
   end
 
-  def middleware(middleware, _field, _object) do
+  defp apply(middleware, _, _, _) do
     middleware
   end
 end

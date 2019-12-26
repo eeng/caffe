@@ -1,6 +1,7 @@
 defmodule CaffeWeb.Schema.OrderingTypes do
   use Absinthe.Schema.Notation
   alias CaffeWeb.Resolvers
+  alias CaffeWeb.Schema.Middleware
 
   object :order do
     field :id, :id
@@ -28,11 +29,13 @@ defmodule CaffeWeb.Schema.OrderingTypes do
     field :place_order, :order do
       arg :items, non_null(list_of(:order_item_input))
       arg :notes, :string
+      middleware Middleware.Authorize, :place_order
       resolve &Resolvers.Ordering.place_order/3
     end
 
     field :cancel_order, :string do
       arg :order_id, :id
+      middleware Middleware.Authorize, :cancel_order
       resolve &Resolvers.Ordering.cancel_order/3
     end
   end
