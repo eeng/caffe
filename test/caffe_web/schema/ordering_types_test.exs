@@ -57,6 +57,26 @@ defmodule CaffeWeb.Schema.OrderingTypesTest do
   end
 
   @query """
+  mutation ($orderId: ID, $itemIds: [ID!]!) {
+    markItemsServed(orderId: $orderId, itemIds: $itemIds)
+  }
+  """
+  describe "mark_items_served mutation" do
+    test "valid case" do
+      cust = insert!(:customer)
+      waiter = insert!(:waitstaff)
+      wine = insert!(:drink)
+      %{id: order_id} = place_order_as(cust, %{items: [%{menu_item_id: wine.id}]})
+
+      conn =
+        build_conn(waiter)
+        |> post("/api", query: @query, variables: %{orderId: order_id, itemIds: [wine.id]})
+
+      assert %{"data" => %{"markItemsServed" => "ok"}} = json_response(conn, 200)
+    end
+  end
+
+  @query """
   mutation ($orderId: ID) {
     cancelOrder(orderId: $orderId)
   }
@@ -78,8 +98,8 @@ defmodule CaffeWeb.Schema.OrderingTypesTest do
       assert %{"errors" => [%{"message" => "unauthorized"}]} = json_response(conn, 200)
     end
 
-    defp place_order_as(user) do
-      {:ok, order} = Ordering.place_order(%{items: [%{menu_item_id: insert!(:drink).id}]}, user)
+    defp place_order_as(user, order_args \\ %{items: [%{menu_item_id: insert!(:drink).id}]}) do
+      {:ok, order} = Ordering.place_order(order_args, user)
       order
     end
   end

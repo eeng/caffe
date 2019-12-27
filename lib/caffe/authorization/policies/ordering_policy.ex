@@ -7,16 +7,20 @@ defmodule Caffe.Authorization.Policies.OrderingPolicy do
   alias Caffe.Repo
 
   def actions do
-    [:place_order, :cancel_order]
+    [:place_order, :cancel_order, :mark_items_served]
   end
 
   def authorize(:place_order, %User{}, _), do: true
+
+  def authorize(:mark_items_served, %User{role: "waitstaff"}, _), do: true
+  def authorize(:begin_food_preparation, %User{role: "chef"}, _), do: true
+  def authorize(:mark_food_prepared, %User{role: "chef"}, _), do: true
+  def authorize(:pay_order, %User{}, _), do: true
 
   def authorize(:cancel_order, %User{role: "customer", id: user_id}, %Order{customer_id: user_id}),
     do: true
 
   def authorize(:cancel_order, %User{role: role}, %Order{}) when role != "customer", do: true
-
   def authorize(:cancel_order, _, %Order{}), do: false
 
   def authorize(:cancel_order, user, %{order_id: order_id}) do

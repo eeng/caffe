@@ -12,7 +12,7 @@ defmodule Caffe.Authorization.Authorizer do
     if policy = Enum.find(@policies, &(action in &1.actions)) do
       policy.authorize(action, user, params)
     else
-      raise "Could not found a policy for action '#{action}'. Please check @policy_actions"
+      raise "Could not found a policy for action '#{action}'."
     end
   end
 

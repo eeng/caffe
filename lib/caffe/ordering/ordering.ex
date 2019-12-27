@@ -82,10 +82,7 @@ defmodule Caffe.Ordering do
     Ordering.pay_order %{order_id: order_id, amount_paid: "3.75"}, user
   """
   def pay_order(params, user) do
-    params
-    |> assign_user(user)
-    |> Commands.PayOrder.new()
-    |> Router.dispatch(consistency: :strong)
+    params |> assign_user(user) |> Commands.PayOrder.new() |> Router.dispatch()
   end
 
   @doc """

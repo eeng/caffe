@@ -12,6 +12,13 @@ defmodule Caffe.Authorization.Policies.OrderingPolicyTest do
     end
   end
 
+  describe "mark_items_served" do
+    test "only the waitstaff can do it" do
+      assert Authorizer.authorize?(:mark_items_served, %User{role: "waitstaff"}, %Order{})
+      refute Authorizer.authorize?(:mark_items_served, %User{role: "customer"}, %Order{})
+    end
+  end
+
   describe "cancel_order" do
     test "a customer can only cancel its orders" do
       user = %User{role: "customer", id: 1}
