@@ -38,7 +38,9 @@ module.exports = env => {
     },
     plugins: [
       new CleanWebpackPlugin(),
-      new HtmlWebpackPlugin({ title: 'Caffe' }),
+      new HtmlWebpackPlugin({
+        template: 'public/index.html'
+      }),
     ],
     resolve: {
       extensions: ['.js', '.ts', '.tsx'],
