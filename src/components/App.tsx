@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import styles from "./App.module.css";
 import Menu from "./Menu";
 
