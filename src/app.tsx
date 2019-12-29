@@ -1,9 +1,10 @@
-import * as React from "react";
+import * as React from 'react';
+import styles from './App.module.css';
 
 const App: React.FC = () => {
   return (
-    <div>
-      Hello!
+    <div className={styles.app}>
+      env: {process.env.NODE_ENV}
     </div>
   )
 }
