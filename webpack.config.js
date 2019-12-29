@@ -56,7 +56,11 @@ module.exports = env => {
     },
     devtool: devtool,
     devServer: {
-      contentBase: "./dist"
+      contentBase: "./dist",
+      port: 3000,
+      proxy: {
+        "/api": "http://localhost:4000"
+      }
     },
     optimization: {
       moduleIds: "hashed",
