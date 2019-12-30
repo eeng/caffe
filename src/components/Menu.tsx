@@ -1,14 +1,6 @@
 import React, { useEffect, useReducer } from "react";
-
-const fetchMenuItems = async () => {
-  return fetch("/api", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      query: "{ menuItems { id name price } }"
-    })
-  }).then(response => response.json());
-};
+import { gql } from "apollo-boost";
+import { useQuery } from "@apollo/react-hooks";
 
 type MenuItem = {
   id: string;
@@ -16,46 +8,28 @@ type MenuItem = {
   price: number;
 };
 
-type State = {
+type QueryResult = {
   menuItems: MenuItem[];
-  loading: boolean;
-  error: string;
 };
 
-type Action =
-  | { type: "FETCH_SUCCESS"; payload: MenuItem[] }
-  | { type: "FECTH_ERROR" };
-
-function reducer(state: State, action: Action): State {
-  switch (action.type) {
-    case "FETCH_SUCCESS":
-      return { menuItems: action.payload, loading: false, error: "" };
-    case "FECTH_ERROR":
-      return { menuItems: [], loading: false, error: "Oops" };
+const MENU_ITEMS_QUERY = gql`
+  {
+    menuItems {
+      id
+      name
+      price
+    }
   }
-}
+`;
 
 const Menu: React.FC = () => {
-  const [state, dispatch] = useReducer(reducer, {
-    menuItems: [],
-    loading: true,
-    error: ""
-  });
-
-  useEffect(() => {
-    fetchMenuItems()
-      .then(res => {
-        if (res.errors) dispatch({ type: "FECTH_ERROR" });
-        else dispatch({ type: "FETCH_SUCCESS", payload: res.data.menuItems });
-      })
-      .catch(_ => dispatch({ type: "FECTH_ERROR" }));
-  }, []);
+  const { loading, error, data } = useQuery<QueryResult>(MENU_ITEMS_QUERY);
 
   return (
     <div>
-      {state.loading && "Loading"}
-      {state.error}
-      {state.menuItems.map(item => (
+      {loading && "Loading"}
+      {error?.message}
+      {data?.menuItems.map(item => (
         <MenuItemCard item={item} key={item.id} />
       ))}
     </div>
