@@ -1,8 +1,8 @@
 import React from "react";
-import styles from "./App.module.css";
-import Menu from "./Menu";
+import CssBaseline from "@material-ui/core/CssBaseline";
 import ApolloClient from "apollo-boost";
 import { ApolloProvider } from "@apollo/react-hooks";
+import Login from "./Login";
 
 const client = new ApolloClient({
   uri: "/api"
@@ -10,11 +10,12 @@ const client = new ApolloClient({
 
 const App: React.FC = () => {
   return (
-    <ApolloProvider client={client}>
-      <div className={styles.app}>
-        <Menu />
-      </div>
-    </ApolloProvider>
+    <>
+      <CssBaseline />
+      <ApolloProvider client={client}>
+        <Login />
+      </ApolloProvider>
+    </>
   );
 };
 
