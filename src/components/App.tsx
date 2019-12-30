@@ -1,5 +1,6 @@
 import React from "react";
 import CssBaseline from "@material-ui/core/CssBaseline";
+import "typeface-roboto";
 import ApolloClient from "apollo-boost";
 import { ApolloProvider } from "@apollo/react-hooks";
 import Login from "./Login";
