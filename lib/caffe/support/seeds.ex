@@ -10,25 +10,25 @@ defmodule Caffe.Seeds do
   defp create_users do
     upsert_all_by(:email, [
       %User{
-        email: "apocalypse@xmen.com",
+        email: "admin@caffe.com",
         password: Password.hash("secret"),
-        name: "Apocalypse the Admin",
+        name: "The Admin",
         role: "admin"
       },
       %User{
-        email: "charles@xmen.com",
+        email: "charles@caffe.com",
         password: Password.hash("secret"),
         name: "Charles the Chef",
         role: "chef"
       },
       %User{
-        email: "wolverine@xmen.com",
+        email: "wolverine@caffe.com",
         password: Password.hash("secret"),
         name: "Wolverine the Waiter",
         role: "waitstaff"
       },
       %User{
-        email: "cyclops@xmen.com",
+        email: "cyclops@caffe.com",
         password: Password.hash("secret"),
         name: "Cyclops the Customer",
         role: "customer"
