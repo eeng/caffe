@@ -57,7 +57,7 @@ module.exports = env => {
     devtool: devtool,
     devServer: {
       contentBase: "./dist",
-      port: 3000,
+      port: 4001,
       proxy: {
         "/api": "http://localhost:4000"
       }

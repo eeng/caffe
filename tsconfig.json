@@ -2,7 +2,6 @@
   "compilerOptions": {
     "outDir": "./dist/",
     "sourceMap": true,
-    "noImplicitAny": true,
     "target": "es6",
     "module": "esnext",
     "jsx": "react",
@@ -13,13 +12,7 @@
     "forceConsistentCasingInFileNames": true,
     "moduleResolution": "node",
     "removeComments": true,
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
+    "lib": ["dom", "dom.iterable", "esnext"]
   },
-  "include": [
-    "src"
-  ]
+  "include": ["src"]
 }
