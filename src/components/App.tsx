@@ -3,6 +3,7 @@ import CssBaseline from "@material-ui/core/CssBaseline";
 import ApolloClient from "apollo-boost";
 import { ApolloProvider } from "@apollo/react-hooks";
 import Login from "./Login";
+import Home from "./Home";
 
 const client = new ApolloClient({
   uri: "/api"
@@ -13,7 +14,7 @@ const App: React.FC = () => {
     <>
       <CssBaseline />
       <ApolloProvider client={client}>
-        <Login />
+        <Home />
       </ApolloProvider>
     </>
   );
