@@ -4,6 +4,7 @@ import ApolloClient from "apollo-boost";
 import { ApolloProvider } from "@apollo/react-hooks";
 import RootPageChooser from "./RootPageChooser";
 import AuthProvider from "./AuthProvider";
+import SnackbarProvider from "./SnackbarProvider";
 
 const client = new ApolloClient({
   uri: "/api",
@@ -23,7 +24,9 @@ const App: React.FC = () => {
       <CssBaseline />
       <ApolloProvider client={client}>
         <AuthProvider>
-          <RootPageChooser />
+          <SnackbarProvider>
+            <RootPageChooser />
+          </SnackbarProvider>
         </AuthProvider>
       </ApolloProvider>
     </>

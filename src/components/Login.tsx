@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Container from "@material-ui/core/Container";
 import Avatar from "@material-ui/core/Avatar";
 import Typography from "@material-ui/core/Typography";
@@ -14,6 +14,7 @@ import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import { makeStyles } from "@material-ui/core/styles";
 import { Credentials, useAuth, AuthStatus } from "./AuthProvider";
+import { useSnackbar } from "./SnackbarProvider";
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -44,6 +45,12 @@ const Login: React.FC = () => {
   });
 
   const { login, status } = useAuth();
+  const { showSnackbar } = useSnackbar();
+
+  useEffect(() => {
+    if (status == AuthStatus.LoggingFailed)
+      showSnackbar("Invalid email or password.", { variant: "error" });
+  }, [status]);
 
   const handleChange = (prop: string) => (event: any) => {
     setCredentials({ ...credentials, [prop]: event.target.value });
