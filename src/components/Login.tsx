@@ -13,6 +13,7 @@ import LockOutlined from "@material-ui/icons/LockOutlined";
 import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import { makeStyles } from "@material-ui/core/styles";
+import { Credentials, useAuth } from "./AuthProvider";
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -33,11 +34,6 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-type Credentials = {
-  email: string;
-  password: string;
-};
-
 const Login: React.FC = () => {
   const classes = useStyles();
 
@@ -47,13 +43,17 @@ const Login: React.FC = () => {
     password: ""
   });
 
+  const { login } = useAuth();
+
   const handleChange = (prop: string) => (event: any) => {
     setCredentials({ ...credentials, [prop]: event.target.value });
   };
 
   function handleSubmit(e: React.FormEvent) {
+    if (!login(credentials))
+      // TODO
+      console.log("show error message");
     e.preventDefault();
-    console.log(credentials);
   }
 
   return (
