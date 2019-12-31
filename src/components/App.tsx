@@ -6,7 +6,15 @@ import RootPageChooser from "./RootPageChooser";
 import AuthProvider from "./AuthProvider";
 
 const client = new ApolloClient({
-  uri: "/api"
+  uri: "/api",
+  request: operation => {
+    const token = localStorage.getItem("token");
+    operation.setContext({
+      headers: {
+        authorization: token ? `Bearer ${token}` : ""
+      }
+    });
+  }
 });
 
 const App: React.FC = () => {

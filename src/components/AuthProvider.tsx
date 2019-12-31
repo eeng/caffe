@@ -23,13 +23,11 @@ export enum AuthStatus {
 }
 
 type State = {
-  token?: string;
   user?: User;
   status: AuthStatus;
 };
 
 type Auth = {
-  token?: string;
   user?: User;
   status: AuthStatus;
   login: (credentials: Credentials) => void;
@@ -64,8 +62,8 @@ const AuthProvider: React.FC = ({ children }) => {
 
   useEffect(() => {
     try {
-      const authState = JSON.parse(localStorage.getItem("authState") || "");
-      setState({ ...authState, status: AuthStatus.LoggedIn });
+      const user = JSON.parse(localStorage.getItem("user") || "");
+      setState({ user, status: AuthStatus.LoggedIn });
     } catch (_) {
       setState({ status: AuthStatus.NotLoggedIn });
     }
@@ -75,15 +73,18 @@ const AuthProvider: React.FC = ({ children }) => {
     return <FullScreenSpinner />;
 
   const login = (credentials: Credentials) => {
-    setState({ ...state, status: AuthStatus.LoggingIn });
+    setState({ status: AuthStatus.LoggingIn });
     client
       .mutate({
         mutation: LOGIN_MUTATION,
         variables: { email: credentials.email, password: credentials.password }
       })
       .then(({ data }) => {
-        localStorage.setItem("authState", JSON.stringify(data.login));
-        setState({ ...data.login, status: AuthStatus.LoggedIn });
+        const { token, user } = data.login;
+        localStorage.setItem("token", token);
+        localStorage.setItem("user", JSON.stringify(user));
+        setState({ user, status: AuthStatus.LoggedIn });
+        client.resetStore();
       })
       .catch((error: ApolloError) => {
         if (error.graphQLErrors[0].message == "invalid_credentials")
@@ -96,7 +97,8 @@ const AuthProvider: React.FC = ({ children }) => {
   };
 
   const logout = () => {
-    localStorage.removeItem("authState");
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
     setState({ status: AuthStatus.NotLoggedIn });
   };
 
