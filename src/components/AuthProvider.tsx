@@ -1,7 +1,7 @@
 import React, { useState, useContext, useEffect } from "react";
 import FullScreenSpinner from "./FullScreenSpinner";
 import { gql, ApolloError } from "apollo-boost";
-import { useMutation, useApolloClient } from "@apollo/react-hooks";
+import { useApolloClient } from "@apollo/react-hooks";
 
 type User = {
   id: string;
@@ -14,7 +14,7 @@ export type Credentials = {
   password: string;
 };
 
-enum AuthStatus {
+export enum AuthStatus {
   FetchingFromStorage,
   NotLoggedIn,
   LoggingIn,
@@ -32,16 +32,12 @@ type Auth = {
   token?: string;
   user?: User;
   status: AuthStatus;
-  isLoggedIn: boolean;
-  isLoggingIn: boolean;
   login: (credentials: Credentials) => void;
   logout: () => void;
 };
 
 const AuthContext = React.createContext<Auth>({
   status: AuthStatus.NotLoggedIn,
-  isLoggedIn: false,
-  isLoggingIn: false,
   login: _ => {},
   logout: () => {}
 });
@@ -106,8 +102,6 @@ const AuthProvider: React.FC = ({ children }) => {
 
   const auth: Auth = {
     ...state,
-    isLoggedIn: state.status == AuthStatus.LoggedIn,
-    isLoggingIn: state.status == AuthStatus.LoggingIn,
     login,
     logout
   };

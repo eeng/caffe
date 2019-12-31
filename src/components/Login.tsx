@@ -13,7 +13,7 @@ import LockOutlined from "@material-ui/icons/LockOutlined";
 import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import { makeStyles } from "@material-ui/core/styles";
-import { Credentials, useAuth } from "./AuthProvider";
+import { Credentials, useAuth, AuthStatus } from "./AuthProvider";
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -43,7 +43,7 @@ const Login: React.FC = () => {
     password: ""
   });
 
-  const { login, isLoggingIn } = useAuth();
+  const { login, status } = useAuth();
 
   const handleChange = (prop: string) => (event: any) => {
     setCredentials({ ...credentials, [prop]: event.target.value });
@@ -102,7 +102,7 @@ const Login: React.FC = () => {
             size="large"
             fullWidth
             className={classes.submit}
-            disabled={isLoggingIn}
+            disabled={status == AuthStatus.LoggingIn}
           >
             Sign In
           </Button>
