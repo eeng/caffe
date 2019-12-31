@@ -43,7 +43,7 @@ const Login: React.FC = () => {
     password: ""
   });
 
-  const { login } = useAuth();
+  const { login, isLoggingIn } = useAuth();
 
   const handleChange = (prop: string) => (event: any) => {
     setCredentials({ ...credentials, [prop]: event.target.value });
@@ -102,6 +102,7 @@ const Login: React.FC = () => {
             size="large"
             fullWidth
             className={classes.submit}
+            disabled={isLoggingIn}
           >
             Sign In
           </Button>
