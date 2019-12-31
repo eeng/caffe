@@ -50,9 +50,7 @@ const Login: React.FC = () => {
   };
 
   function handleSubmit(e: React.FormEvent) {
-    if (!login(credentials))
-      // TODO
-      console.log("show error message");
+    login(credentials);
     e.preventDefault();
   }
 

@@ -4,8 +4,8 @@ import Home from "./Home";
 import { useAuth } from "./AuthProvider";
 
 const RootPageChooser: React.FC = () => {
-  const { isAuthenticated } = useAuth();
-  return isAuthenticated ? <Home /> : <Login />;
+  const { isLoggedIn } = useAuth();
+  return isLoggedIn ? <Home /> : <Login />;
 };
 
 export default RootPageChooser;

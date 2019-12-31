@@ -12,39 +12,50 @@ export type Credentials = {
   password: string;
 };
 
-type Auth = {
-  token?: string;
-  user?: User;
-  isAuthenticated: boolean;
-  login: (credentials: Credentials) => boolean;
-  logout: () => void;
-};
+enum Status {
+  FetchingFromStorage,
+  NotLoggedIn,
+  LoggingIn,
+  LoggedIn
+}
 
 type State = {
   token?: string;
   user?: User;
-  loading: boolean;
+  status: Status;
+};
+
+type Auth = {
+  token?: string;
+  user?: User;
+  status: Status;
+  isLoggedIn: boolean;
+  login: (credentials: Credentials) => void;
+  logout: () => void;
 };
 
 const AuthContext = React.createContext<Auth>({
-  isAuthenticated: false,
-  login: _ => false,
+  status: Status.NotLoggedIn,
+  isLoggedIn: false,
+  login: _ => {},
   logout: () => {}
 });
 
 const AuthProvider: React.FC = ({ children }) => {
-  const [state, setState] = useState<State>({ loading: true });
+  const [state, setState] = useState<State>({
+    status: Status.FetchingFromStorage
+  });
 
   useEffect(() => {
     try {
       const authState = JSON.parse(localStorage.getItem("authState") || "");
-      setState({ ...authState, loading: false });
+      setState({ ...authState, status: Status.LoggedIn });
     } catch (_) {
-      setState({ loading: false });
+      setState({ status: Status.NotLoggedIn });
     }
   }, []);
 
-  if (state.loading) return <FullScreenSpinner />;
+  if (state.status == Status.FetchingFromStorage) return <FullScreenSpinner />;
 
   const login = (credentials: Credentials) => {
     console.log("login", credentials);
@@ -55,7 +66,7 @@ const AuthProvider: React.FC = ({ children }) => {
     };
 
     localStorage.setItem("authState", JSON.stringify(response));
-    setState({ ...response, loading: false });
+    setState({ ...response, status: Status.LoggedIn });
     return true;
   };
 
@@ -63,13 +74,12 @@ const AuthProvider: React.FC = ({ children }) => {
     console.log("logout");
 
     localStorage.removeItem("authState");
-    setState({ loading: false });
+    setState({ status: Status.NotLoggedIn });
   };
 
   const auth: Auth = {
-    user: state.user,
-    token: state.token,
-    isAuthenticated: state.user != null,
+    ...state,
+    isLoggedIn: state.status == Status.LoggedIn,
     login,
     logout
   };
