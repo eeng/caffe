@@ -29,6 +29,12 @@ const Home: React.FC = () => {
         </Toolbar>
       </AppBar>
       <Toolbar />
+      <div>
+        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Veritatis quas
+        quos blanditiis sint adipisci architecto inventore earum fugit culpa
+        nostrum saepe neque incidunt accusamus tenetur ipsam debitis facere,
+        repellat labore.
+      </div>
     </>
   );
 };
