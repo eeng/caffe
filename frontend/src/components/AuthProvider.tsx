@@ -22,17 +22,15 @@ export enum AuthStatus {
   LoggedIn
 }
 
-type State = {
+interface State {
   user?: User;
   status: AuthStatus;
-};
+}
 
-type Auth = {
-  user?: User;
-  status: AuthStatus;
+interface Auth extends State {
   login: (credentials: Credentials) => void;
   logout: () => void;
-};
+}
 
 const AuthContext = React.createContext<Auth>({
   status: AuthStatus.NotLoggedIn,
