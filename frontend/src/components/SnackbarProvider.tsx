@@ -39,7 +39,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const SnackbarProvider: React.FC = ({ children }) => {
+function SnackbarProvider({ children }: any) {
   const classes = useStyles();
 
   const [state, setState] = useState<State>({
@@ -93,7 +93,7 @@ const SnackbarProvider: React.FC = ({ children }) => {
       </Snackbar>
     </Fragment>
   );
-};
+}
 
 export const useSnackbar = () => useContext(SnackbarContext);
 

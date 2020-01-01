@@ -11,7 +11,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const FullScreenSpinner: React.FC = () => {
+function FullScreenSpinner() {
   const classes = useStyles();
 
   return (
@@ -21,6 +21,6 @@ const FullScreenSpinner: React.FC = () => {
       </div>
     </Box>
   );
-};
+}
 
 export default FullScreenSpinner;

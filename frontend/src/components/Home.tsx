@@ -12,7 +12,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const Home: React.FC = () => {
+function Home() {
   const classes = useStyles();
   const { logout } = useAuth();
 
@@ -37,6 +37,6 @@ const Home: React.FC = () => {
       </div>
     </>
   );
-};
+}
 
 export default Home;

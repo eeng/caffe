@@ -53,7 +53,7 @@ const LOGIN_MUTATION = gql`
   }
 `;
 
-const AuthProvider: React.FC = ({ children }) => {
+function AuthProvider({ children }: any) {
   const client = useApolloClient();
 
   const [state, setState] = useState<State>({
@@ -109,7 +109,7 @@ const AuthProvider: React.FC = ({ children }) => {
   };
 
   return <AuthContext.Provider value={auth}>{children}</AuthContext.Provider>;
-};
+}
 
 export const useAuth = () => useContext(AuthContext);
 

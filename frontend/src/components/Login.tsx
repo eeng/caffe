@@ -35,7 +35,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const Login: React.FC = () => {
+function Login() {
   const classes = useStyles();
 
   const [showPassword, setShowPassword] = useState(false);
@@ -117,6 +117,6 @@ const Login: React.FC = () => {
       </div>
     </Container>
   );
-};
+}
 
 export default Login;

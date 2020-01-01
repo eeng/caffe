@@ -18,7 +18,7 @@ const client = new ApolloClient({
   }
 });
 
-const App: React.FC = () => {
+function App() {
   return (
     <>
       <CssBaseline />
@@ -31,6 +31,6 @@ const App: React.FC = () => {
       </ApolloProvider>
     </>
   );
-};
+}
 
 export default App;

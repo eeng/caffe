@@ -22,7 +22,7 @@ const MENU_ITEMS_QUERY = gql`
   }
 `;
 
-const Menu: React.FC = () => {
+function Menu() {
   const { loading, error, data } = useQuery<QueryResult>(MENU_ITEMS_QUERY);
 
   return (
@@ -34,18 +34,18 @@ const Menu: React.FC = () => {
       ))}
     </div>
   );
-};
+}
 
 type MenuItemCardProps = {
   item: MenuItem;
 };
 
-const MenuItemCard: React.FC<MenuItemCardProps> = ({ item }) => {
+function MenuItemCard({ item }: MenuItemCardProps) {
   return (
     <div>
       {item.name} ($ {item.price})
     </div>
   );
-};
+}
 
 export default Menu;
