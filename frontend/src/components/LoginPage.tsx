@@ -15,6 +15,7 @@ import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import { makeStyles } from "@material-ui/core/styles";
 import { Credentials, useAuth, AuthStatus } from "./AuthProvider";
 import { useSnackbar } from "./SnackbarProvider";
+import { useHistory, useLocation } from "react-router-dom";
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -46,10 +47,16 @@ function LoginPage() {
 
   const { login, status } = useAuth();
   const { showSnackbar } = useSnackbar();
+  const history = useHistory();
+  const location = useLocation();
 
   useEffect(() => {
-    if (status == AuthStatus.LoggingFailed)
+    if (status == AuthStatus.LoggedIn) {
+      const { from } = location.state || { from: { pathname: "/" } };
+      history.replace(from);
+    } else if (status == AuthStatus.LoggingFailed) {
       showSnackbar("Invalid email or password.", { variant: "error" });
+    }
   }, [status]);
 
   const handleChange = (prop: string) => (event: any) => {

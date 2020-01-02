@@ -56,8 +56,9 @@ module.exports = env => {
     },
     devtool: devtool,
     devServer: {
-      contentBase: "./dist",
       port: 4001,
+      publicPath: "/",
+      historyApiFallback: true,
       proxy: {
         "/api": "http://localhost:4000"
       }

@@ -12,7 +12,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-function Home() {
+function HomePage() {
   const classes = useStyles();
   const { logout } = useAuth();
 
@@ -39,4 +39,4 @@ function Home() {
   );
 }
 
-export default Home;
+export default HomePage;
