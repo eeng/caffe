@@ -1,13 +1,13 @@
 import React, { Fragment } from "react";
-import CssBaseline from "@material-ui/core/CssBaseline";
+import { SemanticToastContainer } from "react-semantic-toasts";
+import "react-semantic-toasts/styles/react-semantic-alert.css";
 import ApolloClient from "apollo-boost";
 import { ApolloProvider } from "@apollo/react-hooks";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import AuthProvider from "./AuthProvider";
-import SnackbarProvider from "./SnackbarProvider";
 import LoginPage from "./LoginPage";
 import HomePage from "./HomePage";
-import UsersPage from "./UsersPage";
+import ConfigPage from "./ConfigPage";
 import PrivateRoute from "./PrivateRoute";
 import NotFoundPage from "./NotFoundPage";
 
@@ -26,29 +26,27 @@ const client = new ApolloClient({
 function App() {
   return (
     <Fragment>
-      <CssBaseline />
       <ApolloProvider client={client}>
         <AuthProvider>
-          <SnackbarProvider>
-            <Router>
-              <Switch>
-                <PrivateRoute exact path="/">
-                  <HomePage />
-                </PrivateRoute>
-                <PrivateRoute path="/users">
-                  <UsersPage />
-                </PrivateRoute>
-                <Route path="/login">
-                  <LoginPage />
-                </Route>
-                <Route path="*">
-                  <NotFoundPage />
-                </Route>
-              </Switch>
-            </Router>
-          </SnackbarProvider>
+          <Router>
+            <Switch>
+              <PrivateRoute exact path="/">
+                <HomePage />
+              </PrivateRoute>
+              <PrivateRoute path="/config">
+                <ConfigPage />
+              </PrivateRoute>
+              <Route path="/login">
+                <LoginPage />
+              </Route>
+              <Route path="*">
+                <NotFoundPage />
+              </Route>
+            </Switch>
+          </Router>
         </AuthProvider>
       </ApolloProvider>
+      <SemanticToastContainer position="bottom-right" />
     </Fragment>
   );
 }

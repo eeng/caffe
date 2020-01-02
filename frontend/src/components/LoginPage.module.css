@@ -1,0 +1,7 @@
+.grid {
+  height: 100vh;
+}
+
+.column {
+  max-width: 450px;
+}

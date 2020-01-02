@@ -34,7 +34,13 @@ module.exports = env => {
                 modules: true
               }
             }
-          ]
+          ],
+          include: /\.module\.css$/
+        },
+        {
+          test: /\.css$/,
+          use: ["style-loader", "css-loader"],
+          exclude: /\.module\.css$/
         }
       ]
     },
