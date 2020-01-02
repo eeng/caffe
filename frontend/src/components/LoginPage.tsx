@@ -35,7 +35,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-function Login() {
+function LoginPage() {
   const classes = useStyles();
 
   const [showPassword, setShowPassword] = useState(false);
@@ -119,4 +119,4 @@ function Login() {
   );
 }
 
-export default Login;
+export default LoginPage;

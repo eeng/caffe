@@ -45,12 +45,12 @@ function SnackbarProvider({ children }: any) {
   const [state, setState] = useState<State>({
     open: false,
     message: "",
-    autoHideDuration: 3000,
+    autoHideDuration: 4000,
     variant: "info"
   });
   const { open, variant, message, ...opts } = state;
 
-  const handleClose = (event: any, reason?: string) => {
+  const handleClose = (_event: any, reason?: string) => {
     if (reason === "clickaway") return;
     setState({ ...state, open: false });
   };
