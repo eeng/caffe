@@ -2,7 +2,15 @@ import React, { useState, useEffect } from "react";
 import styles from "./LoginPage.module.css";
 import { Credentials, useAuth, AuthStatus } from "./AuthProvider";
 import { useHistory, useLocation } from "react-router-dom";
-import { Grid, Header, Icon, Form, Segment, Button } from "semantic-ui-react";
+import {
+  Grid,
+  Header,
+  Icon,
+  Form,
+  Segment,
+  Button,
+  InputOnChangeData
+} from "semantic-ui-react";
 import { toast } from "react-semantic-toasts";
 
 function LoginPage() {
@@ -28,7 +36,7 @@ function LoginPage() {
     }
   }, [status]);
 
-  const handleChange = (_event: any, { name, value }: any) => {
+  const handleChange = (_event: any, { name, value }: InputOnChangeData) => {
     setCredentials({ ...credentials, [name]: value });
   };
 

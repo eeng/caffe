@@ -12,10 +12,11 @@ defmodule CaffeWeb.Schema.AccountsTypes do
   end
 
   enum :role do
-    value :admin
-    value :chef
-    value :waitstaff
-    value :customer
+    value :admin, as: "admin"
+    value :chef, as: "chef"
+    value :waitstaff, as: "waitstaff"
+    value :cashier, as: "cashier"
+    value :customer, as: "customer"
   end
 
   object :session do

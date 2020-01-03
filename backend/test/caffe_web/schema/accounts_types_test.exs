@@ -41,7 +41,7 @@ defmodule CaffeWeb.Schema.AccountsTypesTest do
   end
 
   @query """
-    { users { name } }
+    { users { name role } }
   """
   describe "users query" do
     test "admins can list users" do
@@ -49,7 +49,7 @@ defmodule CaffeWeb.Schema.AccountsTypesTest do
       conn = build_conn() |> auth_user(user) |> post("/api", query: @query)
 
       assert %{
-               "data" => %{"users" => [%{"name" => "Max"}]}
+               "data" => %{"users" => [%{"name" => "Max", "role" => "ADMIN"}]}
              } == json_response(conn, 200)
     end
 

@@ -7,7 +7,7 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import AuthProvider from "./AuthProvider";
 import LoginPage from "./LoginPage";
 import HomePage from "./HomePage";
-import ConfigPage from "./ConfigPage";
+import ConfigPage from "./configuration/ConfigPage";
 import PrivateRoute from "./PrivateRoute";
 import NotFoundPage from "./NotFoundPage";
 
