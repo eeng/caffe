@@ -11,6 +11,7 @@ defmodule CaffeWeb.Schema.MenuTypes do
     field :description, :string
     field :price, :decimal
     field :is_drink, :boolean
+    field :category_id, :id
     field :category, :category, resolve: dataloader(Menu.Category)
   end
 
@@ -27,6 +28,12 @@ defmodule CaffeWeb.Schema.MenuTypes do
       resolve &Resolvers.Menu.list_items/3
     end
 
+    @desc "Get a single item by id"
+    field :menu_item, :menu_item do
+      arg :id, :id
+      resolve &Resolvers.Menu.find_item/3
+    end
+
     @desc "Get all menu categories"
     field :categories, list_of(:category) do
       resolve &Resolvers.Menu.list_categories/3
@@ -39,7 +46,7 @@ defmodule CaffeWeb.Schema.MenuTypes do
       arg :description, :string
       arg :price, non_null(:decimal)
       arg :is_drink, :boolean
-      arg :category_id, non_null(:integer)
+      arg :category_id, non_null(:id)
       middleware Middleware.Authorize, :create_menu_item
       resolve &Resolvers.Menu.create_item/3
     end
@@ -50,7 +57,7 @@ defmodule CaffeWeb.Schema.MenuTypes do
       arg :description, :string
       arg :price, :decimal
       arg :is_drink, :boolean
-      arg :category_id, :integer
+      arg :category_id, :id
       middleware Middleware.Authorize, :update_menu_item
       resolve &Resolvers.Menu.update_item/3
     end

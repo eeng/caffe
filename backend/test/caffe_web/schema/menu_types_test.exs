@@ -61,7 +61,7 @@ defmodule CaffeWeb.Schema.MenuTypesTest do
   end
 
   @query """
-  mutation ($name: String, $price: Decimal, $categoryId: Int) {
+  mutation ($name: String, $price: Decimal, $categoryId: ID) {
     createMenuItem(name: $name, price: $price, categoryId: $categoryId) {
       name
       price

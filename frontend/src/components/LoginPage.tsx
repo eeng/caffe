@@ -79,9 +79,8 @@ function LoginPage() {
               size="large"
               disabled={status == AuthStatus.LoggingIn}
               loading={status == AuthStatus.LoggingIn}
-            >
-              Login
-            </Button>
+              content="Login"
+            />
           </Segment>
         </Form>
       </Grid.Column>

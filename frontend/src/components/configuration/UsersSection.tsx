@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import { gql } from "apollo-boost";
 import { useQuery } from "@apollo/react-hooks";
-import APIError from "../APIError";
+import APIError from "../shared/APIError";
 import Fuse from "fuse.js";
-import { Tab, Grid, Input, Button, Table } from "semantic-ui-react";
+import { Tab, Grid, Input, Button, Table, Message } from "semantic-ui-react";
+import QueryResultWrapper from "../shared/QueryResult";
+import SearchInput from "../shared/SearchInput";
 
 type Role = "ADMIN" | "CHEF" | "WAITSTAFF" | "CASHIER" | "CUSTOMER";
 
@@ -30,13 +32,13 @@ const USERS_QUERY = gql`
 `;
 
 function UsersSection() {
-  const { loading, error, data } = useQuery<QueryResult>(USERS_QUERY);
+  const result = useQuery<QueryResult>(USERS_QUERY);
 
   return (
-    <Tab.Pane loading={loading}>
-      {error && <APIError error={error} />}
-      {data && <Users users={data?.users} />}
-    </Tab.Pane>
+    <QueryResultWrapper
+      result={result}
+      render={data => <Users users={data.users} />}
+    />
   );
 }
 
@@ -49,51 +51,30 @@ function Users({ users }: QueryResult) {
 
   return (
     <>
-      <Grid columns="2">
-        <Grid.Column>
-          <Input
-            icon="search"
-            placeholder="Search..."
-            value={search}
-            onChange={(_, { value }) => setSearch(value)}
-            autoFocus
-          />
-        </Grid.Column>
-        <Grid.Column textAlign="right">
-          <Button content="Add" primary icon="plus" labelPosition="right" />
-        </Grid.Column>
-      </Grid>
+      <SearchInput search={search} onSearch={setSearch} autoFocus />
 
-      <Table celled>
-        <Table.Header>
-          <Table.Row>
-            <Table.HeaderCell>E-mail</Table.HeaderCell>
-            <Table.HeaderCell>Name</Table.HeaderCell>
-            <Table.HeaderCell>Role</Table.HeaderCell>
-            <Table.HeaderCell></Table.HeaderCell>
-          </Table.Row>
-        </Table.Header>
-        <Table.Body>
-          {filteredUsers.map(user => (
-            <Table.Row key={user.id}>
-              <Table.Cell>{user.email}</Table.Cell>
-              <Table.Cell>{user.name}</Table.Cell>
-              <Table.Cell>{user.role}</Table.Cell>
-              <Table.Cell singleLine collapsing>
-                <Button icon="edit" size="tiny" compact circular basic />
-                <Button
-                  icon="delete"
-                  color="red"
-                  size="tiny"
-                  compact
-                  circular
-                  basic
-                />
-              </Table.Cell>
+      {filteredUsers.length ? (
+        <Table celled>
+          <Table.Header>
+            <Table.Row>
+              <Table.HeaderCell>E-mail</Table.HeaderCell>
+              <Table.HeaderCell>Name</Table.HeaderCell>
+              <Table.HeaderCell>Role</Table.HeaderCell>
             </Table.Row>
-          ))}
-        </Table.Body>
-      </Table>
+          </Table.Header>
+          <Table.Body>
+            {filteredUsers.map(user => (
+              <Table.Row key={user.id}>
+                <Table.Cell>{user.email}</Table.Cell>
+                <Table.Cell>{user.name}</Table.Cell>
+                <Table.Cell>{user.role}</Table.Cell>
+              </Table.Row>
+            ))}
+          </Table.Body>
+        </Table>
+      ) : (
+        <Message content="No users were found." />
+      )}
     </>
   );
 }

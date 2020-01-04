@@ -3,7 +3,7 @@ import AppBar from "../AppBar";
 import { Tab, Container, Menu } from "semantic-ui-react";
 import MenuSection from "./MenuSection";
 import UsersSection from "./UsersSection";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, NavLink } from "react-router-dom";
 
 function ConfigPage() {
   const location = useLocation();
@@ -20,25 +20,24 @@ function ConfigPage() {
               menuItem: (
                 <Menu.Item
                   name="Menu"
-                  as={Link}
+                  as={NavLink}
                   to="/config"
                   key="menu"
-                  active={activeTabIndex == 0}
+                  exact
                 />
               ),
-              render: () => <MenuSection />
+              render: () => <Tab.Pane content={<MenuSection />} />
             },
             {
               menuItem: (
                 <Menu.Item
                   name="Users"
-                  as={Link}
+                  as={NavLink}
                   to="/config/users"
                   key="users"
-                  active={activeTabIndex == 1}
                 />
               ),
-              render: () => <UsersSection />
+              render: () => <Tab.Pane content={<UsersSection />} />
             }
           ]}
         />

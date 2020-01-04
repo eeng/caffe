@@ -5,6 +5,10 @@ defmodule CaffeWeb.Resolvers.Menu do
     {:ok, Menu.list_items()}
   end
 
+  def find_item(_parent, %{id: id}, _resolution) do
+    Menu.get_item(id)
+  end
+
   def list_categories(_parent, _args, _resolution) do
     {:ok, Menu.list_categories()}
   end
