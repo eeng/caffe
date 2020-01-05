@@ -72,16 +72,18 @@ function AuthProvider({ children }: any) {
 
   const login = (credentials: Credentials) => {
     setState({ status: AuthStatus.LoggingIn });
+
     client
-      .mutate({
-        mutation: LOGIN_MUTATION,
-        variables: { email: credentials.email, password: credentials.password }
-      })
+      .mutate({ mutation: LOGIN_MUTATION, variables: credentials })
       .then(({ data }) => {
         const { token, user } = data.login;
+
         localStorage.setItem("token", token);
         localStorage.setItem("user", JSON.stringify(user));
+
         setState({ user, status: AuthStatus.LoggedIn });
+
+        // Clear the Apollo cache
         client.resetStore();
       })
       .catch((error: ApolloError) => {
