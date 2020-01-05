@@ -7,6 +7,7 @@ type User = {
   id: string;
   email: string;
   name: string;
+  permissions: string[];
 };
 
 export type Credentials = {
@@ -30,25 +31,44 @@ interface State {
 interface Auth extends State {
   login: (credentials: Credentials) => void;
   logout: () => void;
+  can: (permission: string) => boolean;
 }
 
 const AuthContext = React.createContext<Auth>({
   status: AuthStatus.NotLoggedIn,
   login: _ => {},
-  logout: () => {}
+  logout: () => {},
+  can: _ => false
 });
+
+const USER_FRAGMENT = gql`
+  fragment UserFields on User {
+    id
+    name
+    email
+    permissions
+  }
+`;
 
 const LOGIN_MUTATION = gql`
   mutation($email: String!, $password: String!) {
     login(email: $email, password: $password) {
       token
       user {
-        id
-        name
-        email
+        ...UserFields
       }
     }
   }
+  ${USER_FRAGMENT}
+`;
+
+const ME_QUERY = gql`
+  query {
+    me {
+      ...UserFields
+    }
+  }
+  ${USER_FRAGMENT}
 `;
 
 function AuthProvider({ children }: any) {
@@ -58,13 +78,21 @@ function AuthProvider({ children }: any) {
     status: AuthStatus.FetchingFromStorage
   });
 
+  /*
+    When the app mounts this tries to fetch the user.
+    If she was already logged in, the token should be sent (see the Apollo Client config),
+    the backend should return the (possibly changed) user data which we store, and then set the LoggedIn status.
+    Otherwise, if the token was not present or invalid (the backend returns and error), we set the NotLoggedIn status.
+  */
   useEffect(() => {
-    try {
-      const user = JSON.parse(localStorage.getItem("user") || "");
-      setState({ user, status: AuthStatus.LoggedIn });
-    } catch (_) {
-      setState({ status: AuthStatus.NotLoggedIn });
-    }
+    if (localStorage.getItem("token"))
+      client
+        .query({ query: ME_QUERY })
+        .then(({ data }) =>
+          setState({ user: data.me, status: AuthStatus.LoggedIn })
+        )
+        .catch(() => setState({ status: AuthStatus.NotLoggedIn }));
+    else setState({ status: AuthStatus.NotLoggedIn });
   }, []);
 
   if (state.status == AuthStatus.FetchingFromStorage)
@@ -77,10 +105,7 @@ function AuthProvider({ children }: any) {
       .mutate({ mutation: LOGIN_MUTATION, variables: credentials })
       .then(({ data }) => {
         const { token, user } = data.login;
-
         localStorage.setItem("token", token);
-        localStorage.setItem("user", JSON.stringify(user));
-
         setState({ user, status: AuthStatus.LoggedIn });
 
         // Clear the Apollo cache
@@ -98,14 +123,17 @@ function AuthProvider({ children }: any) {
 
   const logout = () => {
     localStorage.removeItem("token");
-    localStorage.removeItem("user");
     setState({ status: AuthStatus.NotLoggedIn });
   };
+
+  const can = (permission: string) =>
+    state.user != null && state.user.permissions.includes(permission);
 
   const auth: Auth = {
     ...state,
     login,
-    logout
+    logout,
+    can
   };
 
   return <AuthContext.Provider value={auth}>{children}</AuthContext.Provider>;
