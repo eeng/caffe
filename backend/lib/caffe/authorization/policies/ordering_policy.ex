@@ -7,7 +7,14 @@ defmodule Caffe.Authorization.Policies.OrderingPolicy do
   alias Caffe.Repo
 
   def actions do
-    [:place_order, :cancel_order, :mark_items_served]
+    [
+      :place_order,
+      :cancel_order,
+      :mark_items_served,
+      :begin_food_preparation,
+      :mark_food_prepared,
+      :pay_order
+    ]
   end
 
   def authorize(:place_order, %User{}, _), do: true

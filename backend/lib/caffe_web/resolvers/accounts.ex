@@ -1,6 +1,7 @@
 defmodule CaffeWeb.Resolvers.Accounts do
   alias CaffeWeb.Support.Authentication
   alias Caffe.Accounts
+  alias Caffe.Authorization.Authorizer
 
   def login(_parent, %{email: email, password: password}, _resolution) do
     case Accounts.authenticate(email, password) do
@@ -15,6 +16,10 @@ defmodule CaffeWeb.Resolvers.Accounts do
 
   def me(_parent, _params, %{context: %{current_user: user}}) do
     Accounts.get_user(user.id)
+  end
+
+  def permissions(user, _params, _resolution) do
+    {:ok, Authorizer.authorized_actions(user)}
   end
 
   def list_users(_parent, _params, _resolution) do

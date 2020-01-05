@@ -8,6 +8,10 @@ defmodule CaffeWeb.Schema.AccountsTypes do
     field :email, non_null(:string)
     field :role, non_null(:role)
     field :name, :string
+
+    field :permissions, list_of(:string) do
+      resolve &Resolvers.Accounts.permissions/3
+    end
   end
 
   enum :role do
