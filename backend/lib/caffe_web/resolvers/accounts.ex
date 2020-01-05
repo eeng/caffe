@@ -13,6 +13,10 @@ defmodule CaffeWeb.Resolvers.Accounts do
     end
   end
 
+  def me(_parent, _params, %{context: %{current_user: user}}) do
+    Accounts.get_user(user.id)
+  end
+
   def list_users(_parent, _params, _resolution) do
     {:ok, Accounts.list_users()}
   end

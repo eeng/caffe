@@ -6,7 +6,6 @@ defmodule CaffeWeb.Schema.AccountsTypes do
   object :user do
     field :id, :id
     field :email, non_null(:string)
-    field :password, non_null(:string)
     field :role, non_null(:role)
     field :name, :string
   end
@@ -25,6 +24,11 @@ defmodule CaffeWeb.Schema.AccountsTypes do
   end
 
   object :accounts_queries do
+    field :me, :user do
+      middleware Middleware.Authorize, :me
+      resolve &Resolvers.Accounts.me/3
+    end
+
     field :users, list_of(:user) do
       middleware Middleware.Authorize, :list_users
       resolve &Resolvers.Accounts.list_users/3
