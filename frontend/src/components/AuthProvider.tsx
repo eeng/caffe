@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from "react";
-import FullScreenSpinner from "./FullScreenSpinner";
+import FullScreenSpinner from "./shared/FullScreenSpinner";
 import { gql, ApolloError } from "apollo-boost";
 import { useApolloClient } from "@apollo/react-hooks";
 
