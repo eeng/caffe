@@ -4,7 +4,7 @@ import "react-semantic-toasts/styles/react-semantic-alert.css";
 import ApolloClient from "apollo-boost";
 import { ApolloProvider } from "@apollo/react-hooks";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import AuthProvider from "./AuthProvider";
+import AuthProvider, { AUTH_TOKEN } from "./AuthProvider";
 import LoginPage from "./LoginPage";
 import HomePage from "./HomePage";
 import ConfigPage from "./configuration/ConfigPage";
@@ -14,7 +14,7 @@ import NotFoundPage from "./NotFoundPage";
 const client = new ApolloClient({
   uri: "/api",
   request: operation => {
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem(AUTH_TOKEN);
     operation.setContext({
       headers: {
         authorization: token ? `Bearer ${token}` : ""

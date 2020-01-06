@@ -34,6 +34,8 @@ interface Auth extends State {
   can: (permission: string) => boolean;
 }
 
+export const AUTH_TOKEN = "token";
+
 const AuthContext = React.createContext<Auth>({
   status: AuthStatus.NotLoggedIn,
   login: _ => {},
@@ -85,7 +87,7 @@ function AuthProvider({ children }: any) {
     Otherwise, if the token was not present or invalid (the backend returns and error), we set the NotLoggedIn status.
   */
   useEffect(() => {
-    if (localStorage.getItem("token"))
+    if (localStorage.getItem(AUTH_TOKEN))
       client
         .query({ query: ME_QUERY })
         .then(({ data }) =>
@@ -105,7 +107,7 @@ function AuthProvider({ children }: any) {
       .mutate({ mutation: LOGIN_MUTATION, variables: credentials })
       .then(({ data }) => {
         const { token, user } = data.login;
-        localStorage.setItem("token", token);
+        localStorage.setItem(AUTH_TOKEN, token);
         setState({ user, status: AuthStatus.LoggedIn });
 
         // Clear the Apollo cache
@@ -122,7 +124,7 @@ function AuthProvider({ children }: any) {
   };
 
   const logout = () => {
-    localStorage.removeItem("token");
+    localStorage.removeItem(AUTH_TOKEN);
     setState({ status: AuthStatus.NotLoggedIn });
   };
 
