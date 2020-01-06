@@ -1,17 +1,17 @@
-import React, { Fragment } from "react";
+import React from "react";
 import AppBar from "../AppBar";
 import { Tab, Container, Menu } from "semantic-ui-react";
 import MenuSection from "./MenuSection";
 import UsersSection from "./UsersSection";
 import { Link, useLocation, NavLink } from "react-router-dom";
+import Layout from "../shared/Layout";
 
 function ConfigPage() {
   const location = useLocation();
   const activeTabIndex = location.pathname == "/config/users" ? 1 : 0;
 
   return (
-    <Fragment>
-      <AppBar title="Configuration" />
+    <Layout header="Configuration">
       <Container>
         <Tab
           activeIndex={activeTabIndex}
@@ -42,7 +42,7 @@ function ConfigPage() {
           ]}
         />
       </Container>
-    </Fragment>
+    </Layout>
   );
 }
 

@@ -1,8 +1,8 @@
 import React from "react";
-import AppBar from "./AppBar";
+import Layout from "./shared/Layout";
 
 function HomePage() {
-  return <AppBar title="Home" />;
+  return <Layout header="Home">Content</Layout>;
 }
 
 export default HomePage;

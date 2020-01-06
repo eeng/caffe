@@ -25,29 +25,27 @@ const client = new ApolloClient({
 
 function App() {
   return (
-    <Fragment>
-      <ApolloProvider client={client}>
-        <AuthProvider>
-          <Router>
-            <Switch>
-              <PrivateRoute exact path="/">
-                <HomePage />
-              </PrivateRoute>
-              <PrivateRoute path="/config" permission="list_users">
-                <ConfigPage />
-              </PrivateRoute>
-              <Route path="/login">
-                <LoginPage />
-              </Route>
-              <Route path="*">
-                <NotFoundPage />
-              </Route>
-            </Switch>
-          </Router>
-        </AuthProvider>
-      </ApolloProvider>
+    <ApolloProvider client={client}>
+      <AuthProvider>
+        <Router>
+          <Switch>
+            <PrivateRoute exact path="/">
+              <HomePage />
+            </PrivateRoute>
+            <PrivateRoute path="/config" permission="list_users">
+              <ConfigPage />
+            </PrivateRoute>
+            <Route path="/login">
+              <LoginPage />
+            </Route>
+            <Route path="*">
+              <NotFoundPage />
+            </Route>
+          </Switch>
+        </Router>
+      </AuthProvider>
       <SemanticToastContainer position="bottom-right" />
-    </Fragment>
+    </ApolloProvider>
   );
 }
 
