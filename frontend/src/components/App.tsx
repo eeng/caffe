@@ -33,7 +33,7 @@ function App() {
               <PrivateRoute exact path="/">
                 <HomePage />
               </PrivateRoute>
-              <PrivateRoute path="/config">
+              <PrivateRoute path="/config" permission="list_users">
                 <ConfigPage />
               </PrivateRoute>
               <Route path="/login">
