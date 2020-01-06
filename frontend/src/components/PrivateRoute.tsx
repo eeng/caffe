@@ -10,6 +10,7 @@ interface Props extends RouteProps {
 // or to the home page if you don't have the necessary permission.
 function PrivateRoute({ permission, children, ...rest }: Props) {
   const { status, can } = useAuth();
+
   return (
     <Route
       {...rest}

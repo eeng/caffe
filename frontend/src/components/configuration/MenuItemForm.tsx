@@ -2,7 +2,7 @@ import { useQuery, useMutation } from "@apollo/react-hooks";
 import { gql } from "apollo-boost";
 import React, { useState, useEffect } from "react";
 import { Link, useParams, Redirect, useHistory } from "react-router-dom";
-import { Button, Form } from "semantic-ui-react";
+import { Button, Form, Segment } from "semantic-ui-react";
 import CategoryDropdown from "./CategoryDropdown";
 import QueryResultWrapper from "../shared/QueryResult";
 import { toast } from "react-semantic-toasts";
@@ -97,52 +97,57 @@ function MenuItemForm({ item }: { item: MenuItemInput }) {
   }
 
   return (
-    <Form onSubmit={handleSubmit} loading={loading}>
-      <Form.Input
-        label="Name"
-        name="name"
-        value={formData.name}
-        onChange={handleChange}
-        required
-        autoFocus
-      />
-      <Form.Input
-        label="Description"
-        name="description"
-        value={formData.description || ""}
-        onChange={handleChange}
-      />
-      <Form.Field>
-        <CategoryDropdown value={formData.categoryId} onChange={handleChange} />
-      </Form.Field>
-      <Form.Input
-        label="Price"
-        name="price"
-        value={formData.price}
-        onChange={handleChange}
-        required
-        type="number"
-        step="0.01"
-      />
-      <Form.Field>
-        <Form.Checkbox
-          label="Is drink?"
-          toggle
-          checked={formData.isDrink}
-          name="isDrink"
-          onChange={(e, { name, checked }) =>
-            handleChange(e, { name, value: checked })
-          }
+    <Segment>
+      <Form onSubmit={handleSubmit} loading={loading}>
+        <Form.Input
+          label="Name"
+          name="name"
+          value={formData.name}
+          onChange={handleChange}
+          required
+          autoFocus
         />
-      </Form.Field>
+        <Form.Input
+          label="Description"
+          name="description"
+          value={formData.description || ""}
+          onChange={handleChange}
+        />
+        <Form.Field>
+          <CategoryDropdown
+            value={formData.categoryId}
+            onChange={handleChange}
+          />
+        </Form.Field>
+        <Form.Input
+          label="Price"
+          name="price"
+          value={formData.price}
+          onChange={handleChange}
+          required
+          type="number"
+          step="0.01"
+        />
+        <Form.Field>
+          <Form.Checkbox
+            label="Is drink?"
+            toggle
+            checked={formData.isDrink}
+            name="isDrink"
+            onChange={(e, { name, checked }) =>
+              handleChange(e, { name, value: checked })
+            }
+          />
+        </Form.Field>
 
-      <Button
-        primary
-        content={isNewRecord ? "Create" : "Update"}
-        disabled={!isValid}
-      />
-      <Button content="Cancel" as={Link} to="/config" />
-    </Form>
+        <Button
+          primary
+          content={isNewRecord ? "Create" : "Update"}
+          disabled={!isValid}
+        />
+        <Button content="Cancel" as={Link} to="/config" />
+      </Form>
+    </Segment>
   );
 }
 

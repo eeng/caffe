@@ -1,10 +1,9 @@
 import React from "react";
-import AppBar from "../AppBar";
-import { Tab, Container, Menu } from "semantic-ui-react";
+import { NavLink, useLocation } from "react-router-dom";
+import { Container, Menu, Tab } from "semantic-ui-react";
+import Layout from "../shared/Layout";
 import MenuSection from "./MenuSection";
 import UsersSection from "./UsersSection";
-import { Link, useLocation, NavLink } from "react-router-dom";
-import Layout from "../shared/Layout";
 
 function ConfigPage() {
   const location = useLocation();
@@ -14,6 +13,7 @@ function ConfigPage() {
     <Layout header="Configuration">
       <Container>
         <Tab
+          menu={{ secondary: true, pointing: true }}
           activeIndex={activeTabIndex}
           panes={[
             {
@@ -26,7 +26,7 @@ function ConfigPage() {
                   exact
                 />
               ),
-              render: () => <Tab.Pane content={<MenuSection />} />
+              render: () => <MenuSection />
             },
             {
               menuItem: (
@@ -37,7 +37,7 @@ function ConfigPage() {
                   key="users"
                 />
               ),
-              render: () => <Tab.Pane content={<UsersSection />} />
+              render: () => <UsersSection />
             }
           ]}
         />

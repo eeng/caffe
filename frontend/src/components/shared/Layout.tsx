@@ -1,8 +1,8 @@
 import React from "react";
-import styles from "./Layout.module.css";
-import { useAuth } from "../AuthProvider";
-import { Icon, Header, Menu, Divider } from "semantic-ui-react";
 import { NavLink } from "react-router-dom";
+import { Divider, Icon, Menu } from "semantic-ui-react";
+import { useAuth } from "../AuthProvider";
+import styles from "./Layout.module.css";
 
 type Props = {
   header: string;
