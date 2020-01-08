@@ -2,7 +2,7 @@ import React, { useState, useContext, useEffect } from "react";
 import FullScreenSpinner from "./shared/FullScreenSpinner";
 import { useApolloClient, ApolloError, gql } from "@apollo/client";
 
-type User = {
+export type User = {
   id: string;
   email: string;
   name: string;
@@ -42,34 +42,31 @@ const AuthContext = React.createContext<Auth>({
   can: _ => false
 });
 
-const USER_FRAGMENT = gql`
-  fragment UserFields on User {
-    id
-    name
-    email
-    permissions
-  }
-`;
-
 const LOGIN_MUTATION = gql`
   mutation($email: String!, $password: String!) {
     login(email: $email, password: $password) {
       token
       user {
-        ...UserFields
+        id
+        name
+        email
+        permissions
       }
     }
   }
-  ${USER_FRAGMENT}
 `;
 
-const ME_QUERY = gql`
+// If you change a field here, remember to change it in the login mutation as well.
+// Previously I've used fragments to remove this duplication but they would work with the MockedProvider in the tests
+export const ME_QUERY = gql`
   query {
     me {
-      ...UserFields
+      id
+      name
+      email
+      permissions
     }
   }
-  ${USER_FRAGMENT}
 `;
 
 function AuthProvider({ children }: any) {
@@ -83,17 +80,15 @@ function AuthProvider({ children }: any) {
     When the app mounts this tries to fetch the user.
     If she was already logged in, the token should be sent (see the Apollo Client config),
     the backend should return the (possibly changed) user data which we store, and then set the LoggedIn status.
-    Otherwise, if the token was not present or invalid (the backend returns and error), we set the NotLoggedIn status.
+    Otherwise, if the token was not present or invalid (the backend returns an error), we set the NotLoggedIn status.
   */
   useEffect(() => {
-    if (localStorage.getItem(AUTH_TOKEN))
-      client
-        .query({ query: ME_QUERY })
-        .then(({ data }) =>
-          setState({ user: data.me, status: AuthStatus.LoggedIn })
-        )
-        .catch(() => setState({ status: AuthStatus.NotLoggedIn }));
-    else setState({ status: AuthStatus.NotLoggedIn });
+    client
+      .query({ query: ME_QUERY })
+      .then(({ data }) =>
+        setState({ user: data.me, status: AuthStatus.LoggedIn })
+      )
+      .catch(() => setState({ status: AuthStatus.NotLoggedIn }));
   }, []);
 
   if (state.status == AuthStatus.FetchingFromStorage)

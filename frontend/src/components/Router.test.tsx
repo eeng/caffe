@@ -1,9 +1,13 @@
 import React from "react";
-import { render } from "@testing-library/react";
 import Router from "./Router";
-import "@testing-library/jest-dom/extend-expect";
+import { render } from "./TestUtils";
 
-test("renders the login page if not authenticated", () => {
-  const { getByText } = render(<Router />);
-  expect(getByText(/Sign In/i)).toBeInTheDocument();
+it("renders the login page if the user not authenticated", async () => {
+  const { findByText } = render(<Router />, {});
+  await findByText("Sign In");
+});
+
+it("renders the home page if the user is authenticated", async () => {
+  const { findByText } = render(<Router />, { user: { name: "Max Payne" } });
+  await findByText("Max Payne");
 });
