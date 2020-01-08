@@ -1,7 +1,6 @@
 import React, { useState, useContext, useEffect } from "react";
 import FullScreenSpinner from "./shared/FullScreenSpinner";
-import { gql, ApolloError } from "apollo-boost";
-import { useApolloClient } from "@apollo/react-hooks";
+import { useApolloClient, ApolloError, gql } from "@apollo/client";
 
 type User = {
   id: string;

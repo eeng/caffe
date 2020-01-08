@@ -1,4 +1,4 @@
-import { QueryResult } from "@apollo/react-common";
+import { QueryResult } from "@apollo/client";
 import React, { ReactElement } from "react";
 import APIError from "./APIError";
 import SectionLoader from "./SectionLoader";

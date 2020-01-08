@@ -1,5 +1,4 @@
-import { useQuery } from "@apollo/react-hooks";
-import { gql } from "apollo-boost";
+import { gql, useQuery } from "@apollo/client";
 import Fuse from "fuse.js";
 import React, { useState } from "react";
 import { Message, Table } from "semantic-ui-react";

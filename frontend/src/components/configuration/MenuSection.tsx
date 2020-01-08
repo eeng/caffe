@@ -1,7 +1,6 @@
-import { useMutation, useQuery } from "@apollo/react-hooks";
-import { gql } from "apollo-boost";
+import { gql, useMutation, useQuery } from "@apollo/client";
 import Fuse from "fuse.js";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Link, Route, Switch, useRouteMatch } from "react-router-dom";
 import { toast } from "react-semantic-toasts";
 import { Button, Grid, Message, Popup, Table } from "semantic-ui-react";

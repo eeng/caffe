@@ -1,11 +1,10 @@
-import { useQuery, useMutation } from "@apollo/react-hooks";
-import { gql } from "apollo-boost";
-import React, { useState, useEffect } from "react";
-import { Link, useParams, Redirect, useHistory } from "react-router-dom";
-import { Button, Form, Segment } from "semantic-ui-react";
-import CategoryDropdown from "./CategoryDropdown";
-import QueryResultWrapper from "../shared/QueryResult";
+import { gql, useMutation, useQuery } from "@apollo/client";
+import React, { useState } from "react";
+import { Link, useHistory, useParams } from "react-router-dom";
 import { toast } from "react-semantic-toasts";
+import { Button, Form, Segment } from "semantic-ui-react";
+import QueryResultWrapper from "../shared/QueryResult";
+import CategoryDropdown from "./CategoryDropdown";
 import { MENU_ITEMS } from "./MenuSection";
 
 type MenuItemInput = {

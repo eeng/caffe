@@ -1,20 +1,29 @@
-import { ApolloProvider } from "@apollo/react-hooks";
-import ApolloClient from "apollo-boost";
+import {
+  ApolloClient,
+  ApolloLink,
+  ApolloProvider,
+  HttpLink,
+  InMemoryCache
+} from "@apollo/client";
 import React from "react";
-import "react-semantic-toasts/styles/react-semantic-alert.css";
 import AuthProvider, { AUTH_TOKEN } from "./AuthProvider";
 import Router from "./Router";
 
+const httpLink = new HttpLink({ uri: "/api" });
+
+const authLink = new ApolloLink((operation, forward) => {
+  const token = localStorage.getItem(AUTH_TOKEN);
+  operation.setContext({
+    headers: {
+      authorization: token ? `Bearer ${token}` : ""
+    }
+  });
+  return forward(operation);
+});
+
 const client = new ApolloClient({
-  uri: "/api",
-  request: operation => {
-    const token = localStorage.getItem(AUTH_TOKEN);
-    operation.setContext({
-      headers: {
-        authorization: token ? `Bearer ${token}` : ""
-      }
-    });
-  }
+  link: authLink.concat(httpLink),
+  cache: new InMemoryCache()
 });
 
 function App() {
