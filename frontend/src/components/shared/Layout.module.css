@@ -1,5 +1,6 @@
 .layout {
   height: 100vh;
+  /* TODO duplicated on the FullScreenSpinner and Login */
   background-color: #ededed;
   display: grid;
   grid-template-rows: 60px 1fr;
@@ -15,6 +16,7 @@
   box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.32);
 }
 
+/* TODO add less to be able to define this variable and lighten it below */
 .user {
   background-color: #995739;
   font-size: 1.1em;

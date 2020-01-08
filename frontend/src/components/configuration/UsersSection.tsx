@@ -1,9 +1,8 @@
-import React, { useState } from "react";
-import { gql } from "apollo-boost";
 import { useQuery } from "@apollo/react-hooks";
-import APIError from "../shared/APIError";
+import { gql } from "apollo-boost";
 import Fuse from "fuse.js";
-import { Tab, Grid, Input, Button, Table, Message } from "semantic-ui-react";
+import React, { useState } from "react";
+import { Message, Table } from "semantic-ui-react";
 import QueryResultWrapper from "../shared/QueryResult";
 import SearchInput from "../shared/SearchInput";
 
