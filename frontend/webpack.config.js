@@ -65,6 +65,7 @@ module.exports = env => {
       port: 4001,
       publicPath: "/",
       historyApiFallback: true,
+      hot: true,
       proxy: {
         "/api": "http://localhost:4000"
       }
