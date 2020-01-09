@@ -2,7 +2,7 @@ import { gql, useQuery } from "@apollo/client";
 import Fuse from "fuse.js";
 import React, { useState } from "react";
 import { Message, Table } from "semantic-ui-react";
-import QueryResultWrapper from "../shared/QueryResult";
+import QueryResultWrapper from "../shared/QueryResultWrapper";
 import SearchInput from "../shared/SearchInput";
 
 type Role = "ADMIN" | "CHEF" | "WAITSTAFF" | "CASHIER" | "CUSTOMER";

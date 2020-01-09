@@ -20,6 +20,7 @@ function SearchInput({ search, onSearch, ...rest }: Props) {
               onSearch("");
               searchRef.current && searchRef.current.focus();
             }}
+            title="Clear Search"
           />
         ) : (
           <Icon name="search" />

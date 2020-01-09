@@ -1,54 +1,25 @@
+import { MockedProvider, MockedResponse } from "@apollo/client/testing";
 import "@testing-library/jest-dom/extend-expect";
-import { render, RenderOptions } from "@testing-library/react";
+import { render } from "@testing-library/react";
 import React from "react";
-import AuthProvider, { ME_QUERY } from "../components/AuthProvider";
-import { MockedProvider } from "@apollo/client/testing";
+import { MemoryRouter } from "react-router-dom";
+import * as factory from "./factory";
 
-interface User {
-  name?: string;
-  permissions?: string[];
+interface RenderOptions {
+  mocks?: MockedResponse[];
 }
-
-const userMock = (user?: User) =>
-  user
-    ? {
-        request: {
-          query: ME_QUERY
-        },
-        result: {
-          data: {
-            me: {
-              id: 1,
-              name: "User Name",
-              permissions: [],
-              email: "user@acme.com",
-              ...user
-            }
-          }
-        }
-      }
-    : {
-        request: {
-          query: ME_QUERY
-        },
-        error: new Error("unauthorized")
-      };
-
-const generateWrapper = ({ user }: { user?: User }) => ({ children }: any) => {
-  return (
-    <MockedProvider mocks={[userMock(user)]} addTypename={false}>
-      <AuthProvider>{children}</AuthProvider>
-    </MockedProvider>
-  );
-};
 
 const customRender = (
   ui: React.ReactElement,
-  { user }: { user?: User },
-  options?: Omit<RenderOptions, "queries">
-) => render(ui, { wrapper: generateWrapper({ user: user }) });
+  { mocks = [] }: RenderOptions = {}
+) =>
+  render(
+    <MockedProvider mocks={mocks} addTypename={false}>
+      <MemoryRouter>{ui}</MemoryRouter>
+    </MockedProvider>
+  );
 
-// re-export everything
+// re-export everything from @testing-library/react
 export * from "@testing-library/react";
 // override render method
-export { customRender as render };
+export { customRender as render, factory };

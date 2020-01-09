@@ -1,18 +1,17 @@
-import React, { useState, useEffect } from "react";
-import styles from "./LoginPage.module.css";
-import "./LoginPage.less";
-import { Credentials, useAuth, AuthStatus } from "./AuthProvider";
+import React, { useEffect, useState } from "react";
 import { useHistory, useLocation } from "react-router-dom";
+import { toast } from "react-semantic-toasts";
 import {
+  Button,
+  Form,
   Grid,
   Header,
   Icon,
-  Form,
-  Segment,
-  Button,
-  InputOnChangeData
+  InputOnChangeData,
+  Segment
 } from "semantic-ui-react";
-import { toast } from "react-semantic-toasts";
+import { AuthStatus, Credentials, useAuth } from "./AuthProvider";
+import "./LoginPage.less";
 
 function LoginPage() {
   const [credentials, setCredentials] = useState<Credentials>({

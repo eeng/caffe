@@ -3,9 +3,9 @@ import React, { useState } from "react";
 import { Link, useHistory, useParams } from "react-router-dom";
 import { toast } from "react-semantic-toasts";
 import { Button, Form, Segment } from "semantic-ui-react";
-import QueryResultWrapper from "../shared/QueryResult";
+import QueryResultWrapper from "../shared/QueryResultWrapper";
 import CategoryDropdown from "./CategoryDropdown";
-import { MENU_ITEMS } from "./MenuSection";
+import { MENU_ITEMS_QUERY } from "./MenuSection";
 
 type MenuItemInput = {
   id?: string;
@@ -66,7 +66,7 @@ function MenuItemForm({ item }: { item: MenuItemInput }) {
     isNewRecord ? CREATE_MENU_ITEM : UPDATE_MENU_ITEM,
     {
       // I needed to pass the whole query object due to this issue: https://github.com/apollographql/apollo-client/issues/5419
-      refetchQueries: [{ query: MENU_ITEMS }, "GetMenuItem"],
+      refetchQueries: [{ query: MENU_ITEMS_QUERY }, "GetMenuItem"],
       awaitRefetchQueries: true
     }
   );
