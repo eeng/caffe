@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styles from "./LoginPage.module.css";
+import "./LoginPage.less";
 import { Credentials, useAuth, AuthStatus } from "./AuthProvider";
 import { useHistory, useLocation } from "react-router-dom";
 import {
@@ -45,8 +46,8 @@ function LoginPage() {
   }
 
   return (
-    <Grid textAlign="center" verticalAlign="middle" className={styles.grid}>
-      <Grid.Column className={styles.column}>
+    <Grid textAlign="center" verticalAlign="middle" className="LoginPage">
+      <Grid.Column>
         <Header as="h2" icon textAlign="center">
           <Icon name="lock" circular />
           <Header.Content>Sign In</Header.Content>

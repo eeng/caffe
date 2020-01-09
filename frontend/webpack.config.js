@@ -25,22 +25,11 @@ module.exports = env => {
         },
         {
           test: /\.css$/,
-          use: [
-            "style-loader",
-            {
-              loader: "css-loader",
-              options: {
-                importLoaders: 1,
-                modules: true
-              }
-            }
-          ],
-          include: /\.module\.css$/
+          use: ["style-loader", "css-loader"]
         },
         {
-          test: /\.css$/,
-          use: ["style-loader", "css-loader"],
-          exclude: /\.module\.css$/
+          test: /\.less$/,
+          use: ["style-loader", "css-loader", "less-loader"]
         }
       ]
     },

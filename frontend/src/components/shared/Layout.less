@@ -1,0 +1,44 @@
+@import "variables.less";
+
+.Layout {
+  height: 100vh;
+  background-color: @backgroundColor;
+  display: grid;
+  grid-template-rows: 60px 1fr;
+  grid-template-columns: 250px 1fr;
+
+  .PageHeader,
+  .UserHeader {
+    color: white;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.32);
+  }
+
+  .UserHeader {
+    background-color: @primaryColor;
+    font-size: 1.1em;
+    padding: 0 1em;
+  }
+
+  .PageHeader {
+    background-color: lighten(@primaryColor, 5%);
+    font-size: 1.3em;
+    padding: 0 2rem;
+  }
+
+  .LayoutContent {
+    padding: 1.5em 2rem;
+    overflow: auto;
+  }
+
+  .Sidebar {
+    border-right: 1px solid #cfcfcf;
+    padding: 1.2rem 10px;
+
+    .menu {
+      margin: 0;
+    }
+  }
+}

@@ -2,7 +2,7 @@ import React from "react";
 import { NavLink } from "react-router-dom";
 import { Divider, Icon, Menu } from "semantic-ui-react";
 import { useAuth } from "../AuthProvider";
-import styles from "./Layout.module.css";
+import "./Layout.less";
 
 type Props = {
   header: string;
@@ -11,11 +11,11 @@ type Props = {
 
 function Layout({ header, children }: Props) {
   return (
-    <div className={styles.layout}>
+    <div className="Layout">
       <UserHeader />
-      <div className={styles.header}>{header}</div>
+      <div className="PageHeader">{header}</div>
       <Sidebar />
-      <div className={styles.content}>{children}</div>
+      <div className="LayoutContent"> {children}</div>
     </div>
   );
 }
@@ -24,7 +24,7 @@ function UserHeader() {
   const { user } = useAuth();
 
   return (
-    <div className={styles.user}>
+    <div className="UserHeader">
       <Icon name="user circle" size="big" />
       {user?.name}
     </div>
@@ -35,8 +35,8 @@ function Sidebar() {
   const { can, logout } = useAuth();
 
   return (
-    <div className={styles.sidebar}>
-      <Menu secondary vertical fluid className={styles.menu}>
+    <div className="Sidebar">
+      <Menu secondary vertical fluid>
         <Menu.Item content="Home" icon="home" as={NavLink} to="/" exact />
         {can("list_users") && (
           <Menu.Item

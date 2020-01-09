@@ -1,11 +1,11 @@
 import React from "react";
 import { Loader } from "semantic-ui-react";
-import styles from "./FullScreenSpinner.module.css";
+import "./FullScreenSpinner.less";
 
 function FullScreenSpinner() {
   return (
-    <div className={styles.container}>
-      <Loader active size="huge" />
+    <div className="FullScreenSpinner">
+      <Loader active size="big" />
     </div>
   );
 }
