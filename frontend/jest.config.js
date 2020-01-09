@@ -9,5 +9,6 @@ module.exports = {
   },
   moduleNameMapper: {
     "\\.(css|less)$": "<rootDir>/src/__mocks__/styleMock.ts"
-  }
+  },
+  moduleDirectories: ["node_modules", "src/__test__"]
 };

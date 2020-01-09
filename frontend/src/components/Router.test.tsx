@@ -1,6 +1,6 @@
 import React from "react";
 import Router from "./Router";
-import { render } from "./TestUtils";
+import { render } from "testHelper";
 
 it("renders the login page if the user not authenticated", async () => {
   const { findByText } = render(<Router />, {});
