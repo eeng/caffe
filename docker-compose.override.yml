@@ -1,0 +1,31 @@
+version: "3"
+services:
+  frontend:
+    volumes:
+      - ./frontend:/code
+    ports:
+      - 4001:4001
+    environment:
+      NODE_ENV: development
+      BACKEND_URL: http://backend:4000
+      DEV_SERVER_HOST: 0.0.0.0
+    tty: true # for the webpack colors
+  backend:
+    # TODO This is forcing mix to recompile everytime
+    # volumes:
+    #   - ./backend:/code
+    ports:
+      - 4000:4000
+    build:
+      args:
+        MIX_ENV: dev
+    environment:
+      DATABASE_URL: ecto://postgres:postgres@db/caffe_dev
+      EVENTSTORE_DATABASE_URL: ecto://postgres:postgres@db/caffe_eventstore_dev
+  db:
+    volumes:
+      - ./tmp/db:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_MULTIPLE_DATABASES: caffe_dev,caffe_eventstore_dev

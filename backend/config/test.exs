@@ -2,10 +2,7 @@ use Mix.Config
 
 # Configure your database
 config :caffe, Caffe.Repo,
-  username: "postgres",
-  password: "postgres",
-  database: "caffe_test",
-  hostname: "localhost",
+  url: System.get_env("DATABASE_URL", "ecto://postgres:postgres@localhost/caffe_test"),
   pool: Ecto.Adapters.SQL.Sandbox
 
 # We don't run a server during test. If one is required,

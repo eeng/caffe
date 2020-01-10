@@ -2,10 +2,7 @@ use Mix.Config
 
 # Configure your database
 config :caffe, Caffe.Repo,
-  username: "postgres",
-  password: "postgres",
-  database: "caffe_dev",
-  hostname: "localhost",
+  url: System.get_env("DATABASE_URL", "ecto://postgres:postgres@localhost/caffe_dev"),
   show_sensitive_data_on_connection_error: true,
   pool_size: 10
 
@@ -60,10 +57,11 @@ config :eventstore, column_data_type: "jsonb"
 config :eventstore, EventStore.Storage,
   serializer: Commanded.Serialization.JsonSerializer,
   types: EventStore.PostgresTypes,
-  username: "postgres",
-  password: "postgres",
-  database: "caffe_eventstore_dev",
-  hostname: "localhost",
+  url:
+    System.get_env(
+      "EVENTSTORE_DATABASE_URL",
+      "ecto://postgres:postgres@localhost/caffe_eventstore_dev"
+    ),
   pool_size: 10,
   pool_overflow: 5
 

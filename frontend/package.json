@@ -4,7 +4,7 @@
   "description": "",
   "private": true,
   "scripts": {
-    "build": "webpack --progress --env=production",
+    "build": "NODE_ENV=production webpack --progress",
     "start": "webpack-dev-server",
     "test": "jest",
     "test-watch": "jest --watch"

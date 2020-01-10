@@ -64,7 +64,9 @@ defmodule Caffe.MixProject do
       "ecto.seed": ["run priv/repo/seeds.exs"],
       "ecto.setup": ["ecto.create", "ecto.migrate", "ecto.seed"],
       "ecto.reset": ["ecto.drop", "ecto.setup"],
-      "event_store.reset": ["event_store.drop", "event_store.create", "event_store.init"],
+      "event_store.setup": ["event_store.create", "event_store.init"],
+      "event_store.reset": ["event_store.drop", "event_store.setup"],
+      "db.setup": ["event_store.setup", "ecto.setup"],
       "db.reset": ["event_store.reset", "ecto.reset"],
       test: ["ecto.create --quiet", "ecto.migrate", "test"]
     ]

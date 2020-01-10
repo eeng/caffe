@@ -1,0 +1,14 @@
+version: "3"
+services:
+  frontend:
+    build:
+      context: ./frontend
+  backend:
+    build:
+      context: ./backend
+    depends_on:
+      - db
+  db:
+    image: postgres:11.6-alpine
+    volumes:
+      - ./scripts/postgres:/docker-entrypoint-initdb.d
