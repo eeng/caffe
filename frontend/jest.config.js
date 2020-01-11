@@ -7,6 +7,12 @@ module.exports = {
   transform: {
     "^.+\\.(ts|tsx)$": "ts-jest"
   },
+  globals: {
+    // Improves the tests speed a litte bit
+    "ts-jest": {
+      isolatedModules: true
+    }
+  },
   moduleNameMapper: {
     "\\.(css|less)$": "<rootDir>/src/__mocks__/styleMock.ts"
   },
