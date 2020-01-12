@@ -1,0 +1,7 @@
+language: shell
+sudo: required
+
+services:
+  - docker
+
+script: ./scripts/run-tests.sh
