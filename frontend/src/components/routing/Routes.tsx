@@ -5,6 +5,7 @@ import "react-semantic-toasts/styles/react-semantic-alert.css";
 import ConfigPage from "../configuration/ConfigPage";
 import HomePage from "../HomePage";
 import LoginPage from "../LoginPage";
+import PlaceOrderPage from "../ordering/PlaceOrderPage";
 import NotFoundPage from "./NotFoundPage";
 import PrivateRoute from "./PrivateRoute";
 
@@ -14,6 +15,9 @@ function Routes() {
       <Switch>
         <PrivateRoute exact path="/">
           <HomePage />
+        </PrivateRoute>
+        <PrivateRoute path="/place_order" permission="place_order">
+          <PlaceOrderPage />
         </PrivateRoute>
         <PrivateRoute path="/config" permission="list_users">
           <ConfigPage />

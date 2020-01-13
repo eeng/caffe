@@ -45,9 +45,30 @@ defmodule Caffe.Seeds do
       ])
 
     upsert_all_by(:name, [
-      %Menu.Item{name: "Reuben", price: 4.50, category: sandwiches},
-      %Menu.Item{name: "Croque Monsieur", price: 6.25, category: sandwiches},
-      %Menu.Item{name: "Muffuletta", price: 5.50, category: sandwiches},
+      %Menu.Item{
+        name: "Reuben",
+        price: 4.50,
+        category: sandwiches,
+        description: """
+        The Reuben sandwich is an American grilled sandwich composed of corned beef,
+        Swiss cheese, sauerkraut, and Russian dressing, grilled between slices of rye bread.
+        """
+      },
+      %Menu.Item{
+        name: "Croque Monsieur",
+        price: 6.25,
+        category: sandwiches,
+        description: "A croque monsieur is a baked or fried boiled ham and cheese sandwich."
+      },
+      %Menu.Item{
+        name: "Muffuletta",
+        price: 5.50,
+        category: sandwiches,
+        description: """
+        Consists of a muffuletta loaf split horizontally and covered with layers of marinated
+        muffuletta-style olive salad, salami, ham, Swiss cheese, provolone, and mortadella.
+        """
+      },
       %Menu.Item{name: "Bánh mì", price: 7, category: sandwiches},
       %Menu.Item{name: "Vada Pav", price: 4.50, category: sandwiches},
       %Menu.Item{name: "Hamburger", price: 2, category: sandwiches},

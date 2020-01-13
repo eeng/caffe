@@ -49,6 +49,7 @@ defmodule Caffe.MixProject do
       {:absinthe_phoenix, "~> 1.4.0"},
       {:dataloader, "~> 1.0.0"},
       {:argon2_elixir, "~> 2.0"},
+      {:arc_ecto, "~> 0.11.3"},
       {:mix_test_watch, "~> 0.8", only: :dev, runtime: false}
     ]
   end

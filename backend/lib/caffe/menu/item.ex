@@ -1,6 +1,8 @@
 defmodule Caffe.Menu.Item do
   use Ecto.Schema
+  use Arc.Ecto.Schema
   import Ecto.Changeset
+
   alias Caffe.Menu.Category
 
   schema "menu_items" do
@@ -9,12 +11,14 @@ defmodule Caffe.Menu.Item do
     belongs_to :category, Category
     field :price, :decimal
     field :is_drink, :boolean, default: false
+    field :image, Caffe.Menu.Image.Type
     timestamps()
   end
 
   def changeset(menu_item, attrs) do
     menu_item
     |> cast(attrs, [:name, :description, :price, :is_drink, :category_id])
+    |> cast_attachments(attrs, [:image])
     |> validate_required([:name, :price])
     |> validate_number(:price, greater_than_or_equal_to: 0)
     |> unique_constraint(:name)

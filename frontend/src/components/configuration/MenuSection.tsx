@@ -31,7 +31,6 @@ export const MENU_ITEMS_QUERY = gql`
     menuItems {
       id
       name
-      description
       price
       isDrink
       category {

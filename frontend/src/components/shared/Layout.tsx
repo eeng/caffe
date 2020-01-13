@@ -38,6 +38,14 @@ function Sidebar() {
     <div className="Sidebar">
       <Menu secondary vertical fluid>
         <Menu.Item content="Home" icon="home" as={NavLink} to="/" exact />
+        {can("place_order") && (
+          <Menu.Item
+            content="Place Order"
+            icon="cart"
+            as={NavLink}
+            to="/place_order"
+          />
+        )}
         {can("list_users") && (
           <Menu.Item
             content="Configuration"

@@ -48,7 +48,8 @@ module.exports = {
     })
   ],
   resolve: {
-    extensions: [".js", ".ts", ".tsx"]
+    extensions: [".js", ".ts", ".tsx"],
+    modules: [path.resolve("./src"), "node_modules"]
   },
   devtool: isEnvDevelopment ? "eval-source-map" : "nosources-source-map",
   devServer: {
