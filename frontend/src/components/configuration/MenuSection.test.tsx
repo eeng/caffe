@@ -1,10 +1,5 @@
 import React from "react";
-import {
-  factory,
-  fireEvent,
-  render,
-  waitForElementToBeRemoved
-} from "testHelper";
+import { factory, fire, render, waitForElementToBeRemoved } from "testHelper";
 import MenuSection, {
   DELETE_MENU_ITEM_MUTATION,
   MENU_ITEMS_QUERY
@@ -24,12 +19,10 @@ test("allows to search menu items", async () => {
   expect(r.getByText("Burger")).toBeInTheDocument();
   expect(r.getByText("Fish")).toBeInTheDocument();
 
-  fireEvent.change(r.getByPlaceholderText("Search..."), {
-    target: { value: "burg" }
-  });
+  fire.fill(r.getByPlaceholderText("Search..."), "burg");
   expect(r.queryAllByText(/Food/)).toHaveLength(1);
 
-  fireEvent.click(r.getByTitle("Clear Search"));
+  fire.click(r.getByTitle("Clear Search"));
   expect(r.queryAllByText(/Food/)).toHaveLength(2);
 });
 
@@ -60,7 +53,7 @@ test("deleting a menu item", async () => {
   });
   await r.findByText("Burger");
 
-  fireEvent.click(r.getAllByTitle("Delete")[0]);
-  fireEvent.click(r.getByText("Confirm"));
+  fire.click(r.getAllByTitle("Delete")[0]);
+  fire.click(r.getByText("Confirm"));
   await waitForElementToBeRemoved(() => r.queryByText("Burger"));
 });

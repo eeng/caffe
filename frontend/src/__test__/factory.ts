@@ -42,6 +42,15 @@ export function mockQuery(
     returnsError(error: any): MockedResponse {
       return {
         ...baseResponse,
+        result: {
+          errors: [error]
+        }
+      };
+    },
+
+    returnsNetworkError(error: any): MockedResponse {
+      return {
+        ...baseResponse,
         error: error
       };
     }

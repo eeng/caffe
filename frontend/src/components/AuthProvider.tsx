@@ -42,7 +42,7 @@ const AuthContext = React.createContext<Auth>({
   can: _ => false
 });
 
-const LOGIN_MUTATION = gql`
+export const LOGIN_MUTATION = gql`
   mutation($email: String!, $password: String!) {
     login(email: $email, password: $password) {
       token
@@ -108,7 +108,10 @@ function AuthProvider({ children }: any) {
         client.resetStore();
       })
       .catch((error: ApolloError) => {
-        if (error.graphQLErrors[0].message == "invalid_credentials")
+        if (
+          error.graphQLErrors.length &&
+          error.graphQLErrors[0].message == "invalid_credentials"
+        )
           setState({ status: AuthStatus.LoggingFailed });
         else {
           setState({ status: AuthStatus.NotLoggedIn });

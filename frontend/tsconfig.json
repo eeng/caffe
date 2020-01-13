@@ -13,9 +13,9 @@
     "moduleResolution": "node",
     "removeComments": true,
     "lib": ["dom", "dom.iterable", "esnext"],
-    "baseUrl": "src",
+    "baseUrl": "./src",
     "paths": {
-      "testHelper": ["./__test__/testHelper"]
+      "testHelper": ["__test__/testHelper"]
     }
   },
   "include": ["src"]

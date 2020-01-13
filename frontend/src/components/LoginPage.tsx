@@ -31,7 +31,8 @@ function LoginPage() {
       toast({
         title: "Oops",
         description: "Invalid email or password",
-        type: "error"
+        type: "error",
+        icon: "lock"
       });
     }
   }, [status]);
