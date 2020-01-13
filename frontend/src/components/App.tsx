@@ -6,8 +6,9 @@ import {
   InMemoryCache
 } from "@apollo/client";
 import React from "react";
+import { BrowserRouter } from "react-router-dom";
 import AuthProvider, { AUTH_TOKEN } from "./AuthProvider";
-import Router from "./Router";
+import Routes from "./routing/Routes";
 
 const httpLink = new HttpLink({ uri: "/api" });
 
@@ -30,7 +31,9 @@ function App() {
   return (
     <ApolloProvider client={client}>
       <AuthProvider>
-        <Router />
+        <BrowserRouter>
+          <Routes />
+        </BrowserRouter>
       </AuthProvider>
     </ApolloProvider>
   );

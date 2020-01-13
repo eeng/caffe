@@ -1,6 +1,6 @@
 import React from "react";
 import { Route, Redirect, RouteProps } from "react-router-dom";
-import { useAuth, AuthStatus } from "./AuthProvider";
+import { useAuth, AuthStatus } from "../AuthProvider";
 
 interface Props extends RouteProps {
   permission?: string;
