@@ -6,16 +6,17 @@ import "./Layout.less";
 
 type Props = {
   header: string;
+  actions?: React.ReactNode[];
   children: React.ReactNode;
 };
 
-function Layout({ header, children }: Props) {
+function Layout({ header, actions, children }: Props) {
   return (
     <div className="Layout">
       <UserHeader />
-      <div className="PageHeader">{header}</div>
+      <PageHeader header={header} actions={actions} />
       <Sidebar />
-      <div className="LayoutContent"> {children}</div>
+      <div className="LayoutContent">{children}</div>
     </div>
   );
 }
@@ -31,6 +32,15 @@ function UserHeader() {
   );
 }
 
+const PageHeader = ({ header, actions }: Pick<Props, "header" | "actions">) => (
+  <div className="PageHeader">
+    <div className="PageTitle">{header}</div>
+    {actions?.map((action, i) => (
+      <div key={i}>{action}</div>
+    ))}
+  </div>
+);
+
 function Sidebar() {
   const { can, logout } = useAuth();
 
@@ -41,7 +51,7 @@ function Sidebar() {
         {can("place_order") && (
           <Menu.Item
             content="Place Order"
-            icon="cart"
+            icon="food"
             as={NavLink}
             to="/place_order"
           />

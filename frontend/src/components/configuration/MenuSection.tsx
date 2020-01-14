@@ -9,8 +9,10 @@ import QueryResultWrapper from "../shared/QueryResultWrapper";
 import SearchInput from "../shared/SearchInput";
 import { EditMenuItemForm, NewMenuItemForm } from "./MenuItemForm";
 
-type Category = {
+export type Category = {
   name: string;
+  position?: number;
+  items?: MenuItem[];
 };
 
 export type MenuItem = {
