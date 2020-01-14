@@ -21,6 +21,7 @@ export const MENU_ITEMS_QUERY = gql`
       name
       description
       price
+      imageUrl
       category {
         name
       }
@@ -48,6 +49,7 @@ const MenuItemCard = ({ item }: { item: MenuItem }) => (
     header={item.name}
     meta={item.category.name}
     description={item.description}
+    image={item.imageUrl}
     extra={
       <Grid columns="equal">
         <Grid.Column verticalAlign="middle">

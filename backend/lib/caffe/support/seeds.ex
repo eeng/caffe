@@ -49,6 +49,7 @@ defmodule Caffe.Seeds do
         name: "Reuben",
         price: 4.50,
         category: sandwiches,
+        image: fixture("Reuben.jpg"),
         description: """
         The Reuben sandwich is an American grilled sandwich composed of corned beef,
         Swiss cheese, sauerkraut, and Russian dressing, grilled between slices of rye bread.
@@ -58,30 +59,113 @@ defmodule Caffe.Seeds do
         name: "Croque Monsieur",
         price: 6.25,
         category: sandwiches,
+        image: fixture("Croque_Monsieur.jpg"),
         description: "A croque monsieur is a baked or fried boiled ham and cheese sandwich."
       },
       %Menu.Item{
         name: "Muffuletta",
         price: 5.50,
         category: sandwiches,
+        image: fixture("Muffuletta.jpg"),
         description: """
         Consists of a muffuletta loaf split horizontally and covered with layers of marinated
         muffuletta-style olive salad, salami, ham, Swiss cheese, provolone, and mortadella.
         """
       },
-      %Menu.Item{name: "Bánh mì", price: 7, category: sandwiches},
-      %Menu.Item{name: "Vada Pav", price: 4.50, category: sandwiches},
-      %Menu.Item{name: "Hamburger", price: 2, category: sandwiches},
-      %Menu.Item{name: "French Fries", price: 2.50, category: sides},
-      %Menu.Item{name: "Papadum", price: 1.25, category: sides},
-      %Menu.Item{name: "Pasta Salad", price: 2.50, category: sides},
-      %Menu.Item{name: "Thai Salad", price: 3.50, category: sides},
+      %Menu.Item{
+        name: "Bánh mì",
+        price: 7,
+        category: sandwiches,
+        image: fixture("Banh_Mi.jpg"),
+        description: """
+        Is a fusion of meats and vegetables from native Vietnamese cuisine such as chả lụa (pork sausage),
+        coriander leaf (cilantro), cucumber, pickled carrots, and pickled daikon.
+        """
+      },
+      %Menu.Item{
+        name: "Vada Pav",
+        price: 4.50,
+        category: sandwiches,
+        image: fixture("Vada_Pav.jpg"),
+        description: """
+        It's a vegetarian fast food dish native to the state of Maharashtra. The dish consists of a
+        deep fried potato dumpling placed inside a bread bun sliced almost in half through the middle.
+        """
+      },
+      %Menu.Item{
+        name: "Hamburger",
+        price: 2,
+        category: sandwiches,
+        image: fixture("Hamburger.jpg"),
+        description: """
+        A hamburger is a sandwich consisting of one or more cooked patties of ground meat, usually beef,
+        placed inside a sliced bread roll or bun. The patty may be pan fried, grilled, smoked or flame broiled.
+        """
+      },
+      %Menu.Item{
+        name: "Kalamarakia Tiganita",
+        price: 2.50,
+        category: sides,
+        image: fixture("Kalamarakia_Tiganita.jpg"),
+        description: """
+        Crispy and perfectly seasoned fried calamari (kalamarakia tiganita) recipe!
+        """
+      },
+      %Menu.Item{
+        name: "Papadum",
+        price: 1.25,
+        category: sides,
+        image: fixture("Papadum.jpg"),
+        description: """
+        A papadum is a thin, crisp, round flatbread from the Indian subcontinent.
+        It is typically based on a seasoned dough usually made from peeled black gram flour,
+        either fried or cooked with dry heat.
+        """
+      },
+      %Menu.Item{
+        name: "Pasta Salad",
+        price: 2.50,
+        category: sides,
+        image: fixture("Pasta_Salad.jpg"),
+        description: """
+        An Italian pasta salad with rotini, juicy tomatoes, fresh mozzarella, red onion,
+        salami, olives, herbs, and a drench of quick homemade Italian dressing.
+        """
+      },
+      %Menu.Item{
+        name: "Thai Salad",
+        price: 3.50,
+        category: sides,
+        image: fixture("Thai_Salad.jpg")
+      },
       %Menu.Item{name: "Water", price: 0, is_drink: true, category: beverages},
       %Menu.Item{name: "Beer", price: 1.5, is_drink: true, category: beverages},
       %Menu.Item{name: "Lemonade", price: 1.25, is_drink: true, category: beverages},
-      %Menu.Item{name: "Masala Chai", price: 1.5, is_drink: true, category: beverages},
+      %Menu.Item{
+        name: "Masala Chai",
+        price: 1.5,
+        is_drink: true,
+        category: beverages,
+        image: fixture("Masala_Chai.jpg"),
+        description: """
+        Masala chai is a flavoured tea beverage made by brewing black tea with a mixture
+        of aromatic Indian spices and herbs.
+        """
+      },
       %Menu.Item{name: "Milkshake", price: 3, is_drink: true, category: beverages}
     ])
+  end
+
+  # We need to pass through the changeset for the image to be assigned (by the cast_attachments).
+  # Also, because we are using the id for the storage_dir, we must insert the record before setting the attachment.
+  defp upsert_by(%Menu.Item{image: image} = record, conflict_target) do
+    {:ok, record} =
+      Map.delete(record, :image)
+      |> upsert_by(conflict_target)
+      |> Menu.Item.changeset(%{image: image})
+      |> Repo.update()
+
+    record
   end
 
   defp upsert_by(record, conflict_target) do
@@ -93,5 +177,9 @@ defmodule Caffe.Seeds do
 
   defp upsert_all_by(field, records) do
     Enum.map(records, &upsert_by(&1, field))
+  end
+
+  def fixture(filename) do
+    "priv/repo/fixtures/#{filename}"
   end
 end

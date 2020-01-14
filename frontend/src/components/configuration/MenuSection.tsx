@@ -20,6 +20,7 @@ export type MenuItem = {
   price: number;
   isDrink: boolean;
   category: Category;
+  imageUrl?: string;
 };
 
 type QueryResult = {

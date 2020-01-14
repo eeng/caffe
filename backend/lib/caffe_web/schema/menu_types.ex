@@ -13,6 +13,10 @@ defmodule CaffeWeb.Schema.MenuTypes do
     field :is_drink, :boolean
     field :category_id, :id
     field :category, :category, resolve: dataloader(Menu.Category)
+
+    field :image_url, :string do
+      resolve &Resolvers.Menu.image_url/3
+    end
   end
 
   object :category do
