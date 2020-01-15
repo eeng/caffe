@@ -1,4 +1,4 @@
-import Layout from "components/shared/Layout";
+import Layout from "../shared/Layout";
 import React from "react";
 import { Link } from "react-router-dom";
 import { Button, Segment, Header, Icon } from "semantic-ui-react";

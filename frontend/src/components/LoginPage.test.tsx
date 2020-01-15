@@ -1,6 +1,6 @@
 import { GraphQLError } from "graphql";
 import React from "react";
-import { factory, fire, render } from "testHelper";
+import { factory, fire, render } from "/__test__/testHelper";
 import AuthProvider, { LOGIN_MUTATION } from "./AuthProvider";
 import LoginPage from "./LoginPage";
 

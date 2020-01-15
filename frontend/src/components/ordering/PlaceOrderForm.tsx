@@ -1,8 +1,8 @@
 import { gql, useQuery } from "@apollo/client";
-import { Category, MenuItem } from "components/configuration/MenuSection";
-import Layout from "components/shared/Layout";
-import QueryResultWrapper from "components/shared/QueryResultWrapper";
-import { formatCurrency } from "lib/format";
+import { Category, MenuItem } from "../configuration/MenuSection";
+import Layout from "../shared/Layout";
+import QueryResultWrapper from "../shared/QueryResultWrapper";
+import { formatCurrency } from "/lib/format";
 import React from "react";
 import { Link } from "react-router-dom";
 import {

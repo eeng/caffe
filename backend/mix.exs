@@ -41,6 +41,7 @@ defmodule Caffe.MixProject do
       {:gettext, "~> 0.11"},
       {:jason, "~> 1.0"},
       {:plug_cowboy, "~> 2.0"},
+      {:cors_plug, "~> 1.5"},
       {:commanded, "~> 0.19"},
       {:commanded_eventstore_adapter, "~> 0.6", runtime: Mix.env() != :test},
       {:commanded_ecto_projections, "~> 0.8"},

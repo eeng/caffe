@@ -6,6 +6,8 @@ defmodule CaffeWeb.Endpoint do
     websocket: true,
     longpoll: false
 
+  plug CORSPlug
+
   # Serve at "/" the static files from "priv/static" directory.
   #
   # You should set gzip to true if you are running phx.digest

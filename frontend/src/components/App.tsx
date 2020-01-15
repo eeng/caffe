@@ -6,11 +6,12 @@ import {
   InMemoryCache
 } from "@apollo/client";
 import React from "react";
+import { hot } from "react-hot-loader";
 import { BrowserRouter } from "react-router-dom";
 import AuthProvider, { AUTH_TOKEN } from "./AuthProvider";
 import Routes from "./routing/Routes";
 
-const httpLink = new HttpLink({ uri: "/api" });
+const httpLink = new HttpLink({ uri: `${process.env.BACKEND_URL}/api` });
 
 const authLink = new ApolloLink((operation, forward) => {
   const token = localStorage.getItem(AUTH_TOKEN);
@@ -39,4 +40,4 @@ function App() {
   );
 }
 
-export default App;
+export default hot(module)(App);

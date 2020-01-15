@@ -1,7 +1,7 @@
-import { MenuItem } from "components/configuration/MenuSection";
+import { MenuItem } from "/components/configuration/MenuSection";
 import { MockedResponse } from "@apollo/client/testing";
 import { DocumentNode } from "@apollo/client";
-import { User } from "components/AuthProvider";
+import { User } from "/components/AuthProvider";
 
 function sequenceGen() {
   let n = 1;
