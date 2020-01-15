@@ -1,12 +1,14 @@
 version: "3"
 services:
   frontend:
-    # volumes:
-    #   - ./frontend:/code
+    volumes:
+      - ./frontend:/code
     ports:
       - 4001:4001
+      - 4999:4999
     environment:
       NODE_ENV: development
+      HMR_PORT: 4999
     tty: true # for the webpack colors
   backend:
     # This is forcing mix to recompile everytime

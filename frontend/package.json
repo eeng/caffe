@@ -4,7 +4,7 @@
   "description": "",
   "private": true,
   "scripts": {
-    "start": "parcel -p 4001 src/index.html",
+    "start": "node scripts/start.js",
     "build": "parcel build src/index.html",
     "test": "jest",
     "test-watch": "jest --watch"
