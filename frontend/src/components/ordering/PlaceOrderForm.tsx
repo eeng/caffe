@@ -1,8 +1,4 @@
 import { gql, useQuery } from "@apollo/client";
-import { Category, MenuItem } from "../configuration/MenuSection";
-import Layout from "../shared/Layout";
-import QueryResultWrapper from "../shared/QueryResultWrapper";
-import { formatCurrency } from "/lib/format";
 import React from "react";
 import { Link } from "react-router-dom";
 import {
@@ -13,13 +9,16 @@ import {
   Segment,
   Transition
 } from "semantic-ui-react";
+import { Category, MenuItem } from "../configuration/MenuSection";
+import Layout from "../shared/Layout";
+import QueryResultWrapper from "../shared/QueryResultWrapper";
 import {
-  Action,
   CurrentOrderContextType,
-  Order,
   useCurrentOrder
 } from "./CurrentOrderProvider";
+import { Action, Order, OrderItem, orderTotalQty } from "./model";
 import "./PlaceOrderForm.less";
+import { formatCurrency } from "/lib/format";
 
 function PlaceOrderForm() {
   const state = useCurrentOrder();
@@ -51,18 +50,15 @@ const MENU_QUERY = gql`
 `;
 
 function ReviewOrderButton({ order }: { order: Order }) {
-  const totalQty = order.items.reduce(
-    (total, item) => total + item.quantity,
-    0
-  );
+  const totalQty = orderTotalQty(order);
 
   return (
     <Transition visible={totalQty > 0} animation="fade left" duration={500}>
       <Button
-        content="My Order"
+        content="Review Order"
         icon="cart"
-        color="brown"
-        label={{ content: totalQty, basic: true, color: "brown" }}
+        color="green"
+        label={{ content: totalQty, basic: true, color: "green" }}
         labelPosition="right"
         as={Link}
         to="/place_order/summary"
@@ -92,10 +88,9 @@ function Menu({ order, dispatch }: CurrentOrderContextType) {
                     item={item}
                     dispatch={dispatch}
                     key={item.id}
-                    qtyOrdered={
-                      order.items.find(oi => oi.menuItemId == item.id)
-                        ?.quantity || 0
-                    }
+                    orderedItem={order.items.find(
+                      oi => oi.menuItem.id == item.id
+                    )}
                   />
                 ))}
               </div>
@@ -109,18 +104,18 @@ function Menu({ order, dispatch }: CurrentOrderContextType) {
 
 const MenuItemCard = ({
   item,
-  dispatch,
-  qtyOrdered
+  orderedItem,
+  dispatch
 }: {
   item: MenuItem;
+  orderedItem: OrderItem;
   dispatch: React.Dispatch<Action>;
-  qtyOrdered: number;
 }) => (
   <Card
     header={item.name}
     description={item.description}
     image={item.imageUrl}
-    className={qtyOrdered > 0 ? "ordered" : undefined}
+    className={orderedItem ? "ordered" : undefined}
     extra={
       <div className="CardExtra">
         <div>
@@ -128,7 +123,7 @@ const MenuItemCard = ({
         </div>
         <div className="CardActions">
           <Transition
-            visible={qtyOrdered > 0}
+            visible={Boolean(orderedItem)}
             animation="fade left"
             duration={300}
           >
@@ -139,7 +134,7 @@ const MenuItemCard = ({
                 basic: true,
                 color: "red",
                 pointing: "left",
-                content: qtyOrdered
+                content: orderedItem?.quantity || 0
               }}
               onClick={() =>
                 dispatch({
@@ -158,7 +153,7 @@ const MenuItemCard = ({
               dispatch({
                 type: "ADD_ITEM",
                 quantity: 1,
-                menuItemId: item.id
+                menuItem: item
               })
             }
           />

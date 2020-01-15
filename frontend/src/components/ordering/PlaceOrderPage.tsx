@@ -3,6 +3,7 @@ import { Route, Switch } from "react-router-dom";
 import CurrentOrderProvider from "./CurrentOrderProvider";
 import PlaceOrderForm from "./PlaceOrderForm";
 import PlaceOrderSummary from "./PlaceOrderSummary";
+import PlaceOrderSuccess from "./PlaceOrderSuccess";
 
 function PlaceOrderPage() {
   return (
@@ -11,8 +12,11 @@ function PlaceOrderPage() {
         <Route path="/place_order" exact>
           <PlaceOrderForm />
         </Route>
-        <Route path="/place_order/summary" exact>
+        <Route path="/place_order/summary">
           <PlaceOrderSummary />
+        </Route>
+        <Route path="/place_order/success">
+          <PlaceOrderSuccess />
         </Route>
       </Switch>
     </CurrentOrderProvider>

@@ -8,6 +8,7 @@ import LoginPage from "../LoginPage";
 import PlaceOrderPage from "../ordering/PlaceOrderPage";
 import NotFoundPage from "./NotFoundPage";
 import PrivateRoute from "./PrivateRoute";
+import OrderDetailsPage from "../ordering/OrderDetailsPage";
 
 function Routes() {
   return (
@@ -18,6 +19,9 @@ function Routes() {
         </PrivateRoute>
         <PrivateRoute path="/place_order" permission="place_order">
           <PlaceOrderPage />
+        </PrivateRoute>
+        <PrivateRoute path="/orders/:id">
+          <OrderDetailsPage />
         </PrivateRoute>
         <PrivateRoute path="/config" permission="list_users">
           <ConfigPage />

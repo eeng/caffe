@@ -57,9 +57,9 @@ export function mockQuery(
   };
 }
 
-export function user(fields?: Partial<User>) {
+export function user(fields?: Partial<User>): User {
   return {
-    id: sequence.next(),
+    id: sequence.next().toString(),
     name: "User name",
     email: "user@acme.com",
     permissions: [],
@@ -67,11 +67,11 @@ export function user(fields?: Partial<User>) {
   };
 }
 
-export function menuItem(fields?: Partial<MenuItem>) {
+export function menuItem(fields?: Partial<MenuItem>): MenuItem {
   return {
-    id: sequence.next(),
+    id: sequence.next().toString(),
     name: "Burger",
-    price: "10.5",
+    price: 10.5,
     isDrink: false,
     description: "",
     category: { name: "Food" },

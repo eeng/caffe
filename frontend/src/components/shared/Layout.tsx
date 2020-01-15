@@ -3,16 +3,18 @@ import { NavLink } from "react-router-dom";
 import { Divider, Icon, Menu } from "semantic-ui-react";
 import { useAuth } from "../AuthProvider";
 import "./Layout.less";
+import classNames from "classnames/bind";
 
 type Props = {
   header: string;
   actions?: React.ReactNode[];
   children: React.ReactNode;
+  className?: string;
 };
 
-function Layout({ header, actions, children }: Props) {
+function Layout({ header, actions, className, children }: Props) {
   return (
-    <div className="Layout">
+    <div className={classNames("Layout", className)}>
       <UserHeader />
       <PageHeader header={header} actions={actions} />
       <Sidebar />

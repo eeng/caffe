@@ -14,14 +14,14 @@ defmodule CaffeWeb.Schema.OrderingTypes do
   end
 
   object :order_item do
-    field :menu_item_id, :integer
+    field :menu_item_id, :id
     field :menu_item_name, :string
     field :quantity, :integer
     field :price, :decimal
   end
 
   input_object :order_item_input do
-    field :menu_item_id, non_null(:integer)
+    field :menu_item_id, non_null(:id)
     field :quantity, non_null(:integer)
   end
 

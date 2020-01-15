@@ -1,18 +1,38 @@
+import { gql, useMutation } from "@apollo/client";
+import React, { useEffect } from "react";
+import { Link, useHistory } from "react-router-dom";
+import {
+  Button,
+  Divider,
+  Form,
+  Header,
+  Icon,
+  Segment,
+  Table,
+  TextArea
+} from "semantic-ui-react";
 import Layout from "../shared/Layout";
-import React from "react";
-import { Link } from "react-router-dom";
-import { Button, Segment, Header, Icon } from "semantic-ui-react";
-import { useCurrentOrder, isOrderEmpty, Order } from "./CurrentOrderProvider";
+import {
+  CurrentOrderContextType,
+  useCurrentOrder
+} from "./CurrentOrderProvider";
+import { isOrderEmpty, Order, OrderItem, orderTotalAmount } from "./model";
+import "./PlaceOrderSummary.less";
+import { formatCurrency } from "/lib/format";
 
 function PlaceOrderSummary() {
-  const { order } = useCurrentOrder();
+  const state = useCurrentOrder();
 
   return (
-    <Layout header="Order Summary" actions={[<GoBackButton />]}>
-      {isOrderEmpty(order) ? (
+    <Layout
+      header="Order Summary"
+      actions={[<GoBackButton />]}
+      className="PlaceOrderSummary"
+    >
+      {isOrderEmpty(state.order) ? (
         <EmptyOrderMessage />
       ) : (
-        <OrderDetails order={order} />
+        <OrderDetails {...state} />
       )}
     </Layout>
   );
@@ -22,9 +42,132 @@ const GoBackButton = () => (
   <Button icon="reply" color="brown" as={Link} to="/place_order" />
 );
 
-const OrderDetails = ({ order }: { order: Order }) => (
-  <Header content="Items" />
-);
+function OrderDetails({ order, dispatch }: CurrentOrderContextType) {
+  return (
+    <>
+      <Table>
+        <Table.Body>
+          {order.items.map(item => (
+            <Table.Row key={item.menuItem.id}>
+              <Table.Cell>{item.menuItem.name}</Table.Cell>
+              <Table.Cell collapsing textAlign="right">
+                <Button
+                  icon="add"
+                  compact
+                  basic
+                  size="small"
+                  onClick={() =>
+                    dispatch({
+                      type: "INCREMENT_QTY",
+                      menuItemId: item.menuItem.id
+                    })
+                  }
+                />
+                <Button
+                  icon="minus"
+                  compact
+                  basic
+                  size="small"
+                  disabled={item.quantity == 1}
+                  onClick={() =>
+                    dispatch({
+                      type: "DECREMENT_QTY",
+                      menuItemId: item.menuItem.id
+                    })
+                  }
+                />
+                <Button
+                  icon="remove"
+                  compact
+                  basic
+                  size="small"
+                  color="red"
+                  onClick={() =>
+                    dispatch({
+                      type: "REMOVE_ITEM",
+                      menuItemId: item.menuItem.id
+                    })
+                  }
+                />
+              </Table.Cell>
+              <Table.Cell textAlign="right" collapsing>
+                {item.quantity} x {formatCurrency(item.menuItem.price)}
+              </Table.Cell>
+            </Table.Row>
+          ))}
+        </Table.Body>
+        <Table.Footer>
+          <Table.Row>
+            <Table.HeaderCell className="TotalLabel" colSpan="2">
+              Total
+            </Table.HeaderCell>
+            <Table.HeaderCell className="TotalAmount">
+              {formatCurrency(orderTotalAmount(order))}
+            </Table.HeaderCell>
+          </Table.Row>
+        </Table.Footer>
+      </Table>
+
+      <Form>
+        <TextArea
+          placeholder="You can enter additional notes here..."
+          value={order.notes}
+          onChange={(_event, { value }: { value: string }) =>
+            dispatch({ type: "FIELD_CHANGE", field: "notes", value })
+          }
+        />
+      </Form>
+
+      <Divider hidden />
+      <ConfirmOrderButton order={order} dispatch={dispatch} />
+    </>
+  );
+}
+
+type OrderItemInput = Omit<OrderItem, "menuItem"> & { menuItemId: string };
+type PlaceOrderInput = Omit<Order, "items"> & { items: OrderItemInput[] };
+
+const PLACE_ORDER_MUTATION = gql`
+  mutation($items: [OrderItemInput], $notes: String) {
+    placeOrder(items: $items, notes: $notes) {
+      id
+    }
+  }
+`;
+
+const orderToMutationInput = (order: Order): PlaceOrderInput => ({
+  ...order,
+  items: order.items.map(item => ({
+    quantity: item.quantity,
+    menuItemId: item.menuItem.id
+  }))
+});
+
+function ConfirmOrderButton({ order, dispatch }: CurrentOrderContextType) {
+  const [placeOrder, { loading, data }] = useMutation(PLACE_ORDER_MUTATION, {
+    variables: orderToMutationInput(order)
+  });
+
+  const history = useHistory();
+  useEffect(() => {
+    if (data) {
+      history.replace("/place_order/success", { orderId: data.placeOrder.id });
+      dispatch({ type: "RESET_ORDER" });
+    }
+  }, [data]);
+
+  return (
+    <Button
+      primary
+      content="Confirm Order"
+      size="large"
+      floated="right"
+      loading={loading}
+      disabled={loading}
+      onClick={() => placeOrder()}
+    />
+  );
+}
 
 const EmptyOrderMessage = () => (
   <Segment placeholder>
