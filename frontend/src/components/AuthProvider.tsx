@@ -83,12 +83,16 @@ function AuthProvider({ children }: any) {
     Otherwise, if the token was not present or invalid (the backend returns an error), we set the NotLoggedIn status.
   */
   useEffect(() => {
-    client
-      .query({ query: ME_QUERY })
-      .then(({ data }) =>
-        setState({ user: data.me, status: AuthStatus.LoggedIn })
-      )
-      .catch(() => setState({ status: AuthStatus.NotLoggedIn }));
+    if (localStorage.getItem(AUTH_TOKEN)) {
+      client
+        .query({ query: ME_QUERY })
+        .then(({ data }) =>
+          setState({ user: data.me, status: AuthStatus.LoggedIn })
+        )
+        .catch(() => setState({ status: AuthStatus.NotLoggedIn }));
+    } else {
+      setState({ status: AuthStatus.NotLoggedIn });
+    }
   }, []);
 
   if (state.status == AuthStatus.FetchingFromStorage)

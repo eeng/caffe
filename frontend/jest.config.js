@@ -14,7 +14,10 @@ module.exports = {
     }
   },
   moduleNameMapper: {
-    "\\.(css|less)$": "<rootDir>/src/__mocks__/styleMock.ts"
-  },
-  moduleDirectories: ["node_modules", "src/__test__", "src"]
+    "\\.(css|less)$": "<rootDir>/src/__mocks__/styleMock.ts",
+
+    // Matches Parcel module resolution
+    "^/(.*)$": "<rootDir>/src/$1",
+    "^~/(.*)$": "<rootDir>/$1"
+  }
 };

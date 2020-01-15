@@ -1,5 +1,10 @@
 import React from "react";
-import { factory, fire, render, waitForElementToBeRemoved } from "testHelper";
+import {
+  factory,
+  fire,
+  render,
+  waitForElementToBeRemoved
+} from "/__test__/testHelper";
 import MenuSection, {
   DELETE_MENU_ITEM_MUTATION,
   MENU_ITEMS_QUERY
