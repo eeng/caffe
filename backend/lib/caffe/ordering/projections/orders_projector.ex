@@ -18,8 +18,10 @@ defmodule Caffe.Ordering.Projections.OrdersProjector do
     OrderCancelled
   }
 
-  project %OrderPlaced{order_id: order_id} = command, fn multi ->
-    changeset = Order.changeset(%Order{id: order_id}, Map.from_struct(command))
+  project %OrderPlaced{order_id: order_id} = evt, %{created_at: created_at}, fn multi ->
+    changeset =
+      Order.changeset(%Order{id: order_id, order_date: created_at}, Map.from_struct(evt))
+
     Multi.insert(multi, :insert, changeset)
   end
 

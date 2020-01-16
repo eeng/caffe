@@ -6,7 +6,7 @@ defmodule Caffe.Authorization.AuthorizerTest do
 
   describe "authorized_actions" do
     test "returns an array of all permitted actions" do
-      assert [:me, :place_order, :pay_order] ==
+      assert [:me, :place_order, :pay_order, :get_order] ==
                Authorizer.authorized_actions(%User{role: "customer"})
     end
   end

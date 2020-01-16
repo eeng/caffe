@@ -1,7 +1,7 @@
 import { MockedResponse } from "@apollo/client/testing";
 import { DocumentNode } from "@apollo/client";
 import { User } from "/components/AuthProvider";
-import { Order } from "/components/ordering/model";
+import { Order, OrderItem } from "/components/ordering/model";
 import { MenuItem } from "/components/configuration/model";
 
 function sequenceGen() {
@@ -84,6 +84,17 @@ export function order(fields?: Partial<Order>): Order {
   return {
     items: [],
     notes: "",
+    ...fields
+  };
+}
+
+export function item(fields?: Partial<OrderItem>): OrderItem {
+  const mi = menuItem();
+  return {
+    menuItemId: mi.id,
+    menuItemName: mi.name,
+    quantity: 1,
+    price: 10.5,
     ...fields
   };
 }

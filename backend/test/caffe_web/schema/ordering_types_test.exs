@@ -103,4 +103,38 @@ defmodule CaffeWeb.Schema.OrderingTypesTest do
       order
     end
   end
+
+  @query """
+  query ($id: ID) {
+    order(id: $id) {
+      notes
+    }
+  }
+  """
+  describe "order query" do
+    test "when it exists" do
+      order = insert!(:order, notes: "...")
+      user = insert!(:admin)
+      conn = build_conn(user) |> post("/api", query: @query, variables: %{id: order.id})
+      assert %{"data" => %{"order" => %{"notes" => "..."}}} = json_response(conn, 200)
+    end
+
+    test "when it doesn't exists" do
+      insert!(:order)
+      user = insert!(:admin)
+      conn = build_conn(user) |> post("/api", query: @query, variables: %{id: "nop"})
+      assert %{"errors" => [%{"message" => "not_found"}]} = json_response(conn, 200)
+    end
+
+    test "customers can only view their orders" do
+      [cust1, cust2] = insert!(2, :customer)
+      order = insert!(:order, customer_id: cust1.id)
+
+      conn = build_conn(cust1) |> post("/api", query: @query, variables: %{id: order.id})
+      assert %{"data" => %{"order" => %{}}} = json_response(conn, 200)
+
+      conn = build_conn(cust2) |> post("/api", query: @query, variables: %{id: order.id})
+      assert %{"errors" => [%{"message" => "unauthorized"}]} = json_response(conn, 200)
+    end
+  end
 end

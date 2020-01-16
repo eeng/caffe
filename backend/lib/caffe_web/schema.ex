@@ -8,6 +8,7 @@ defmodule CaffeWeb.Schema do
   query do
     import_fields :accounts_queries
     import_fields :menu_queries
+    import_fields :ordering_queries
   end
 
   mutation do
@@ -27,6 +28,19 @@ defmodule CaffeWeb.Schema do
     end
 
     serialize &to_string/1
+  end
+
+  scalar :datetime do
+    parse fn input ->
+      case DateTime.from_iso8601(input.value) do
+        {:ok, datetime, _} -> {:ok, datetime}
+        _ -> :error
+      end
+    end
+
+    serialize fn datetime ->
+      DateTime.to_iso8601(datetime)
+    end
   end
 
   def context(ctx) do

@@ -89,7 +89,7 @@ function Menu({ order, dispatch }: CurrentOrderContextType) {
                     dispatch={dispatch}
                     key={item.id}
                     orderedItem={order.items.find(
-                      oi => oi.menuItem.id == item.id
+                      oi => oi.menuItemId == item.id
                     )}
                   />
                 ))}
@@ -108,7 +108,7 @@ const MenuItemCard = ({
   dispatch
 }: {
   item: MenuItem;
-  orderedItem: OrderItem;
+  orderedItem?: OrderItem;
   dispatch: React.Dispatch<Action>;
 }) => (
   <Card

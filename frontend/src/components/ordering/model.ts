@@ -2,7 +2,9 @@ import { MenuItem } from "../configuration/model";
 
 export interface OrderItem {
   quantity: number;
-  menuItem: MenuItem;
+  menuItemId: string;
+  menuItemName: string;
+  price: number;
 }
 
 export interface Order {
@@ -36,7 +38,7 @@ interface DecrementQty {
 interface FieldChange {
   type: "FIELD_CHANGE";
   field: string;
-  value: string;
+  value: any;
 }
 
 interface ResetOrder {
@@ -53,7 +55,7 @@ export type Action =
 
 function changeQty(items: OrderItem[], menuItemId: string, by: number) {
   return items.map(item =>
-    item.menuItem.id == menuItemId
+    item.menuItemId == menuItemId
       ? { ...item, quantity: Math.max(item.quantity + by, 1) }
       : item
   );
@@ -63,10 +65,18 @@ function addItemOrIncrementQty(
   items: OrderItem[],
   action: AddItem
 ): OrderItem[] {
-  if (items.some(item => item.menuItem.id == action.menuItem.id))
+  if (items.some(item => item.menuItemId == action.menuItem.id))
     return changeQty(items, action.menuItem.id, action.quantity);
   else
-    return [...items, { menuItem: action.menuItem, quantity: action.quantity }];
+    return [
+      ...items,
+      {
+        menuItemId: action.menuItem.id,
+        menuItemName: action.menuItem.name,
+        price: action.menuItem.price,
+        quantity: action.quantity
+      }
+    ];
 }
 
 export function reducer(order: Order, action: Action): Order {
@@ -79,7 +89,7 @@ export function reducer(order: Order, action: Action): Order {
     case "REMOVE_ITEM":
       return {
         ...order,
-        items: order.items.filter(item => item.menuItem.id != action.menuItemId)
+        items: order.items.filter(item => item.menuItemId != action.menuItemId)
       };
     case "INCREMENT_QTY":
       return {
@@ -107,7 +117,4 @@ export const orderTotalQty = (order: Order) =>
   order.items.reduce((total, item) => total + item.quantity, 0);
 
 export const orderTotalAmount = (order: Order) =>
-  order.items.reduce(
-    (total, item) => total + item.quantity * item.menuItem.price,
-    0
-  );
+  order.items.reduce((total, item) => total + item.quantity * item.price, 0);

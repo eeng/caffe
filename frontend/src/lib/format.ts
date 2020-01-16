@@ -5,4 +5,9 @@ function formatCurrency(number: number) {
   }).format(number);
 }
 
-export { formatCurrency };
+function formatDate(value: string | Date) {
+  const date = typeof value == "string" ? new Date(value) : value;
+  return date.toLocaleDateString();
+}
+
+export { formatCurrency, formatDate };

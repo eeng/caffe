@@ -9,7 +9,8 @@ import {
   Icon,
   Segment,
   Table,
-  TextArea
+  TextArea,
+  TextAreaProps
 } from "semantic-ui-react";
 import Page from "../shared/Page";
 import {
@@ -48,8 +49,8 @@ function OrderDetails({ order, dispatch }: CurrentOrderContextType) {
       <Table>
         <Table.Body>
           {order.items.map(item => (
-            <Table.Row key={item.menuItem.id}>
-              <Table.Cell>{item.menuItem.name}</Table.Cell>
+            <Table.Row key={item.menuItemId}>
+              <Table.Cell>{item.menuItemName}</Table.Cell>
               <Table.Cell collapsing textAlign="right">
                 <Button
                   icon="add"
@@ -59,7 +60,7 @@ function OrderDetails({ order, dispatch }: CurrentOrderContextType) {
                   onClick={() =>
                     dispatch({
                       type: "INCREMENT_QTY",
-                      menuItemId: item.menuItem.id
+                      menuItemId: item.menuItemId
                     })
                   }
                 />
@@ -72,7 +73,7 @@ function OrderDetails({ order, dispatch }: CurrentOrderContextType) {
                   onClick={() =>
                     dispatch({
                       type: "DECREMENT_QTY",
-                      menuItemId: item.menuItem.id
+                      menuItemId: item.menuItemId
                     })
                   }
                 />
@@ -85,13 +86,13 @@ function OrderDetails({ order, dispatch }: CurrentOrderContextType) {
                   onClick={() =>
                     dispatch({
                       type: "REMOVE_ITEM",
-                      menuItemId: item.menuItem.id
+                      menuItemId: item.menuItemId
                     })
                   }
                 />
               </Table.Cell>
               <Table.Cell textAlign="right" collapsing>
-                {item.quantity} x {formatCurrency(item.menuItem.price)}
+                {item.quantity} x {formatCurrency(item.price)}
               </Table.Cell>
             </Table.Row>
           ))}
@@ -112,8 +113,8 @@ function OrderDetails({ order, dispatch }: CurrentOrderContextType) {
         <TextArea
           placeholder="You can enter additional notes here..."
           value={order.notes}
-          onChange={(_event, { value }: { value: string }) =>
-            dispatch({ type: "FIELD_CHANGE", field: "notes", value })
+          onChange={(_, { value }: TextAreaProps) =>
+            dispatch({ type: "FIELD_CHANGE", field: "notes", value: value })
           }
         />
       </Form>
@@ -124,7 +125,9 @@ function OrderDetails({ order, dispatch }: CurrentOrderContextType) {
   );
 }
 
-type OrderItemInput = Omit<OrderItem, "menuItem"> & { menuItemId: string };
+type OrderItemInput = Pick<OrderItem, "menuItemId" | "quantity"> & {
+  menuItemId: string;
+};
 type PlaceOrderInput = Omit<Order, "items"> & { items: OrderItemInput[] };
 
 const PLACE_ORDER_MUTATION = gql`
@@ -139,7 +142,7 @@ const orderToMutationInput = (order: Order): PlaceOrderInput => ({
   ...order,
   items: order.items.map(item => ({
     quantity: item.quantity,
-    menuItemId: item.menuItem.id
+    menuItemId: item.menuItemId
   }))
 });
 

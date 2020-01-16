@@ -13,7 +13,8 @@ defmodule Caffe.Authorization.Policies.OrderingPolicy do
       :mark_items_served,
       :begin_food_preparation,
       :mark_food_prepared,
-      :pay_order
+      :pay_order,
+      :get_order
     ]
   end
 
@@ -32,6 +33,16 @@ defmodule Caffe.Authorization.Policies.OrderingPolicy do
 
   def authorize(:cancel_order, user, %{order_id: order_id}) do
     authorize(:cancel_order, user, Repo.get(Order, order_id))
+  end
+
+  def authorize(:get_order, %User{role: "customer", id: user_id}, %Order{customer_id: cust_id}),
+    do: user_id == cust_id
+
+  def authorize(:get_order, _, %Order{}), do: true
+  def authorize(:get_order, _, nil), do: true
+
+  def authorize(:get_order, user, %{id: id}) do
+    authorize(:get_order, user, Repo.get(Order, id))
   end
 
   def authorize(_, _, _), do: false

@@ -11,6 +11,7 @@ defmodule CaffeWeb.Schema.OrderingTypes do
     field :order_amount, :decimal
     field :items, list_of(:order_item)
     field :notes, :string
+    field :order_date, :datetime
   end
 
   object :order_item do
@@ -65,6 +66,14 @@ defmodule CaffeWeb.Schema.OrderingTypes do
       arg :order_id, non_null(:id)
       middleware Middleware.Authorize, :cancel_order
       resolve &Resolvers.Ordering.cancel_order/3
+    end
+  end
+
+  object :ordering_queries do
+    field :order, :order do
+      arg :id, :id
+      middleware Middleware.Authorize, :get_order
+      resolve &Resolvers.Ordering.get_order/3
     end
   end
 

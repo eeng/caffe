@@ -17,6 +17,7 @@ defmodule Caffe.Ordering.Projections.Order do
     field :order_amount, :decimal, default: 0
     field :tip_amount, :decimal, default: 0
     field :notes, :string
+    field :order_date, :utc_datetime_usec
     has_many :items, Item
     timestamps()
   end
@@ -30,7 +31,8 @@ defmodule Caffe.Ordering.Projections.Order do
       :amount_paid,
       :order_amount,
       :tip_amount,
-      :notes
+      :notes,
+      :order_date
     ])
     |> cast_assoc(:items, with: &Item.changeset/2)
   end

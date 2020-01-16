@@ -25,6 +25,13 @@ defmodule CaffeWeb.Resolvers.Ordering do
     Ordering.cancel_order(params, user) |> ok_result
   end
 
+  def get_order(_parent, %{id: id}, _resolution) do
+    case Ordering.get_order(id) do
+      nil -> {:error, :not_found}
+      order -> {:ok, order}
+    end
+  end
+
   defp ok_result(result) do
     with :ok <- result do
       {:ok, "ok"}
