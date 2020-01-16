@@ -170,14 +170,13 @@ function ConfirmOrderButton({ order, dispatch }: CurrentOrderContextType) {
 }
 
 const EmptyOrderMessage = () => (
-  <Segment placeholder>
-    <Header icon>
+  <Segment padded="very" textAlign="center" placeholder>
+    <Header as="h2" icon>
       <Icon name="meh outline" />
       Your order is empty!
+      <Divider hidden />
+      <Button content="Order Something" primary as={Link} to="/place_order" />
     </Header>
-    <Button primary as={Link} to="/place_order">
-      Order Something
-    </Button>
   </Segment>
 );
 
