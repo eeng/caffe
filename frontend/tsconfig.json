@@ -2,8 +2,9 @@
   "compilerOptions": {
     "jsx": "react",
     "esModuleInterop": true,
-    "baseUrl": ".",
+    "skipLibCheck": true,
     "lib": ["dom", "dom.iterable", "esnext"],
+    "baseUrl": ".",
     "paths": {
       "/*": ["./src/*"],
       "~/*": ["./*"]

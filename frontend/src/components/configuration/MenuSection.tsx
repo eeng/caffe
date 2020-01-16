@@ -8,22 +8,7 @@ import { formatCurrency } from "../../lib/format";
 import QueryResultWrapper from "../shared/QueryResultWrapper";
 import SearchInput from "../shared/SearchInput";
 import { EditMenuItemForm, NewMenuItemForm } from "./MenuItemForm";
-
-export type Category = {
-  name: string;
-  position?: number;
-  items?: MenuItem[];
-};
-
-export type MenuItem = {
-  id: string;
-  name: string;
-  description?: string;
-  price: number;
-  isDrink: boolean;
-  category: Category;
-  imageUrl?: string;
-};
+import { MenuItem } from "./model";
 
 type QueryResult = {
   menuItems: MenuItem[];

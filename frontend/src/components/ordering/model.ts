@@ -1,4 +1,4 @@
-import { MenuItem } from "/components/configuration/MenuSection";
+import { MenuItem } from "../configuration/model";
 
 export interface OrderItem {
   quantity: number;

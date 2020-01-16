@@ -9,7 +9,7 @@ import {
   Segment,
   Transition
 } from "semantic-ui-react";
-import { Category, MenuItem } from "../configuration/MenuSection";
+import { Category, MenuItem } from "../configuration/model";
 import Page from "../shared/Page";
 import QueryResultWrapper from "../shared/QueryResultWrapper";
 import {
