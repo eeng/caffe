@@ -10,7 +10,7 @@ import {
   Transition
 } from "semantic-ui-react";
 import { Category, MenuItem } from "../configuration/MenuSection";
-import Layout from "../shared/Layout";
+import Page from "../shared/Page";
 import QueryResultWrapper from "../shared/QueryResultWrapper";
 import {
   CurrentOrderContextType,
@@ -24,12 +24,12 @@ function PlaceOrderForm() {
   const state = useCurrentOrder();
 
   return (
-    <Layout
-      header="Place Order"
+    <Page
+      title="Place Order"
       actions={[<ReviewOrderButton order={state.order} />]}
     >
       <Menu {...state} />
-    </Layout>
+    </Page>
   );
 }
 

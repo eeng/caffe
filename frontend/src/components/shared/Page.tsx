@@ -6,17 +6,17 @@ import "./Layout.less";
 import classNames from "classnames/bind";
 
 type Props = {
-  header: string;
+  title: string;
   actions?: React.ReactNode[];
   children: React.ReactNode;
   className?: string;
 };
 
-function Layout({ header, actions, className, children }: Props) {
+function Page({ title, actions, className, children }: Props) {
   return (
     <div className={classNames("Layout", className)}>
       <UserHeader />
-      <PageHeader header={header} actions={actions} />
+      <PageHeader title={title} actions={actions} />
       <Sidebar />
       <div className="LayoutContent">{children}</div>
     </div>
@@ -34,9 +34,9 @@ function UserHeader() {
   );
 }
 
-const PageHeader = ({ header, actions }: Pick<Props, "header" | "actions">) => (
+const PageHeader = ({ title, actions }: Pick<Props, "title" | "actions">) => (
   <div className="PageHeader">
-    <div className="PageTitle">{header}</div>
+    <div className="PageTitle">{title}</div>
     {actions?.map((action, i) => (
       <div key={i}>{action}</div>
     ))}
@@ -73,4 +73,4 @@ function Sidebar() {
   );
 }
 
-export default Layout;
+export default Page;

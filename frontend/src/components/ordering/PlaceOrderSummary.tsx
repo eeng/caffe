@@ -11,7 +11,7 @@ import {
   Table,
   TextArea
 } from "semantic-ui-react";
-import Layout from "../shared/Layout";
+import Page from "../shared/Page";
 import {
   CurrentOrderContextType,
   useCurrentOrder
@@ -24,8 +24,8 @@ function PlaceOrderSummary() {
   const state = useCurrentOrder();
 
   return (
-    <Layout
-      header="Order Summary"
+    <Page
+      title="Order Summary"
       actions={[<GoBackButton />]}
       className="PlaceOrderSummary"
     >
@@ -34,7 +34,7 @@ function PlaceOrderSummary() {
       ) : (
         <OrderDetails {...state} />
       )}
-    </Layout>
+    </Page>
   );
 }
 

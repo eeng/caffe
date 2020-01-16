@@ -1,8 +1,8 @@
 import React from "react";
-import Layout from "./shared/Layout";
+import Page from "./shared/Page";
 
 function HomePage() {
-  return <Layout header="Home">Content</Layout>;
+  return <Page title="Home">Content</Page>;
 }
 
 export default HomePage;

@@ -1,10 +1,10 @@
 import React from "react";
-import Layout from "../shared/Layout";
+import Page from "../shared/Page";
 import { useParams } from "react-router-dom";
 
 function OrderDetailsPage() {
   const { id } = useParams();
-  return <Layout header="Order Details">{id}</Layout>;
+  return <Page title="Order Details">{id}</Page>;
 }
 
 export default OrderDetailsPage;
