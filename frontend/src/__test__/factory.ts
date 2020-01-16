@@ -2,6 +2,7 @@ import { MenuItem } from "/components/configuration/MenuSection";
 import { MockedResponse } from "@apollo/client/testing";
 import { DocumentNode } from "@apollo/client";
 import { User } from "/components/AuthProvider";
+import { Order } from "/components/ordering/model";
 
 function sequenceGen() {
   let n = 1;
@@ -75,6 +76,14 @@ export function menuItem(fields?: Partial<MenuItem>): MenuItem {
     isDrink: false,
     description: "",
     category: { name: "Food" },
+    ...fields
+  };
+}
+
+export function order(fields?: Partial<Order>): Order {
+  return {
+    items: [],
+    notes: "",
     ...fields
   };
 }
