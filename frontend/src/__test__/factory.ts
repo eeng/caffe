@@ -1,8 +1,8 @@
 import { MockedResponse } from "@apollo/client/testing";
 import { DocumentNode } from "@apollo/client";
-import { User } from "/components/AuthProvider";
-import { Order, OrderItem } from "/components/ordering/model";
-import { MenuItem } from "/components/configuration/model";
+import { User } from "../accounts/AuthProvider";
+import { Order, OrderItem } from "../ordering/model";
+import { MenuItem } from "../configuration/model";
 
 function sequenceGen() {
   let n = 1;

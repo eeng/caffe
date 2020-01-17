@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { Link, Route, Switch, useRouteMatch } from "react-router-dom";
 import { toast } from "react-semantic-toasts";
 import { Button, Grid, Message, Popup, Table } from "semantic-ui-react";
-import { formatCurrency } from "../../lib/format";
+import { formatCurrency } from "../lib/format";
 import QueryResultWrapper from "../shared/QueryResultWrapper";
 import SearchInput from "../shared/SearchInput";
 import { EditMenuItemForm, NewMenuItemForm } from "./MenuItemForm";

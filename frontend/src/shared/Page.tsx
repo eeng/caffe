@@ -1,7 +1,7 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
 import { Divider, Icon, Menu } from "semantic-ui-react";
-import { useAuth } from "../AuthProvider";
+import { useAuth } from "../accounts/AuthProvider";
 import "./Page.less";
 import classNames from "classnames/bind";
 

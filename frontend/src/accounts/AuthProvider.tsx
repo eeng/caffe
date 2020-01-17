@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from "react";
-import FullScreenSpinner from "./shared/FullScreenSpinner";
+import FullScreenSpinner from "../shared/FullScreenSpinner";
 import { useApolloClient, ApolloError, gql } from "@apollo/client";
 
 export type User = {
