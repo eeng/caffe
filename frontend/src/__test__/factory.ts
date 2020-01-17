@@ -1,6 +1,6 @@
 import { MockedResponse } from "@apollo/client/testing";
 import { DocumentNode } from "@apollo/client";
-import { User, Role } from "../accounts/model";
+import { User } from "../accounts/model";
 import { Order, OrderItem } from "../ordering/model";
 import { MenuItem } from "../configuration/model";
 
@@ -64,7 +64,6 @@ export function user(fields?: Partial<User>): User {
     name: "User name",
     email: "user@acme.com",
     permissions: [],
-    role: Role.Customer,
     ...fields
   };
 }

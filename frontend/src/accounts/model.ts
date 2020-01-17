@@ -1,15 +1,9 @@
-export enum Role {
-  Customer = "CUSTOMER",
-  Chef = "CHEF",
-  Waitstaff = "WAITSTAFF",
-  Cashier = "CASHIER",
-  Admin = "ADMIN"
-}
+type Role = "ADMIN" | "CHEF" | "WAITSTAFF" | "CASHIER" | "CUSTOMER";
 
 export type User = {
   id: string;
   email: string;
   name: string;
-  role: Role;
+  role?: Role;
   permissions: string[];
 };

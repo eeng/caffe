@@ -9,7 +9,7 @@ export function Sidebar() {
   return (
     <div className="Sidebar">
       <Menu secondary vertical fluid>
-        {can("list_users") && (
+        {can("get_stats") && (
           <Menu.Item
             content="Dashboard"
             icon="line graph"

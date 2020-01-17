@@ -1,17 +1,16 @@
 import React, { Fragment } from "react";
-import { Route, Switch, Redirect } from "react-router-dom";
+import { Redirect, Route, Switch } from "react-router-dom";
 import { SemanticToastContainer } from "react-semantic-toasts";
 import "react-semantic-toasts/styles/react-semantic-alert.css";
-import ConfigPage from "../configuration/ConfigPage";
 import LoginPage from "../accounts/LoginPage";
+import ConfigPage from "../configuration/ConfigPage";
+import OrderDetailsPage from "../ordering/OrderDetailsPage";
+import OrdersPage from "../ordering/OrdersPage";
 import PlaceOrderPage from "../ordering/PlaceOrderPage";
 import NotFoundPage from "./NotFoundPage";
 import PrivateRoute from "./PrivateRoute";
-import OrderDetailsPage from "../ordering/OrderDetailsPage";
-import OrdersPage from "../ordering/OrdersPage";
 import { useAuth } from "/accounts/AuthProvider";
 import DashboardPage from "/reports/DashboardPage";
-import { Role } from "/accounts/model";
 
 const Routes = () => (
   <Fragment>
@@ -19,7 +18,7 @@ const Routes = () => (
       <PrivateRoute exact path="/">
         <HomePageSelector />
       </PrivateRoute>
-      <PrivateRoute path="/dashboard" permission="list_users">
+      <PrivateRoute path="/dashboard" permission="get_stats">
         <DashboardPage />
       </PrivateRoute>
       <PrivateRoute path="/place_order">
@@ -46,8 +45,8 @@ const Routes = () => (
 );
 
 function HomePageSelector() {
-  const { user } = useAuth();
-  const homePage = user?.role == Role.Customer ? "/place_order" : "/dashboard";
+  const { can } = useAuth();
+  const homePage = can("get_stats") ? "/dashboard" : "/place_order";
 
   return <Redirect to={homePage} />;
 }
