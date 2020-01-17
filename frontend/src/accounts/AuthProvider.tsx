@@ -2,10 +2,19 @@ import React, { useState, useContext, useEffect } from "react";
 import FullScreenSpinner from "../shared/FullScreenSpinner";
 import { useApolloClient, ApolloError, gql } from "@apollo/client";
 
+export enum Role {
+  Customer = "CUSTOMER",
+  Chef = "CHEF",
+  Waitstaff = "WAITSTAFF",
+  Cashier = "CASHIER",
+  Admin = "ADMIN"
+}
+
 export type User = {
   id: string;
   email: string;
   name: string;
+  role: Role;
   permissions: string[];
 };
 
@@ -42,29 +51,23 @@ const AuthContext = React.createContext<Auth>({
   can: _ => false
 });
 
+const USER_FIELDS = "id name email role permissions";
+
 export const LOGIN_MUTATION = gql`
   mutation($email: String!, $password: String!) {
     login(email: $email, password: $password) {
       token
       user {
-        id
-        name
-        email
-        permissions
+        ${USER_FIELDS}
       }
     }
   }
 `;
 
-// If you change a field here, remember to change it in the login mutation as well.
-// Previously I've used fragments to remove this duplication but they would work with the MockedProvider in the tests
 export const ME_QUERY = gql`
   query {
     me {
-      id
-      name
-      email
-      permissions
+      ${USER_FIELDS}
     }
   }
 `;

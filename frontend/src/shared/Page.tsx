@@ -1,9 +1,9 @@
+import classNames from "classnames/bind";
 import React from "react";
-import { NavLink } from "react-router-dom";
-import { Divider, Icon, Menu } from "semantic-ui-react";
+import { Icon } from "semantic-ui-react";
 import { useAuth } from "../accounts/AuthProvider";
 import "./Page.less";
-import classNames from "classnames/bind";
+import { Sidebar } from "./Sidebar";
 
 type Props = {
   title: string;
@@ -45,42 +45,5 @@ const PageHeader = ({
     ))}
   </div>
 );
-
-function Sidebar() {
-  const { can, logout } = useAuth();
-
-  return (
-    <div className="Sidebar">
-      <Menu secondary vertical fluid>
-        {can("place_order") && (
-          <Menu.Item
-            content="Place Order"
-            icon="food"
-            as={NavLink}
-            to="/place_order"
-          />
-        )}
-        {can("list_orders") && (
-          <Menu.Item
-            content="My Orders"
-            icon="list alternate"
-            as={NavLink}
-            to="/orders"
-          />
-        )}
-        {can("list_users") && (
-          <Menu.Item
-            content="Configuration"
-            icon="cog"
-            as={NavLink}
-            to="/config"
-          />
-        )}
-        <Divider />
-        <Menu.Item content="Logout" icon="log out" onClick={logout} />
-      </Menu>
-    </div>
-  );
-}
 
 export default Page;

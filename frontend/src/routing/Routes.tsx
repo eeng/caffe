@@ -9,12 +9,17 @@ import NotFoundPage from "./NotFoundPage";
 import PrivateRoute from "./PrivateRoute";
 import OrderDetailsPage from "../ordering/OrderDetailsPage";
 import OrdersPage from "../ordering/OrdersPage";
+import { useAuth, Role } from "/accounts/AuthProvider";
+import DashboardPage from "/reports/DashboardPage";
 
 const Routes = () => (
   <Fragment>
     <Switch>
       <PrivateRoute exact path="/">
         <HomePageSelector />
+      </PrivateRoute>
+      <PrivateRoute path="/dashboard" permission="list_users">
+        <DashboardPage />
       </PrivateRoute>
       <PrivateRoute path="/place_order">
         <PlaceOrderPage />
@@ -39,6 +44,11 @@ const Routes = () => (
   </Fragment>
 );
 
-const HomePageSelector = () => <Redirect to="/place_order" />;
+function HomePageSelector() {
+  const { user } = useAuth();
+  const homePage = user?.role == Role.Customer ? "/place_order" : "/dashboard";
+
+  return <Redirect to={homePage} />;
+}
 
 export default Routes;
