@@ -1,22 +1,7 @@
-import React, { useState, useContext, useEffect } from "react";
+import { ApolloError, gql, useApolloClient } from "@apollo/client";
+import React, { useContext, useEffect, useState } from "react";
 import FullScreenSpinner from "../shared/FullScreenSpinner";
-import { useApolloClient, ApolloError, gql } from "@apollo/client";
-
-export enum Role {
-  Customer = "CUSTOMER",
-  Chef = "CHEF",
-  Waitstaff = "WAITSTAFF",
-  Cashier = "CASHIER",
-  Admin = "ADMIN"
-}
-
-export type User = {
-  id: string;
-  email: string;
-  name: string;
-  role: Role;
-  permissions: string[];
-};
+import { User } from "./model";
 
 export type Credentials = {
   email: string;

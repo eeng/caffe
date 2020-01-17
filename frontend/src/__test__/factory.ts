@@ -1,6 +1,6 @@
 import { MockedResponse } from "@apollo/client/testing";
 import { DocumentNode } from "@apollo/client";
-import { User, Role } from "../accounts/AuthProvider";
+import { User, Role } from "../accounts/model";
 import { Order, OrderItem } from "../ordering/model";
 import { MenuItem } from "../configuration/model";
 

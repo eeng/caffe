@@ -9,8 +9,9 @@ import NotFoundPage from "./NotFoundPage";
 import PrivateRoute from "./PrivateRoute";
 import OrderDetailsPage from "../ordering/OrderDetailsPage";
 import OrdersPage from "../ordering/OrdersPage";
-import { useAuth, Role } from "/accounts/AuthProvider";
+import { useAuth } from "/accounts/AuthProvider";
 import DashboardPage from "/reports/DashboardPage";
+import { Role } from "/accounts/model";
 
 const Routes = () => (
   <Fragment>
