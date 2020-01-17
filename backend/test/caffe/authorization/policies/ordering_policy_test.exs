@@ -37,4 +37,11 @@ defmodule Caffe.Authorization.Policies.OrderingPolicyTest do
       assert Authorizer.authorize?(:cancel_order, user, %{order_id: order_id})
     end
   end
+
+  describe "list_orders" do
+    test "only logged-in users view orders" do
+      assert Authorizer.authorize?(:list_orders, %User{})
+      refute Authorizer.authorize?(:list_orders, nil)
+    end
+  end
 end

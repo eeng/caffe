@@ -17,7 +17,7 @@ defmodule Caffe.Ordering.Projections.Order do
     field :order_amount, :decimal, default: 0
     field :tip_amount, :decimal, default: 0
     field :notes, :string
-    field :order_date, :utc_datetime_usec
+    field :order_date, :utc_datetime
     has_many :items, Item
     timestamps()
   end

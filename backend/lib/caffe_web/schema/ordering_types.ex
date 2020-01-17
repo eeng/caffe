@@ -75,6 +75,11 @@ defmodule CaffeWeb.Schema.OrderingTypes do
       middleware Middleware.Authorize, :get_order
       resolve &Resolvers.Ordering.get_order/3
     end
+
+    field :orders, list_of(:order) do
+      middleware Middleware.Authorize, :list_orders
+      resolve &Resolvers.Ordering.list_orders/3
+    end
   end
 
   object :ordering_subscriptions do

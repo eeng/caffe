@@ -4,7 +4,7 @@ defmodule Caffe.Repo.Migrations.CreateOrders do
   def change do
     create table(:orders, primary_key: false) do
       add :id, :uuid, primary_key: true
-      add :order_date, :utc_datetime_usec
+      add :order_date, :utc_datetime
       add :customer_id, references(:users)
       add :customer_name, :string
       add :state, :string

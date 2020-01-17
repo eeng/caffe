@@ -7,6 +7,7 @@ defmodule Caffe.Ordering do
   alias Caffe.Accounts.User
   alias Caffe.Ordering.Commands
   alias Caffe.Ordering.Projections.Order
+  alias Caffe.Ordering.Queries.ListOrdersQuery
 
   @doc """
   ## Examples
@@ -100,5 +101,9 @@ defmodule Caffe.Ordering do
 
   def get_order(id) do
     Repo.get(Order, id) |> Repo.preload(:items)
+  end
+
+  def list_orders(user, params) do
+    ListOrdersQuery.new(user, params) |> Repo.all()
   end
 end

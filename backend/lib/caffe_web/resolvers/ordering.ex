@@ -32,6 +32,10 @@ defmodule CaffeWeb.Resolvers.Ordering do
     end
   end
 
+  def list_orders(_parent, params, %{context: %{current_user: user}}) do
+    {:ok, Ordering.list_orders(user, params)}
+  end
+
   defp ok_result(result) do
     with :ok <- result do
       {:ok, "ok"}

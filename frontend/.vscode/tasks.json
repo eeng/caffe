@@ -20,8 +20,9 @@
       "problemMatcher": "$tsc-watch",
       "isBackground": true,
       "presentation": {
-        "reveal": "always",
-        "revealProblems": "onProblem"
+        "reveal": "silent",
+        "revealProblems": "onProblem",
+        "focus": false
       }
     },
     {

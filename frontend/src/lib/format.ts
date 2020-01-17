@@ -10,4 +10,9 @@ function formatDate(value: string | Date) {
   return date.toLocaleDateString();
 }
 
-export { formatCurrency, formatDate };
+function formatDateTime(value: string | Date) {
+  const date = typeof value == "string" ? new Date(value) : value;
+  return date.toLocaleString();
+}
+
+export { formatCurrency, formatDate, formatDateTime };

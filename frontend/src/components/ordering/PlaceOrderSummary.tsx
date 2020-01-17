@@ -1,4 +1,5 @@
 import { gql, useMutation } from "@apollo/client";
+import _ from "lodash";
 import React, { useEffect } from "react";
 import { Link, useHistory } from "react-router-dom";
 import {
@@ -12,15 +13,16 @@ import {
   TextArea,
   TextAreaProps
 } from "semantic-ui-react";
+import GoBackButton from "../shared/GoBackButton";
 import Page from "../shared/Page";
 import {
   CurrentOrderContextType,
   useCurrentOrder
 } from "./CurrentOrderProvider";
 import { isOrderEmpty, Order, OrderItem, orderTotalAmount } from "./model";
+import { MY_ORDERS_QUERY } from "./OrdersPage";
 import "./PlaceOrderSummary.less";
 import { formatCurrency } from "/lib/format";
-import _ from "lodash";
 
 function PlaceOrderSummary() {
   const state = useCurrentOrder();
@@ -28,7 +30,7 @@ function PlaceOrderSummary() {
   return (
     <Page
       title="Order Summary"
-      actions={[<GoBackButton />]}
+      actions={[<GoBackButton to="/place_order" />]}
       className="PlaceOrderSummary"
     >
       {isOrderEmpty(state.order) ? (
@@ -39,10 +41,6 @@ function PlaceOrderSummary() {
     </Page>
   );
 }
-
-const GoBackButton = () => (
-  <Button icon="reply" color="brown" as={Link} to="/place_order" />
-);
 
 function OrderDetails({ order, dispatch }: CurrentOrderContextType) {
   return (
@@ -146,7 +144,8 @@ const orderToMutationInput = (order: Order): PlaceOrderInput => ({
 
 function ConfirmOrderButton({ order, dispatch }: CurrentOrderContextType) {
   const [placeOrder, { loading, data }] = useMutation(PLACE_ORDER_MUTATION, {
-    variables: orderToMutationInput(order)
+    variables: orderToMutationInput(order),
+    refetchQueries: [{ query: MY_ORDERS_QUERY }]
   });
 
   const history = useHistory();

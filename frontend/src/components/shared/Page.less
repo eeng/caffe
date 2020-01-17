@@ -1,6 +1,6 @@
 @import "variables.less";
 
-.Layout {
+.Page {
   height: 100vh;
   background-color: @backgroundColor;
   display: grid;
@@ -33,7 +33,7 @@
     }
   }
 
-  .LayoutContent {
+  .PageContent {
     padding: 1.5em 2rem;
     overflow: auto;
   }
@@ -44,6 +44,9 @@
 
     .menu {
       margin: 0;
+      .item.active {
+        border-left: 2px solid @primaryColor;
+      }
     }
   }
 }

@@ -12,7 +12,14 @@ export interface Order {
   notes: string;
 }
 
-export const NEW_ORDER = { items: [], notes: "" };
+export const NEW_ORDER: Order = { items: [], notes: "" };
+
+export interface OrderDetails extends Order {
+  id: string;
+  orderAmount: number;
+  state: string;
+  orderDate: Date;
+}
 
 interface AddItem {
   type: "ADD_ITEM";

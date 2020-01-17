@@ -2,7 +2,7 @@ import React from "react";
 import { NavLink } from "react-router-dom";
 import { Divider, Icon, Menu } from "semantic-ui-react";
 import { useAuth } from "../AuthProvider";
-import "./Layout.less";
+import "./Page.less";
 import classNames from "classnames/bind";
 
 type Props = {
@@ -14,11 +14,11 @@ type Props = {
 
 function Page({ title, actions, className, children }: Props) {
   return (
-    <div className={classNames("Layout", className)}>
+    <div className={classNames("Page", className)}>
       <UserHeader />
       <PageHeader title={title} actions={actions} />
       <Sidebar />
-      <div className="LayoutContent">{children}</div>
+      <div className="PageContent">{children}</div>
     </div>
   );
 }
@@ -56,6 +56,14 @@ function Sidebar() {
             icon="food"
             as={NavLink}
             to="/place_order"
+          />
+        )}
+        {can("list_orders") && (
+          <Menu.Item
+            content="My Orders"
+            icon="list alternate"
+            as={NavLink}
+            to="/orders"
           />
         )}
         {can("list_users") && (

@@ -14,7 +14,8 @@ defmodule Caffe.Authorization.Policies.OrderingPolicy do
       :begin_food_preparation,
       :mark_food_prepared,
       :pay_order,
-      :get_order
+      :get_order,
+      :list_orders
     ]
   end
 
@@ -44,6 +45,8 @@ defmodule Caffe.Authorization.Policies.OrderingPolicy do
   def authorize(:get_order, user, %{id: id}) do
     authorize(:get_order, user, Repo.get(Order, id))
   end
+
+  def authorize(:list_orders, %User{}, _), do: true
 
   def authorize(_, _, _), do: false
 end

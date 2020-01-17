@@ -18,19 +18,25 @@ defmodule Caffe.Seeds do
       %User{
         email: "charles@caffe.com",
         password: Password.hash("secret"),
-        name: "Charles the Chef",
+        name: "Charles (Chef)",
         role: "chef"
       },
       %User{
-        email: "wolverine@caffe.com",
+        email: "will@caffe.com",
         password: Password.hash("secret"),
-        name: "Wolverine the Waiter",
+        name: "Will (Waiter)",
         role: "waitstaff"
       },
       %User{
-        email: "cyclops@caffe.com",
+        email: "alice@caffe.com",
         password: Password.hash("secret"),
-        name: "Cyclops the Customer",
+        name: "Alice (Customer)",
+        role: "customer"
+      },
+      %User{
+        email: "bob@caffe.com",
+        password: Password.hash("secret"),
+        name: "Bob (Customer)",
         role: "customer"
       }
     ])

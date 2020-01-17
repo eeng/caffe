@@ -1,15 +1,17 @@
-import React from "react";
-import Page from "../shared/Page";
-import { useParams } from "react-router-dom";
 import { gql, useQuery } from "@apollo/client";
-import { Order } from "./model";
+import React from "react";
+import { useParams } from "react-router-dom";
+import { Label, List, Table } from "semantic-ui-react";
+import GoBackButton from "../shared/GoBackButton";
+import Page from "../shared/Page";
 import QueryResultWrapper from "../shared/QueryResultWrapper";
-import { Table, List, Label } from "semantic-ui-react";
-import { formatCurrency, formatDate } from "/lib/format";
+import { Order, OrderDetails } from "./model";
+import { formatCurrency, formatDateTime } from "/lib/format";
 
 const GET_ORDER_QUERY = gql`
   query($id: ID) {
     order(id: $id) {
+      id
       state
       orderAmount
       orderDate
@@ -24,12 +26,6 @@ const GET_ORDER_QUERY = gql`
   }
 `;
 
-interface OrderDetails extends Order {
-  orderAmount: number;
-  state: string;
-  orderDate: Date;
-}
-
 function OrderDetailsPage() {
   const { id } = useParams();
   const result = useQuery<OrderDetails>(GET_ORDER_QUERY, {
@@ -37,7 +33,7 @@ function OrderDetailsPage() {
   });
 
   return (
-    <Page title="Order Details">
+    <Page title="Order Details" actions={[<GoBackButton to="/orders" />]}>
       <QueryResultWrapper
         result={result}
         render={data => <OrderDetails order={data.order} />}
@@ -50,8 +46,12 @@ const OrderDetails = ({ order }: { order: OrderDetails }) => (
   <Table definition>
     <Table.Body>
       <Table.Row>
+        <Table.Cell>ID</Table.Cell>
+        <Table.Cell>{order.id}</Table.Cell>
+      </Table.Row>
+      <Table.Row>
         <Table.Cell>Date</Table.Cell>
-        <Table.Cell>{formatDate(order.orderDate)}</Table.Cell>
+        <Table.Cell>{formatDateTime(order.orderDate)}</Table.Cell>
       </Table.Row>
       <Table.Row>
         <Table.Cell>State</Table.Cell>
