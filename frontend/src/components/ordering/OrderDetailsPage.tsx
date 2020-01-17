@@ -29,7 +29,8 @@ const GET_ORDER_QUERY = gql`
 function OrderDetailsPage() {
   const { id } = useParams();
   const result = useQuery<OrderDetails>(GET_ORDER_QUERY, {
-    variables: { id: id }
+    variables: { id: id },
+    pollInterval: 10000
   });
 
   return (
