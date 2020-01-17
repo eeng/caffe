@@ -1,20 +1,18 @@
 import { gql, useMutation } from "@apollo/client";
 import _ from "lodash";
 import React, { useEffect } from "react";
-import { Link, useHistory } from "react-router-dom";
+import { useHistory, Link } from "react-router-dom";
 import {
   Button,
   Divider,
   Form,
-  Header,
-  Icon,
-  Segment,
   Table,
   TextArea,
   TextAreaProps
 } from "semantic-ui-react";
 import GoBackButton from "../shared/GoBackButton";
 import Page from "../shared/Page";
+import Result from "../shared/Result";
 import {
   CurrentOrderContextType,
   useCurrentOrder
@@ -170,14 +168,14 @@ function ConfirmOrderButton({ order, dispatch }: CurrentOrderContextType) {
 }
 
 const EmptyOrderMessage = () => (
-  <Segment padded="very" textAlign="center" placeholder>
-    <Header as="h2" icon>
-      <Icon name="meh outline" />
-      Your order is empty!
-      <Divider hidden />
+  <Result
+    header="Your order is empty!"
+    icon="meh outline"
+    placeholder
+    actions={[
       <Button content="Order Something" primary as={Link} to="/place_order" />
-    </Header>
-  </Segment>
+    ]}
+  />
 );
 
 export default PlaceOrderSummary;

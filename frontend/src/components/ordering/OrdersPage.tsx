@@ -3,10 +3,20 @@ import Page from "../shared/Page";
 import { OrderDetails } from "./model";
 import { useQuery, gql } from "@apollo/client";
 import QueryResultWrapper from "../shared/QueryResultWrapper";
-import { Table, Label } from "semantic-ui-react";
+import {
+  Table,
+  Label,
+  Message,
+  Segment,
+  Header,
+  Icon,
+  Divider,
+  Button
+} from "semantic-ui-react";
 import { formatDate, formatCurrency } from "/lib/format";
-import { useHistory } from "react-router-dom";
+import { useHistory, Link } from "react-router-dom";
 import "./OrdersPage.less";
+import Result from "../shared/Result";
 
 export const MY_ORDERS_QUERY = gql`
   query {
@@ -26,7 +36,25 @@ function OrdersPage() {
     <Page title="My Orders" className="OrdersPage">
       <QueryResultWrapper
         result={result}
-        render={data => <OrderList orders={data.orders} />}
+        render={data =>
+          data.orders.length ? (
+            <OrderList orders={data.orders} />
+          ) : (
+            <Result
+              header="No Orders"
+              subheader="You haven't placed any orders yet."
+              icon="folder open outline"
+              actions={[
+                <Button
+                  content="Place Order"
+                  primary
+                  as={Link}
+                  to="/place_order"
+                />
+              ]}
+            />
+          )
+        }
       />
     </Page>
   );

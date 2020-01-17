@@ -34,10 +34,13 @@ function UserHeader() {
   );
 }
 
-const PageHeader = ({ title, actions }: Pick<Props, "title" | "actions">) => (
+const PageHeader = ({
+  title,
+  actions = []
+}: Pick<Props, "title" | "actions">) => (
   <div className="PageHeader">
     <div className="PageTitle">{title}</div>
-    {actions?.map((action, i) => (
+    {actions.map((action, i) => (
       <div key={i}>{action}</div>
     ))}
   </div>
