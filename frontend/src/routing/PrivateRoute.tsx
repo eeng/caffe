@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef, useEffect } from "react";
 import { Route, Redirect, RouteProps } from "react-router-dom";
 import { useAuth, AuthStatus } from "../accounts/AuthProvider";
 
@@ -10,6 +10,11 @@ interface Props extends RouteProps {
 // or to the home page if you don't have the necessary permission.
 function PrivateRoute({ permission, children, ...rest }: Props) {
   const { status, can } = useAuth();
+
+  const previousStatus = useRef<AuthStatus>();
+  useEffect(() => {
+    previousStatus.current = status;
+  });
 
   return (
     <Route
@@ -25,7 +30,7 @@ function PrivateRoute({ permission, children, ...rest }: Props) {
           <Redirect
             to={{
               pathname: "/login",
-              state: { from: location }
+              state: redirectState(previousStatus?.current, status, location)
             }}
           />
         )
@@ -33,4 +38,18 @@ function PrivateRoute({ permission, children, ...rest }: Props) {
     />
   );
 }
+
+// If a non-logged-in user tries to access a private path, this allows us to "remember" it
+// so when the user does sign in, we can redirect them back that path.
+// But we should "forget" it when the user logs out.
+const redirectState = (
+  previousStatus: AuthStatus | undefined,
+  currentStatus: AuthStatus,
+  location: any
+) =>
+  previousStatus == AuthStatus.LoggedIn &&
+  currentStatus == AuthStatus.NotLoggedIn
+    ? null
+    : { from: location };
+
 export default PrivateRoute;
