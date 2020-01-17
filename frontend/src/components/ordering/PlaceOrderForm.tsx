@@ -19,6 +19,7 @@ import {
 import { Action, Order, OrderItem, orderTotalQty } from "./model";
 import "./PlaceOrderForm.less";
 import { formatCurrency } from "/lib/format";
+import _ from "lodash";
 
 function PlaceOrderForm() {
   const state = useCurrentOrder();
@@ -83,7 +84,7 @@ function Menu({ order, dispatch }: CurrentOrderContextType) {
             <Segment vertical key={category.name}>
               <Header content={category.name} color="grey" as="h2" />
               <div className="CardGroup">
-                {category.items?.map(item => (
+                {_.sortBy(category.items, ["name"]).map(item => (
                   <MenuItemCard
                     item={item}
                     dispatch={dispatch}

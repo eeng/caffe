@@ -2,6 +2,7 @@ defmodule Caffe.Menu do
   @moduledoc """
   The Menu bounded context boundary. Implemented with a CRUD approach.
   """
+  import Ecto.Query
 
   alias Caffe.Repo
   alias Caffe.Menu.{Item, Category}
@@ -32,7 +33,7 @@ defmodule Caffe.Menu do
   end
 
   def list_items do
-    Repo.all(Item)
+    Item |> order_by(asc: :name) |> Repo.all()
   end
 
   def get_item(id) do

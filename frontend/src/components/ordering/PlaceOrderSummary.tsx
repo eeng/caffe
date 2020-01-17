@@ -20,6 +20,7 @@ import {
 import { isOrderEmpty, Order, OrderItem, orderTotalAmount } from "./model";
 import "./PlaceOrderSummary.less";
 import { formatCurrency } from "/lib/format";
+import _ from "lodash";
 
 function PlaceOrderSummary() {
   const state = useCurrentOrder();
@@ -140,10 +141,7 @@ const PLACE_ORDER_MUTATION = gql`
 
 const orderToMutationInput = (order: Order): PlaceOrderInput => ({
   ...order,
-  items: order.items.map(item => ({
-    quantity: item.quantity,
-    menuItemId: item.menuItemId
-  }))
+  items: order.items.map(item => _.pick(item, ["menuItemId", "quantity"]))
 });
 
 function ConfirmOrderButton({ order, dispatch }: CurrentOrderContextType) {
