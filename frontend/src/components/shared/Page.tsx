@@ -49,7 +49,6 @@ function Sidebar() {
   return (
     <div className="Sidebar">
       <Menu secondary vertical fluid>
-        <Menu.Item content="Home" icon="home" as={NavLink} to="/" exact />
         {can("place_order") && (
           <Menu.Item
             content="Place Order"

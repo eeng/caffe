@@ -1,8 +1,8 @@
 import React from "react";
-import Page from "./shared/Page";
+import { Redirect } from "react-router-dom";
 
 function HomePage() {
-  return <Page title="Home">Content</Page>;
+  return <Redirect to="/place_order" />;
 }
 
 export default HomePage;

@@ -6,7 +6,7 @@ import { useLocation, Link, Redirect } from "react-router-dom";
 function PlaceOrderSuccess() {
   const location = useLocation();
 
-  if (!location.state) return <Redirect to={{ pathname: "/" }} />;
+  if (!location.state) return <Redirect to="/place_order" />;
 
   return (
     <Page title="Order Placed">

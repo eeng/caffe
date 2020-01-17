@@ -18,7 +18,7 @@ function Routes() {
         <PrivateRoute exact path="/">
           <HomePage />
         </PrivateRoute>
-        <PrivateRoute path="/place_order" permission="place_order">
+        <PrivateRoute path="/place_order">
           <PlaceOrderPage />
         </PrivateRoute>
         <PrivateRoute path="/orders/:id">

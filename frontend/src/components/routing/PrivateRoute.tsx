@@ -19,7 +19,7 @@ function PrivateRoute({ permission, children, ...rest }: Props) {
           !permission || can(permission) ? (
             children
           ) : (
-            <Redirect to={{ pathname: "/" }} />
+            <Redirect to="/" />
           )
         ) : (
           <Redirect
