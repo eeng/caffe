@@ -6,7 +6,7 @@ import Page from "../shared/Page";
 import QueryResultWrapper from "../shared/QueryResultWrapper";
 import Result from "../shared/Result";
 import { OrderDetails } from "./model";
-import { formatCurrency, formatDate } from "/lib/format";
+import { formatCurrency, formatDistanceToNow } from "/lib/format";
 
 const MY_ORDERS_QUERY = gql`
   query {
@@ -68,7 +68,7 @@ function OrderList({ orders }: { orders: OrderDetails[] }) {
               <Link to={`/orders/${order.id}`}>{order.id}</Link>
             </Table.Cell>
             <Table.Cell textAlign="center">
-              {formatDate(order.orderDate)}
+              {formatDistanceToNow(order.orderDate)}
             </Table.Cell>
             <Table.Cell textAlign="center">
               <Label content={order.state.toUpperCase()} />

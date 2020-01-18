@@ -18,7 +18,7 @@ export interface OrderDetails extends Order {
   id: string;
   orderAmount: number;
   state: string;
-  orderDate: Date;
+  orderDate: string;
 }
 
 interface AddItem {
