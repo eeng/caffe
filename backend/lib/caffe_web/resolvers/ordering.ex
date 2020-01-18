@@ -40,6 +40,10 @@ defmodule CaffeWeb.Resolvers.Ordering do
     {:ok, Ordering.get_stats(params)}
   end
 
+  def order_code(%{id: id}, _params, _resolution) do
+    {:ok, id |> String.split("-") |> List.first() |> String.upcase()}
+  end
+
   defp ok_result(result) do
     with :ok <- result do
       {:ok, "ok"}

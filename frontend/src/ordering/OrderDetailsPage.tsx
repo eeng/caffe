@@ -11,7 +11,7 @@ import { formatCurrency, formatDateTime } from "/lib/format";
 const GET_ORDER_QUERY = gql`
   query($id: ID) {
     order(id: $id) {
-      id
+      code
       state
       orderAmount
       orderDate
@@ -47,8 +47,8 @@ const OrderDetails = ({ order }: { order: OrderDetails }) => (
   <Table definition>
     <Table.Body>
       <Table.Row>
-        <Table.Cell>ID</Table.Cell>
-        <Table.Cell>{order.id}</Table.Cell>
+        <Table.Cell>Code</Table.Cell>
+        <Table.Cell>{order.code}</Table.Cell>
       </Table.Row>
       <Table.Row>
         <Table.Cell>Date</Table.Cell>

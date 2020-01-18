@@ -12,6 +12,7 @@ const MY_ORDERS_QUERY = gql`
   query {
     orders {
       id
+      code
       orderDate
       orderAmount
       state
@@ -55,7 +56,7 @@ function OrderList({ orders }: { orders: OrderDetails[] }) {
     <Table>
       <Table.Header>
         <Table.Row>
-          <Table.HeaderCell>ID</Table.HeaderCell>
+          <Table.HeaderCell>Code</Table.HeaderCell>
           <Table.HeaderCell textAlign="center">Date</Table.HeaderCell>
           <Table.HeaderCell textAlign="center">State</Table.HeaderCell>
           <Table.HeaderCell textAlign="right">Amount</Table.HeaderCell>
@@ -65,7 +66,7 @@ function OrderList({ orders }: { orders: OrderDetails[] }) {
         {orders.map(order => (
           <Table.Row key={order.id}>
             <Table.Cell>
-              <Link to={`/orders/${order.id}`}>{order.id}</Link>
+              <Link to={`/orders/${order.id}`}>{order.code}</Link>
             </Table.Cell>
             <Table.Cell textAlign="center">
               {formatDistanceToNow(order.orderDate)}

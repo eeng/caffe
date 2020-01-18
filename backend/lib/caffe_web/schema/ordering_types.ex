@@ -12,6 +12,10 @@ defmodule CaffeWeb.Schema.OrderingTypes do
     field :items, list_of(:order_item)
     field :notes, :string
     field :order_date, :datetime
+
+    field :code, :string do
+      resolve &Resolvers.Ordering.order_code/3
+    end
   end
 
   object :order_item do
