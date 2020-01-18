@@ -17,9 +17,10 @@ export const NEW_ORDER: Order = { items: [], notes: "" };
 export interface OrderDetails extends Order {
   id: string;
   orderAmount: number;
-  state: string;
+  state: "pending" | "cancelled" | "paid";
   orderDate: string;
   code: string;
+  viewerCanCancel?: boolean;
 }
 
 interface AddItem {

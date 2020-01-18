@@ -136,5 +136,24 @@ defmodule CaffeWeb.Schema.OrderingTypesTest do
       conn = build_conn(cust2) |> post("/api", query: @query, variables: %{id: order.id})
       assert %{"errors" => [%{"message" => "unauthorized"}]} = json_response(conn, 200)
     end
+
+    @query """
+    query ($id: ID) {
+      order(id: $id) {
+        viewerCanCancel
+      }
+    }
+    """
+    test "the viewer can check if she can cancel the order" do
+      cust = insert!(:customer)
+      order1 = insert!(:order, state: "pending", customer_id: cust.id)
+      order2 = insert!(:order, state: "cancelled", customer_id: cust.id)
+
+      conn = build_conn(cust) |> post("/api", query: @query, variables: %{id: order1.id})
+      assert %{"data" => %{"order" => %{"viewerCanCancel" => true}}} = json_response(conn, 200)
+
+      conn = build_conn(cust) |> post("/api", query: @query, variables: %{id: order2.id})
+      assert %{"data" => %{"order" => %{"viewerCanCancel" => false}}} = json_response(conn, 200)
+    end
   end
 end

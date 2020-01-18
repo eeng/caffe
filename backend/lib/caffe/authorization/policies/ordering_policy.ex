@@ -27,10 +27,15 @@ defmodule Caffe.Authorization.Policies.OrderingPolicy do
   def authorize(:mark_food_prepared, %User{role: "chef"}, _), do: true
   def authorize(:pay_order, %User{}, _), do: true
 
-  def authorize(:cancel_order, %User{role: "customer", id: user_id}, %Order{customer_id: user_id}),
-    do: true
+  def authorize(:cancel_order, %User{role: "customer", id: user_id}, %Order{
+        customer_id: cust_id,
+        state: state
+      }),
+      do: cust_id == user_id && state == "pending"
 
-  def authorize(:cancel_order, %User{role: role}, %Order{}) when role != "customer", do: true
+  def authorize(:cancel_order, %User{}, %Order{state: state}),
+    do: state == "pending"
+
   def authorize(:cancel_order, _, %Order{}), do: false
 
   def authorize(:cancel_order, user, %{order_id: order_id}) do

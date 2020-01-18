@@ -1,7 +1,9 @@
 defmodule CaffeWeb.Schema.OrderingTypes do
   use Absinthe.Schema.Notation
+
   alias CaffeWeb.Resolvers
   alias CaffeWeb.Schema.Middleware
+  alias Caffe.Authorization.Authorizer
 
   object :order do
     field :id, :id
@@ -12,10 +14,8 @@ defmodule CaffeWeb.Schema.OrderingTypes do
     field :items, list_of(:order_item)
     field :notes, :string
     field :order_date, :datetime
-
-    field :code, :string do
-      resolve &Resolvers.Ordering.order_code/3
-    end
+    field :code, :string, resolve: &Resolvers.Ordering.order_code/3
+    field :viewer_can_cancel, :boolean, resolve: can?(:cancel_order)
   end
 
   object :order_item do
@@ -108,6 +108,16 @@ defmodule CaffeWeb.Schema.OrderingTypes do
       end
 
       trigger :place_order, topic: fn order -> [order.customer_id, "*"] end
+    end
+  end
+
+  defp can?(action) do
+    fn
+      parent, _, %{context: %{current_user: user}} ->
+        {:ok, Authorizer.authorize?(action, user, parent)}
+
+      _, _, _ ->
+        {:ok, false}
     end
   end
 end

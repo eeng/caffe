@@ -1,21 +1,25 @@
 import { gql, useQuery } from "@apollo/client";
 import React from "react";
 import { useParams } from "react-router-dom";
-import { Label, List, Table } from "semantic-ui-react";
+import { List, Table } from "semantic-ui-react";
 import GoBackButton from "../shared/GoBackButton";
 import Page from "../shared/Page";
 import QueryResultWrapper from "../shared/QueryResultWrapper";
 import { Order, OrderDetails } from "./model";
+import OrderState from "./OrderState";
 import { formatCurrency, formatDateTime } from "/lib/format";
+import CancelOrderButton from "./CancelOrderButton";
 
-const GET_ORDER_QUERY = gql`
+export const GET_ORDER_QUERY = gql`
   query($id: ID) {
     order(id: $id) {
+      id
       code
       state
       orderAmount
       orderDate
       notes
+      viewerCanCancel
       items {
         menuItemId
         menuItemName
@@ -44,40 +48,44 @@ function OrderDetailsPage() {
 }
 
 const OrderDetails = ({ order }: { order: OrderDetails }) => (
-  <Table definition>
-    <Table.Body>
-      <Table.Row>
-        <Table.Cell>Code</Table.Cell>
-        <Table.Cell>{order.code}</Table.Cell>
-      </Table.Row>
-      <Table.Row>
-        <Table.Cell>Date</Table.Cell>
-        <Table.Cell>{formatDateTime(order.orderDate)}</Table.Cell>
-      </Table.Row>
-      <Table.Row>
-        <Table.Cell>State</Table.Cell>
-        <Table.Cell>
-          <Label content={order.state.toUpperCase()} />
-        </Table.Cell>
-      </Table.Row>
-      <Table.Row>
-        <Table.Cell>Items</Table.Cell>
-        <Table.Cell>
-          <OrderItems order={order} />
-        </Table.Cell>
-      </Table.Row>
-      {order.notes && (
+  <>
+    <Table definition>
+      <Table.Body>
         <Table.Row>
-          <Table.Cell>Notes</Table.Cell>
-          <Table.Cell>{order.notes}</Table.Cell>
+          <Table.Cell>Code</Table.Cell>
+          <Table.Cell>{order.code}</Table.Cell>
         </Table.Row>
-      )}
-      <Table.Row>
-        <Table.Cell>Total</Table.Cell>
-        <Table.Cell>{formatCurrency(order.orderAmount)}</Table.Cell>
-      </Table.Row>
-    </Table.Body>
-  </Table>
+        <Table.Row>
+          <Table.Cell>Date</Table.Cell>
+          <Table.Cell>{formatDateTime(order.orderDate)}</Table.Cell>
+        </Table.Row>
+        <Table.Row>
+          <Table.Cell>State</Table.Cell>
+          <Table.Cell>
+            <OrderState order={order} />
+          </Table.Cell>
+        </Table.Row>
+        <Table.Row>
+          <Table.Cell>Items</Table.Cell>
+          <Table.Cell>
+            <OrderItems order={order} />
+          </Table.Cell>
+        </Table.Row>
+        {order.notes && (
+          <Table.Row>
+            <Table.Cell>Notes</Table.Cell>
+            <Table.Cell>{order.notes}</Table.Cell>
+          </Table.Row>
+        )}
+        <Table.Row>
+          <Table.Cell>Total</Table.Cell>
+          <Table.Cell>{formatCurrency(order.orderAmount)}</Table.Cell>
+        </Table.Row>
+      </Table.Body>
+    </Table>
+
+    <CancelOrderButton order={order} floated="right" />
+  </>
 );
 
 const OrderItems = ({ order }: { order: Order }) => (

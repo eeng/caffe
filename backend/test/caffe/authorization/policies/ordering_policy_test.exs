@@ -36,6 +36,12 @@ defmodule Caffe.Authorization.Policies.OrderingPolicyTest do
       %{id: order_id} = insert!(:order, customer_id: user.id)
       assert Authorizer.authorize?(:cancel_order, user, %{order_id: order_id})
     end
+
+    test "only pending orders can be cancelled" do
+      user = build(:admin)
+      refute Authorizer.authorize?(:cancel_order, user, %Order{state: "cancelled"})
+      refute Authorizer.authorize?(:cancel_order, user, %Order{state: "paid"})
+    end
   end
 
   describe "list_orders" do

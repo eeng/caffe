@@ -1,14 +1,16 @@
 import { gql, useQuery } from "@apollo/client";
 import React from "react";
 import { Link } from "react-router-dom";
-import { Button, Label, Table } from "semantic-ui-react";
+import { Button, Table } from "semantic-ui-react";
 import Page from "../shared/Page";
 import QueryResultWrapper from "../shared/QueryResultWrapper";
 import Result from "../shared/Result";
+import CancelOrderButton from "./CancelOrderButton";
 import { OrderDetails } from "./model";
+import OrderState from "./OrderState";
 import { formatCurrency, formatDistanceToNow } from "/lib/format";
 
-const MY_ORDERS_QUERY = gql`
+export const MY_ORDERS_QUERY = gql`
   query {
     orders {
       id
@@ -16,6 +18,7 @@ const MY_ORDERS_QUERY = gql`
       orderDate
       orderAmount
       state
+      viewerCanCancel
     }
   }
 `;
@@ -57,9 +60,10 @@ function OrderList({ orders }: { orders: OrderDetails[] }) {
       <Table.Header>
         <Table.Row>
           <Table.HeaderCell>Code</Table.HeaderCell>
-          <Table.HeaderCell textAlign="center">Date</Table.HeaderCell>
+          <Table.HeaderCell>Date</Table.HeaderCell>
           <Table.HeaderCell textAlign="center">State</Table.HeaderCell>
           <Table.HeaderCell textAlign="right">Amount</Table.HeaderCell>
+          <Table.HeaderCell collapsing>Actions</Table.HeaderCell>
         </Table.Row>
       </Table.Header>
       <Table.Body>
@@ -68,14 +72,15 @@ function OrderList({ orders }: { orders: OrderDetails[] }) {
             <Table.Cell>
               <Link to={`/orders/${order.id}`}>{order.code}</Link>
             </Table.Cell>
+            <Table.Cell>{formatDistanceToNow(order.orderDate)}</Table.Cell>
             <Table.Cell textAlign="center">
-              {formatDistanceToNow(order.orderDate)}
-            </Table.Cell>
-            <Table.Cell textAlign="center">
-              <Label content={order.state.toUpperCase()} />
+              <OrderState order={order} />
             </Table.Cell>
             <Table.Cell textAlign="right">
               {formatCurrency(order.orderAmount)}
+            </Table.Cell>
+            <Table.Cell>
+              <CancelOrderButton order={order} basic compact size="small" />
             </Table.Cell>
           </Table.Row>
         ))}

@@ -9,6 +9,7 @@ import QueryResultWrapper from "../shared/QueryResultWrapper";
 import SearchInput from "../shared/SearchInput";
 import { EditMenuItemForm, NewMenuItemForm } from "./MenuItemForm";
 import { MenuItem } from "./model";
+import Confirm from "/shared/Confirm";
 
 type QueryResult = {
   menuItems: MenuItem[];
@@ -146,26 +147,19 @@ function DeleteMenuItemButton({ item }: { item: MenuItem }) {
   }
 
   return (
-    <Popup
-      content={<Button content="Confirm" color="red" onClick={handleConfirm} />}
-      on="click"
-      pinned
-      position="top center"
-      disabled={loading}
-      trigger={
-        <Button
-          icon="delete"
-          color="red"
-          size="tiny"
-          compact
-          circular
-          basic
-          loading={loading}
-          disabled={loading}
-          title="Delete"
-        />
-      }
-    />
+    <Confirm onConfirm={handleConfirm} disabled={loading}>
+      <Button
+        icon="delete"
+        color="red"
+        size="tiny"
+        compact
+        circular
+        basic
+        loading={loading}
+        disabled={loading}
+        title="Delete"
+      />
+    </Confirm>
   );
 }
 
