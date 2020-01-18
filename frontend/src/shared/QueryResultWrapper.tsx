@@ -3,13 +3,13 @@ import React, { ReactElement } from "react";
 import APIError from "./APIError";
 import SectionLoader from "./SectionLoader";
 
-type Props = {
-  result: QueryResult;
-  render: (data: any) => ReactElement;
+type Props<TData> = {
+  result: QueryResult<TData>;
+  render: (data: TData) => ReactElement;
 };
 
 // Simplifies the handling of the loading and error states of GraphQL queries
-function QueryResultWrapper({ result, render }: Props) {
+function QueryResultWrapper<TData>({ result, render }: Props<TData>) {
   const { loading, error, data } = result;
 
   return (

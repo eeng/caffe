@@ -21,6 +21,11 @@ defmodule CaffeWeb.Schema.OrderingTypes do
     field :price, :decimal
   end
 
+  object :stats do
+    field :order_count, :integer
+    field :amount_earned, :decimal
+  end
+
   input_object :order_item_input do
     field :menu_item_id, non_null(:id)
     field :quantity, non_null(:integer)
@@ -79,6 +84,11 @@ defmodule CaffeWeb.Schema.OrderingTypes do
     field :orders, list_of(:order) do
       middleware Middleware.Authorize, :list_orders
       resolve &Resolvers.Ordering.list_orders/3
+    end
+
+    field :stats, :stats do
+      middleware Middleware.Authorize, :get_stats
+      resolve &Resolvers.Ordering.get_stats/3
     end
   end
 

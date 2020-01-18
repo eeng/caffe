@@ -36,6 +36,10 @@ defmodule CaffeWeb.Resolvers.Ordering do
     {:ok, Ordering.list_orders(user, params)}
   end
 
+  def get_stats(_parent, _params, _resolution) do
+    {:ok, Ordering.get_stats()}
+  end
+
   defp ok_result(result) do
     with :ok <- result do
       {:ok, "ok"}

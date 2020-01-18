@@ -44,4 +44,12 @@ defmodule Caffe.Authorization.Policies.OrderingPolicyTest do
       refute Authorizer.authorize?(:list_orders, nil)
     end
   end
+
+  describe "get_stats" do
+    test "customers can't view the stats" do
+      assert Authorizer.authorize?(:get_stats, %User{role: "admin"})
+      refute Authorizer.authorize?(:get_stats, %User{role: "customer"})
+      refute Authorizer.authorize?(:get_stats, nil)
+    end
+  end
 end

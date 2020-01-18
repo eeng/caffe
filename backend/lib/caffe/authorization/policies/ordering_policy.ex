@@ -15,7 +15,8 @@ defmodule Caffe.Authorization.Policies.OrderingPolicy do
       :mark_food_prepared,
       :pay_order,
       :get_order,
-      :list_orders
+      :list_orders,
+      :get_stats
     ]
   end
 
@@ -47,6 +48,10 @@ defmodule Caffe.Authorization.Policies.OrderingPolicy do
   end
 
   def authorize(:list_orders, %User{}, _), do: true
+
+  def authorize(:get_stats, %User{role: role}, _) do
+    role != "customer"
+  end
 
   def authorize(_, _, _), do: false
 end

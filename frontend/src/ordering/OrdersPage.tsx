@@ -30,7 +30,7 @@ export const MY_ORDERS_QUERY = gql`
 `;
 
 function OrdersPage() {
-  const result = useQuery<OrderDetails>(MY_ORDERS_QUERY);
+  const result = useQuery<{ orders: OrderDetails[] }>(MY_ORDERS_QUERY);
 
   return (
     <Page title="My Orders" className="OrdersPage">
@@ -68,8 +68,8 @@ function OrderList({ orders }: { orders: OrderDetails[] }) {
       <Table.Header>
         <Table.Row>
           <Table.HeaderCell>ID</Table.HeaderCell>
-          <Table.HeaderCell>Date</Table.HeaderCell>
-          <Table.HeaderCell>State</Table.HeaderCell>
+          <Table.HeaderCell textAlign="center">Date</Table.HeaderCell>
+          <Table.HeaderCell textAlign="center">State</Table.HeaderCell>
           <Table.HeaderCell textAlign="right">Amount</Table.HeaderCell>
         </Table.Row>
       </Table.Header>
@@ -80,8 +80,10 @@ function OrderList({ orders }: { orders: OrderDetails[] }) {
             onClick={() => history.push(`/orders/${order.id}`)}
           >
             <Table.Cell>{order.id}</Table.Cell>
-            <Table.Cell>{formatDate(order.orderDate)}</Table.Cell>
-            <Table.Cell>
+            <Table.Cell textAlign="center">
+              {formatDate(order.orderDate)}
+            </Table.Cell>
+            <Table.Cell textAlign="center">
               <Label content={order.state.toUpperCase()} />
             </Table.Cell>
             <Table.Cell textAlign="right">
