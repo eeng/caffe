@@ -1,7 +1,7 @@
 import { gql, useMutation } from "@apollo/client";
 import _ from "lodash";
 import React, { useEffect } from "react";
-import { useHistory, Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import {
   Button,
   Divider,
@@ -18,7 +18,6 @@ import {
   useCurrentOrder
 } from "./CurrentOrderProvider";
 import { isOrderEmpty, Order, OrderItem, orderTotalAmount } from "./model";
-import { MY_ORDERS_QUERY } from "./OrdersPage";
 import "./PlaceOrderSummary.less";
 import { formatCurrency } from "/lib/format";
 
@@ -142,8 +141,7 @@ const orderToMutationInput = (order: Order): PlaceOrderInput => ({
 
 function ConfirmOrderButton({ order, dispatch }: CurrentOrderContextType) {
   const [placeOrder, { loading, data }] = useMutation(PLACE_ORDER_MUTATION, {
-    variables: orderToMutationInput(order),
-    refetchQueries: [{ query: MY_ORDERS_QUERY }]
+    variables: orderToMutationInput(order)
   });
 
   const history = useHistory();

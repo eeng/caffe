@@ -5,7 +5,6 @@ import { toast } from "react-semantic-toasts";
 import { Button, Form, Segment } from "semantic-ui-react";
 import QueryResultWrapper from "../shared/QueryResultWrapper";
 import CategoryDropdown from "./CategoryDropdown";
-import { MENU_ITEMS_QUERY } from "./MenuSection";
 
 type MenuItemInput = {
   id?: string;
@@ -63,16 +62,7 @@ function MenuItemForm({ item }: { item: MenuItemInput }) {
   const [formData, setFormData] = useState(item);
 
   const [save, { loading }] = useMutation(
-    isNewRecord ? CREATE_MENU_ITEM : UPDATE_MENU_ITEM,
-    {
-      // I needed to pass the whole query object due to this issue: https://github.com/apollographql/apollo-client/issues/5419
-      refetchQueries: [
-        { query: MENU_ITEMS_QUERY },
-        "GetMenuItem",
-        "PlaceOrderMenu"
-      ],
-      awaitRefetchQueries: true
-    }
+    isNewRecord ? CREATE_MENU_ITEM : UPDATE_MENU_ITEM
   );
 
   const history = useHistory();

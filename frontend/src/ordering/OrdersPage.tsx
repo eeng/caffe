@@ -8,7 +8,7 @@ import Result from "../shared/Result";
 import { OrderDetails } from "./model";
 import { formatCurrency, formatDate } from "/lib/format";
 
-export const MY_ORDERS_QUERY = gql`
+const MY_ORDERS_QUERY = gql`
   query {
     orders {
       id

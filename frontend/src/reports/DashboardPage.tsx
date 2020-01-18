@@ -43,8 +43,7 @@ function DashboardPage() {
   });
 
   const result = useQuery<{ stats: Stats }>(STATS_QUERY, {
-    variables: { since: convertSinceValueToDate(filters.since) },
-    fetchPolicy: "cache-and-network"
+    variables: { since: convertSinceValueToDate(filters.since) }
   });
 
   return (
