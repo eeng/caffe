@@ -18,4 +18,9 @@ defmodule Caffe.Ordering.Queries.StatsQueryTest do
     assert %{amount_earned: ~d(30)} = Ordering.get_stats(%{since: ~U[2020-01-01 00:00:00Z]})
     assert %{amount_earned: ~d(20)} = Ordering.get_stats(%{since: ~U[2020-01-01 00:00:01Z]})
   end
+
+  test "cancelled orders don't count" do
+    insert!(:order, order_amount: 5, state: "cancelled")
+    assert %{order_count: 0} = Ordering.get_stats()
+  end
 end

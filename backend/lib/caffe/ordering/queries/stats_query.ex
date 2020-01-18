@@ -6,6 +6,7 @@ defmodule Caffe.Ordering.Queries.StatsQuery do
   def new(filters) do
     query =
       from o in Order,
+        where: o.state != "cancelled",
         select: %{order_count: count(o.id), amount_earned: sum(o.order_amount) |> coalesce(0)}
 
     filters
