@@ -107,7 +107,7 @@ defmodule Caffe.Ordering do
     ListOrdersQuery.new(user, params) |> Repo.all()
   end
 
-  def get_stats() do
-    StatsQuery.new() |> Repo.one()
+  def get_stats(params \\ %{}) do
+    StatsQuery.new(params) |> Repo.one()
   end
 end

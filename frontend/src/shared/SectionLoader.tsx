@@ -3,7 +3,7 @@ import { Segment, Loader } from "semantic-ui-react";
 
 function SectionLoader() {
   return (
-    <Segment basic padded>
+    <Segment basic padded="very">
       <Loader active />
     </Segment>
   );

@@ -87,6 +87,7 @@ defmodule CaffeWeb.Schema.OrderingTypes do
     end
 
     field :stats, :stats do
+      arg :since, :datetime
       middleware Middleware.Authorize, :get_stats
       resolve &Resolvers.Ordering.get_stats/3
     end

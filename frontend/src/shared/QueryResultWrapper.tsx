@@ -14,7 +14,7 @@ function QueryResultWrapper<TData>({ result, render }: Props<TData>) {
 
   return (
     <>
-      {loading && <SectionLoader />}
+      {loading && !data && <SectionLoader />}
       {error && <APIError error={error} />}
       {data && render(data)}
     </>

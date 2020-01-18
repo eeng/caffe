@@ -3,8 +3,14 @@ defmodule Caffe.Ordering.Queries.StatsQuery do
 
   alias Caffe.Ordering.Projections.Order
 
-  def new() do
-    from o in Order,
-      select: %{order_count: count(o.id), amount_earned: sum(o.order_amount) |> coalesce(0)}
+  def new(filters) do
+    query =
+      from o in Order,
+        select: %{order_count: count(o.id), amount_earned: sum(o.order_amount) |> coalesce(0)}
+
+    filters
+    |> Enum.reduce(query, fn
+      {:since, since}, query -> query |> where([o], o.order_date >= ^since)
+    end)
   end
 end
