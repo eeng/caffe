@@ -22,6 +22,12 @@ defmodule Caffe.Factory do
     %Ordering.Projections.Order{id: uuid()}
   end
 
+  def build(:activity) do
+    %Ordering.Projections.Activity{
+      type: "OrderPlaced"
+    }
+  end
+
   def build(:user) do
     number = sequence()
 

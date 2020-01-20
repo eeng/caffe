@@ -11,6 +11,7 @@ import NotFoundPage from "./NotFoundPage";
 import PrivateRoute from "./PrivateRoute";
 import { useAuth } from "/accounts/AuthProvider";
 import DashboardPage from "/reports/DashboardPage";
+import ActivityFeedPage from "../ordering/activities/ActivityFeedPage";
 
 const Routes = () => (
   <Fragment>
@@ -29,6 +30,9 @@ const Routes = () => (
       </PrivateRoute>
       <PrivateRoute path="/orders">
         <OrdersPage />
+      </PrivateRoute>
+      <PrivateRoute path="/activity_feed" permission="get_activity_feed">
+        <ActivityFeedPage />
       </PrivateRoute>
       <PrivateRoute path="/config" permission="list_users">
         <ConfigPage />

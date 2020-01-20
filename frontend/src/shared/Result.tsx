@@ -10,8 +10,8 @@ import {
 } from "semantic-ui-react";
 
 interface Props extends StrictSegmentProps {
-  header?: string;
-  subheader?: string;
+  header: string;
+  subheader?: string | React.ReactNode;
   icon?: SemanticICONS;
   color?: SemanticCOLORS;
   actions?: React.ReactNode[];

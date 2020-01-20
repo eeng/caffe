@@ -33,6 +33,14 @@ export function Sidebar() {
             to="/orders"
           />
         )}
+        {can("get_activity_feed") && (
+          <Menu.Item
+            content="Activity Feed"
+            icon="book"
+            as={NavLink}
+            to="/activity_feed"
+          />
+        )}
         {can("list_users") && (
           <Menu.Item
             content="Configuration"

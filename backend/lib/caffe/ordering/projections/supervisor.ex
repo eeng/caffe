@@ -7,7 +7,8 @@ defmodule Caffe.Ordering.Projections.Supervisor do
 
   def init(_) do
     children = [
-      Caffe.Ordering.Projections.OrdersProjector
+      Caffe.Ordering.Projections.OrdersProjector,
+      Caffe.Ordering.Projections.ActivitiesProjector
     ]
 
     Supervisor.init(children, strategy: :one_for_one)

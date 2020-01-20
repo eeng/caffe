@@ -1,7 +1,7 @@
 defmodule Caffe.Ordering.Projections.OrdersProjector do
   use Commanded.Projections.Ecto,
     application: Caffe.Commanded.Application,
-    name: "OrdersProjector",
+    name: "Ordering.Projections.OrdersProjector",
     consistency: :strong
 
   alias Ecto.Multi

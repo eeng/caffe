@@ -30,6 +30,15 @@ defmodule CaffeWeb.Schema.OrderingTypes do
     field :amount_earned, :decimal
   end
 
+  object :activity do
+    field :id, :id
+    field :type, :string
+    field :actor, :user
+    field :object_id, :string
+    field :object_type, :string
+    field :published, :datetime
+  end
+
   input_object :order_item_input do
     field :menu_item_id, non_null(:id)
     field :quantity, non_null(:integer)
@@ -94,6 +103,11 @@ defmodule CaffeWeb.Schema.OrderingTypes do
       arg :since, :datetime
       middleware Middleware.Authorize, :get_stats
       resolve &Resolvers.Ordering.get_stats/3
+    end
+
+    field :activities, list_of(:activity) do
+      middleware Middleware.Authorize, :get_activity_feed
+      resolve &Resolvers.Ordering.get_activity_feed/3
     end
   end
 

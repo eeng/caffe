@@ -19,7 +19,10 @@ defmodule Caffe.ProjectorCase do
           |> last_seen_event_number
           |> Kernel.+(1)
 
-        @projector_module.handle(event, %{event_number: event_number})
+        @projector_module.handle(event, %{
+          event_number: event_number,
+          created_at: DateTime.utc_now()
+        })
       end
 
       def last_seen_event_number(name) do

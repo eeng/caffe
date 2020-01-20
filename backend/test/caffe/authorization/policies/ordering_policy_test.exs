@@ -58,4 +58,16 @@ defmodule Caffe.Authorization.Policies.OrderingPolicyTest do
       refute Authorizer.authorize?(:get_stats, nil)
     end
   end
+
+  describe "get_activity_feed" do
+    test "customers and guests can't view activities" do
+      refute Authorizer.authorize?(:get_activity_feed, %User{role: "customer"})
+      refute Authorizer.authorize?(:get_activity_feed, nil)
+    end
+
+    test "employees can view them" do
+      assert Authorizer.authorize?(:get_activity_feed, %User{role: "cashier"})
+      assert Authorizer.authorize?(:get_activity_feed, %User{role: "admin"})
+    end
+  end
 end

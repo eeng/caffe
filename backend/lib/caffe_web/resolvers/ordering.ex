@@ -40,6 +40,10 @@ defmodule CaffeWeb.Resolvers.Ordering do
     {:ok, Ordering.get_stats(params)}
   end
 
+  def get_activity_feed(_parent, _params, _resolution) do
+    {:ok, Ordering.get_activity_feed()}
+  end
+
   def order_code(%{id: id}, _params, _resolution) do
     {:ok, id |> String.split("-") |> List.first() |> String.upcase()}
   end
