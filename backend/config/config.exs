@@ -25,8 +25,7 @@ config :logger, :console,
 # Use Jason for JSON parsing in Phoenix
 config :phoenix, :json_library, Jason
 
-config :commanded,
-  event_store_adapter: Commanded.EventStore.Adapters.EventStore
+config :caffe, event_stores: [Caffe.EventStore]
 
 config :commanded_ecto_projections,
   repo: Caffe.Repo

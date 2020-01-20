@@ -52,10 +52,17 @@ config :phoenix, :stacktrace_depth, 20
 # Initialize plugs at runtime for faster development compilation
 config :phoenix, :plug_init_mode, :runtime
 
-config :eventstore, column_data_type: "jsonb"
+config :caffe, Caffe.Commanded.Application,
+  event_store: [
+    adapter: Commanded.EventStore.Adapters.EventStore,
+    event_store: Caffe.EventStore
+  ],
+  pubsub: :local,
+  registry: :local
 
-config :eventstore, EventStore.Storage,
+config :caffe, Caffe.EventStore,
   serializer: Commanded.Serialization.JsonSerializer,
+  column_data_type: "jsonb",
   types: EventStore.PostgresTypes,
   url:
     System.get_env(

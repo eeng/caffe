@@ -1,5 +1,5 @@
 defmodule Caffe.Router do
-  use Commanded.Commands.Router
+  use Commanded.Commands.Router, application: Caffe.Commanded.Application
 
   alias Caffe.Ordering.Commands
   alias Caffe.Ordering.Aggregates.Order

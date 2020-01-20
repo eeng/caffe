@@ -5,10 +5,14 @@ defmodule Caffe.Application do
 
   use Application
 
+  use Commanded.Application, otp_app: :caffe
+  router(Caffe.Router)
+
   def start(_type, _args) do
     children = [
       Caffe.Repo,
       CaffeWeb.Endpoint,
+      Caffe.Commanded.Application,
       Caffe.Ordering.Projections.Supervisor,
       {Absinthe.Subscription, [CaffeWeb.Endpoint]}
     ]

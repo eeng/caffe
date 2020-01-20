@@ -14,11 +14,15 @@ config :caffe, CaffeWeb.Endpoint,
 # Print only warnings and errors during test
 config :logger, level: :warn
 
-config :commanded,
-  event_store_adapter: Commanded.EventStore.Adapters.InMemory
+config :caffe, Caffe.Commanded.Application,
+  event_store: [
+    adapter: Commanded.EventStore.Adapters.InMemory,
+    event_store: Caffe.EventStore
+  ],
+  pubsub: :local,
+  registry: :local
 
-config :commanded, Commanded.EventStore.Adapters.InMemory,
-  serializer: Commanded.Serialization.JsonSerializer
+config :caffe, Caffe.EventStore, serializer: Commanded.Serialization.JsonSerializer
 
 config :argon2_elixir,
   t_cost: 1,
