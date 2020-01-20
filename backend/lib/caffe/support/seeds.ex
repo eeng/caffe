@@ -176,7 +176,7 @@ defmodule Caffe.Seeds do
 
   defp upsert_by(record, conflict_target) do
     Repo.insert!(record,
-      on_conflict: :replace_all_except_primary_key,
+      on_conflict: {:replace_all_except, [:id]},
       conflict_target: conflict_target
     )
   end

@@ -3,8 +3,6 @@ defmodule Caffe.Ordering.Projections.OrdersProjector do
     name: "Ordering.Projections.OrdersProjector",
     consistency: :strong
 
-  require Logger
-
   alias Ecto.Multi
   alias Caffe.Repo
   alias Caffe.Ordering.Projections.{Order, Item}
