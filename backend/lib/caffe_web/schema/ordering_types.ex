@@ -23,6 +23,7 @@ defmodule CaffeWeb.Schema.OrderingTypes do
     field :menu_item_name, :string
     field :quantity, :integer
     field :price, :decimal
+    field :state, :string
   end
 
   object :stats do
@@ -97,6 +98,11 @@ defmodule CaffeWeb.Schema.OrderingTypes do
     field :orders, list_of(:order) do
       middleware Middleware.Authorize, :list_orders
       resolve &Resolvers.Ordering.list_orders/3
+    end
+
+    field :kitchen_orders, list_of(:order) do
+      middleware Middleware.Authorize, :list_kitchen_orders
+      resolve &Resolvers.Ordering.list_kitchen_orders/3
     end
 
     field :stats, :stats do

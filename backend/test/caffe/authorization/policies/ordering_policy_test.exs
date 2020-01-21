@@ -51,6 +51,14 @@ defmodule Caffe.Authorization.Policies.OrderingPolicyTest do
     end
   end
 
+  describe "list_kitchen_orders" do
+    test "all employees can view the kitchen's orders" do
+      assert Authorizer.authorize?(:list_kitchen_orders, %User{role: "chef"})
+      assert Authorizer.authorize?(:list_kitchen_orders, %User{role: "admin"})
+      refute Authorizer.authorize?(:list_kitchen_orders, %User{role: "customer"})
+    end
+  end
+
   describe "get_stats" do
     test "customers can't view the stats" do
       assert Authorizer.authorize?(:get_stats, %User{role: "admin"})

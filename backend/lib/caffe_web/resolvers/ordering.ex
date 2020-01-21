@@ -36,6 +36,10 @@ defmodule CaffeWeb.Resolvers.Ordering do
     {:ok, Ordering.list_orders(user, params)}
   end
 
+  def list_kitchen_orders(_parent, _params, _resolution) do
+    {:ok, Ordering.kitchen_orders()}
+  end
+
   def get_stats(_parent, params, _resolution) do
     {:ok, Ordering.get_stats(params)}
   end

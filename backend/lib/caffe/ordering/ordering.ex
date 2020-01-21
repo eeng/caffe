@@ -7,7 +7,13 @@ defmodule Caffe.Ordering do
   alias Caffe.Accounts.User
   alias Caffe.Ordering.Commands
   alias Caffe.Ordering.Projections.Order
-  alias Caffe.Ordering.Queries.{ListOrdersQuery, StatsQuery, ActivityFeedQuery}
+
+  alias Caffe.Ordering.Queries.{
+    ListOrdersQuery,
+    StatsQuery,
+    ActivityFeedQuery,
+    KitchenOrdersQuery
+  }
 
   @doc """
   ## Examples
@@ -105,6 +111,10 @@ defmodule Caffe.Ordering do
 
   def list_orders(user, params) do
     ListOrdersQuery.new(user, params) |> Repo.all()
+  end
+
+  def kitchen_orders do
+    KitchenOrdersQuery.new() |> Repo.all()
   end
 
   def get_stats(params \\ %{}) do

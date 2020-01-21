@@ -40,14 +40,7 @@ function ActivityFeedPage() {
           ) : (
             <Result
               header="No activities yet"
-              subheader={
-                <div>
-                  As soon as some events are fired they will appear in this
-                  page.
-                  <br />
-                  TIP: Try placing an order.
-                </div>
-              }
+              subheader="When events are fired (like placing an order) they should appear here after a few seconds."
             />
           )
         }

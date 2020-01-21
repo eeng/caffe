@@ -16,6 +16,7 @@ defmodule Caffe.Authorization.Policies.OrderingPolicy do
       :pay_order,
       :get_order,
       :list_orders,
+      :list_kitchen_orders,
       :get_stats,
       :get_activity_feed
     ]
@@ -56,7 +57,7 @@ defmodule Caffe.Authorization.Policies.OrderingPolicy do
   def authorize(:list_orders, %User{}, _), do: true
 
   def authorize(employee_action, %User{role: role}, _)
-      when employee_action in [:get_stats, :get_activity_feed] do
+      when employee_action in [:list_kitchen_orders, :get_stats, :get_activity_feed] do
     role != "customer"
   end
 

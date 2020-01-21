@@ -14,7 +14,7 @@ function PrivateRoute({ permission, children, ...rest }: Props) {
   const previousStatus = useRef<AuthStatus>();
   useEffect(() => {
     previousStatus.current = status;
-  });
+  }, [status]);
 
   return (
     <Route

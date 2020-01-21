@@ -1,5 +1,5 @@
 defmodule Caffe.Ordering.Projections.Item do
-  use Caffe.Schema
+  use Ecto.Schema
   import Ecto.Changeset
   alias Caffe.Ordering.Projections.Order
 
@@ -7,10 +7,8 @@ defmodule Caffe.Ordering.Projections.Item do
     use Exnumerator, values: ["pending", "preparing", "prepared", "served"]
   end
 
-  @primary_key false
-
   schema "order_items" do
-    belongs_to :order, Order
+    belongs_to :order, Order, type: :binary_id
     field :menu_item_id, :integer
     field :menu_item_name, :string
     field :state, State, default: "pending"
