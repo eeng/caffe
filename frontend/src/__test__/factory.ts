@@ -64,6 +64,7 @@ export function user(fields?: Partial<User>): User {
     name: "User name",
     email: "user@acme.com",
     permissions: [],
+    role: "CUSTOMER",
     ...fields
   };
 }

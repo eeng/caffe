@@ -1,11 +1,11 @@
 import { QueryResult } from "@apollo/client";
-import React, { ReactElement } from "react";
+import React from "react";
 import APIError from "./APIError";
 import SectionLoader from "./SectionLoader";
 
 type Props<TData> = {
   result: QueryResult<TData>;
-  render: (data: TData) => ReactElement;
+  render: (data: TData) => React.ReactNode;
 };
 
 // Simplifies the handling of the loading and error states of GraphQL queries

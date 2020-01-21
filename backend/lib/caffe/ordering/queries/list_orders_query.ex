@@ -11,6 +11,7 @@ defmodule Caffe.Ordering.Queries.ListOrdersQuery do
       {:order, order}, query -> query |> order_by({^order, :order_date})
       {:customer_id, customer_id}, query -> query |> where(customer_id: ^customer_id)
     end)
+    |> limit(100)
   end
 
   defp add_customer_filter(params, %{role: "customer", id: id}),

@@ -3,6 +3,7 @@ export interface OrderItem {
   menuItemId: string;
   menuItemName: string;
   price: number;
+  state?: "pending" | "preparing";
 }
 
 export interface Order {

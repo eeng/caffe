@@ -1,17 +1,18 @@
 import React, { Fragment } from "react";
-import { Redirect, Route, Switch } from "react-router-dom";
+import { Route, Switch } from "react-router-dom";
 import { SemanticToastContainer } from "react-semantic-toasts";
 import "react-semantic-toasts/styles/react-semantic-alert.css";
 import LoginPage from "../accounts/LoginPage";
 import ConfigPage from "../configuration/ConfigPage";
+import ActivityFeedPage from "../ordering/activities/ActivityFeedPage";
 import OrderDetailsPage from "../ordering/OrderDetailsPage";
 import OrdersPage from "../ordering/OrdersPage";
 import PlaceOrderPage from "../ordering/placing/PlaceOrderPage";
+import HomePageSelector from "./HomePageSelector";
 import NotFoundPage from "./NotFoundPage";
 import PrivateRoute from "./PrivateRoute";
-import { useAuth } from "/accounts/AuthProvider";
+import KitchenPage from "/ordering/kitchen/KitchenPage";
 import DashboardPage from "/reports/DashboardPage";
-import ActivityFeedPage from "../ordering/activities/ActivityFeedPage";
 
 const Routes = () => (
   <Fragment>
@@ -31,6 +32,9 @@ const Routes = () => (
       <PrivateRoute path="/orders">
         <OrdersPage />
       </PrivateRoute>
+      <PrivateRoute path="/kitchen">
+        <KitchenPage />
+      </PrivateRoute>
       <PrivateRoute path="/activity_feed" permission="get_activity_feed">
         <ActivityFeedPage />
       </PrivateRoute>
@@ -47,12 +51,5 @@ const Routes = () => (
     <SemanticToastContainer position="bottom-right" />
   </Fragment>
 );
-
-function HomePageSelector() {
-  const { can } = useAuth();
-  const homePage = can("get_stats") ? "/dashboard" : "/place_order";
-
-  return <Redirect to={homePage} />;
-}
 
 export default Routes;

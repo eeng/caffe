@@ -24,9 +24,9 @@ defmodule Caffe.Authorization.Policies.OrderingPolicy do
 
   def authorize(:place_order, %User{}, _), do: true
 
-  def authorize(:mark_items_served, %User{role: "waitstaff"}, _), do: true
-  def authorize(:begin_food_preparation, %User{role: "chef"}, _), do: true
-  def authorize(:mark_food_prepared, %User{role: "chef"}, _), do: true
+  def authorize(:mark_items_served, %User{role: role}, _), do: role in ~w[waitstaff admin]
+  def authorize(:begin_food_preparation, %User{role: role}, _), do: role in ~w[chef admin]
+  def authorize(:mark_food_prepared, %User{role: role}, _), do: role in ~w[chef admin]
   def authorize(:pay_order, %User{}, _), do: true
 
   def authorize(:cancel_order, %User{role: "customer", id: user_id}, %Order{

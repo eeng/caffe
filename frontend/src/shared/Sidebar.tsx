@@ -20,18 +20,21 @@ export function Sidebar() {
         {can("place_order") && (
           <Menu.Item
             content="Place Order"
-            icon="food"
+            icon="cart"
             as={NavLink}
             to="/place_order"
           />
         )}
         {can("list_orders") && (
           <Menu.Item
-            content="My Orders"
+            content="Orders"
             icon="list alternate"
             as={NavLink}
             to="/orders"
           />
+        )}
+        {can("list_kitchen_orders") && (
+          <Menu.Item content="Kitchen" icon="food" as={NavLink} to="/kitchen" />
         )}
         {can("get_activity_feed") && (
           <Menu.Item

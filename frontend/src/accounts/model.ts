@@ -1,9 +1,9 @@
-type Role = "ADMIN" | "CHEF" | "WAITSTAFF" | "CASHIER" | "CUSTOMER";
+export type Role = "ADMIN" | "CHEF" | "WAITSTAFF" | "CASHIER" | "CUSTOMER";
 
 export type User = {
   id: string;
   email: string;
   name: string;
-  role?: Role;
+  role: Role;
   permissions: string[];
 };

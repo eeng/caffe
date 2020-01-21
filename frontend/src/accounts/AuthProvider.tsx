@@ -36,7 +36,7 @@ const AuthContext = React.createContext<Auth>({
   can: _ => false
 });
 
-const USER_FIELDS = "id name email permissions";
+const USER_FIELDS = "id name email role permissions";
 
 export const LOGIN_MUTATION = gql`
   mutation($email: String!, $password: String!) {

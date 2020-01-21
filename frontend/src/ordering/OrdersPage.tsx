@@ -27,7 +27,7 @@ function OrdersPage() {
   const result = useQuery<{ orders: OrderDetails[] }>(MY_ORDERS_QUERY);
 
   return (
-    <Page title="My Orders">
+    <Page title="Orders">
       <QueryResultWrapper
         result={result}
         render={data =>
