@@ -17,6 +17,8 @@ defmodule Caffe.Authorization.Policies.OrderingPolicy do
       :get_order,
       :list_orders,
       :list_kitchen_orders,
+      :list_waitstaff_orders,
+      :serve_item,
       :get_stats,
       :get_activity_feed
     ]
@@ -25,6 +27,9 @@ defmodule Caffe.Authorization.Policies.OrderingPolicy do
   def authorize(:place_order, %User{}, _), do: true
 
   def authorize(:mark_items_served, %User{role: role}, _), do: role in ~w[waitstaff admin]
+  def authorize(:serve_item, _, %{is_drink: true, state: "pending"}), do: true
+  def authorize(:serve_item, _, %{is_drink: false, state: "prepared"}), do: true
+
   def authorize(:begin_food_preparation, %User{role: role}, _), do: role in ~w[chef admin]
   def authorize(:mark_food_prepared, %User{role: role}, _), do: role in ~w[chef admin]
   def authorize(:pay_order, %User{}, _), do: true
@@ -56,8 +61,13 @@ defmodule Caffe.Authorization.Policies.OrderingPolicy do
 
   def authorize(:list_orders, %User{}, _), do: true
 
+  def authorize(:list_kitchen_orders, %User{role: role}, _), do: role in ~w[chef cashier admin]
+
+  def authorize(:list_waitstaff_orders, %User{role: role}, _),
+    do: role in ~w[waitstaff cashier admin]
+
   def authorize(employee_action, %User{role: role}, _)
-      when employee_action in [:list_kitchen_orders, :get_stats, :get_activity_feed] do
+      when employee_action in [:get_stats, :get_activity_feed] do
     role != "customer"
   end
 

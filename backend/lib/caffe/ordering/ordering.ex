@@ -12,7 +12,8 @@ defmodule Caffe.Ordering do
     ListOrdersQuery,
     StatsQuery,
     ActivityFeedQuery,
-    KitchenOrdersQuery
+    KitchenOrdersQuery,
+    WaitstaffOrdersQuery
   }
 
   @doc """
@@ -115,6 +116,10 @@ defmodule Caffe.Ordering do
 
   def kitchen_orders do
     KitchenOrdersQuery.new() |> Repo.all()
+  end
+
+  def waitstaff_orders do
+    WaitstaffOrdersQuery.new() |> Repo.all()
   end
 
   def get_stats(params \\ %{}) do

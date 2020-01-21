@@ -22,9 +22,9 @@ defmodule Caffe.Seeds do
         role: "chef"
       },
       %User{
-        email: "will@caffe.com",
+        email: "wendy@caffe.com",
         password: Password.hash("secret"),
-        name: "Will (Waiter)",
+        name: "Wendy (Waiter)",
         role: "waitstaff"
       },
       %User{

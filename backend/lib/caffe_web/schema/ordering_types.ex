@@ -24,6 +24,7 @@ defmodule CaffeWeb.Schema.OrderingTypes do
     field :quantity, :integer
     field :price, :decimal
     field :state, :string
+    field :viewer_can_serve, :boolean, resolve: can?(:serve_item)
   end
 
   object :stats do
@@ -103,6 +104,11 @@ defmodule CaffeWeb.Schema.OrderingTypes do
     field :kitchen_orders, list_of(:order) do
       middleware Middleware.Authorize, :list_kitchen_orders
       resolve &Resolvers.Ordering.list_kitchen_orders/3
+    end
+
+    field :waitstaff_orders, list_of(:order) do
+      middleware Middleware.Authorize, :list_waitstaff_orders
+      resolve &Resolvers.Ordering.list_waitstaff_orders/3
     end
 
     field :stats, :stats do

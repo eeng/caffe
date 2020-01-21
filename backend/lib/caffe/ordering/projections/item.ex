@@ -14,10 +14,11 @@ defmodule Caffe.Ordering.Projections.Item do
     field :state, State, default: "pending"
     field :price, :decimal
     field :quantity, :integer
+    field :is_drink, :boolean, default: false
   end
 
   def changeset(item, params) do
     item
-    |> cast(params, [:menu_item_id, :menu_item_name, :price, :quantity, :state])
+    |> cast(params, [:menu_item_id, :menu_item_name, :price, :quantity, :state, :is_drink])
   end
 end

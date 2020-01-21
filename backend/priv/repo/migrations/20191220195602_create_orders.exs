@@ -21,6 +21,7 @@ defmodule Caffe.Repo.Migrations.CreateOrders do
       add :order_id, references(:orders, type: :uuid)
       add :menu_item_id, :integer
       add :menu_item_name, :string
+      add :is_drink, :boolean, null: false
       add :price, :decimal
       add :state, :string
       add :quantity, :integer

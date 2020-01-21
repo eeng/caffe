@@ -7,7 +7,7 @@ import QueryResultWrapper from "../shared/QueryResultWrapper";
 import Result from "../shared/Result";
 import CancelOrderButton from "./CancelOrderButton";
 import { OrderDetails } from "./model";
-import OrderState from "./OrderState";
+import OrderStateLabel from "./OrderStateLabel";
 import { formatCurrency, formatDistanceToNow } from "/lib/format";
 
 export const MY_ORDERS_QUERY = gql`
@@ -74,7 +74,7 @@ function OrderList({ orders }: { orders: OrderDetails[] }) {
             </Table.Cell>
             <Table.Cell>{formatDistanceToNow(order.orderDate)}</Table.Cell>
             <Table.Cell textAlign="center">
-              <OrderState order={order} />
+              <OrderStateLabel order={order} />
             </Table.Cell>
             <Table.Cell textAlign="right">
               {formatCurrency(order.orderAmount)}

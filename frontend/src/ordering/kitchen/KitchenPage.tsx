@@ -8,6 +8,7 @@ import MarkAsPreparedButton from "./MarkAsPreparedButton";
 import Page from "/shared/Page";
 import QueryResultWrapper from "/shared/QueryResultWrapper";
 import Result from "/shared/Result";
+import PreparingLabel from "../waitstaff/PreparingLabel";
 
 const KITCHEN_ORDERS_QUERY = gql`
   query KitchenOrders {
@@ -64,12 +65,7 @@ function KitchenOrder({ order }: { order: OrderDetails }) {
             <div className="description">
               <div className="quantity">{item.quantity} x</div>
               <div className="name">{item.menuItemName}</div>
-              {item.state == "preparing" && (
-                <Label>
-                  <Icon name="spinner" loading />
-                  Preparing
-                </Label>
-              )}
+              <PreparingLabel item={item} />
             </div>
             <div className="actions">
               <BeginPreparationButton item={item} order={order} />

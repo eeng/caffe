@@ -6,7 +6,7 @@ import GoBackButton from "../shared/GoBackButton";
 import Page from "../shared/Page";
 import QueryResultWrapper from "../shared/QueryResultWrapper";
 import { Order, OrderDetails } from "./model";
-import OrderState from "./OrderState";
+import OrderStateLabel from "./OrderStateLabel";
 import { formatCurrency, formatDateTime } from "/lib/format";
 import CancelOrderButton from "./CancelOrderButton";
 
@@ -62,7 +62,7 @@ const OrderDetails = ({ order }: { order: OrderDetails }) => (
         <Table.Row>
           <Table.Cell>State</Table.Cell>
           <Table.Cell>
-            <OrderState order={order} />
+            <OrderStateLabel order={order} />
           </Table.Cell>
         </Table.Row>
         <Table.Row>

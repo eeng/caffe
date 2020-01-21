@@ -4,7 +4,7 @@
   height: 100vh;
   background-color: @backgroundColor;
   display: grid;
-  grid-template-rows: 60px 1fr;
+  grid-template-rows: 60px minmax(0, 1fr); // The minmax fixes an issue a Safari that scrolls to the top when focusing a button
   grid-template-columns: 250px 1fr;
 
   .PageHeader,

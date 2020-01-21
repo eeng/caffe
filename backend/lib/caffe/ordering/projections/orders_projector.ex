@@ -28,7 +28,7 @@ defmodule Caffe.Ordering.Projections.OrdersProjector do
   end
 
   project %ItemsServed{} = evt, fn multi ->
-    update_items_state(multi, evt, "served")
+    multi |> update_items_state(evt, "served") |> mark_order_as_served(evt)
   end
 
   project %FoodBeingPrepared{} = evt, fn multi ->
@@ -54,12 +54,31 @@ defmodule Caffe.Ordering.Projections.OrdersProjector do
   end
 
   project %OrderCancelled{order_id: order_id}, fn multi ->
-    query = from o in Order, where: o.id == ^order_id
-    Multi.update_all(multi, :update, query, set: [state: "cancelled"])
+    set_order_state(multi, order_id, "cancelled")
   end
 
   defp update_items_state(multi, %{order_id: order_id, item_ids: item_ids}, state) do
     query = from i in Item, where: i.order_id == ^order_id and i.menu_item_id in ^item_ids
-    Multi.update_all(multi, :update, query, set: [state: state])
+    Multi.update_all(multi, :update_items_state, query, set: [state: state])
+  end
+
+  defp set_order_state(multi, order_id, state) do
+    query = from o in Order, where: o.id == ^order_id
+    Multi.update_all(multi, :update_order_state, query, set: [state: state])
+  end
+
+  defp mark_order_as_served(multi, %{order_id: order_id, item_ids: item_ids}) do
+    all_served? =
+      from(i in Item,
+        where: i.order_id == ^order_id and i.menu_item_id not in ^item_ids,
+        select: i.state
+      )
+      |> Repo.all()
+      |> Enum.all?(&(&1 == "served"))
+
+    case all_served? do
+      true -> multi |> set_order_state(order_id, "served")
+      false -> multi
+    end
   end
 end

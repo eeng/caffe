@@ -36,6 +36,14 @@ export function Sidebar() {
         {can("list_kitchen_orders") && (
           <Menu.Item content="Kitchen" icon="food" as={NavLink} to="/kitchen" />
         )}
+        {can("list_waitstaff_orders") && (
+          <Menu.Item
+            content="Waitstaff"
+            icon="coffee"
+            as={NavLink}
+            to="/waitstaff"
+          />
+        )}
         {can("get_activity_feed") && (
           <Menu.Item
             content="Activity Feed"

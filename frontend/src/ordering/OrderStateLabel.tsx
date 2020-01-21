@@ -3,10 +3,11 @@ import { Label, SemanticCOLORS } from "semantic-ui-react";
 import { OrderDetails } from "./model";
 
 const STATE_COLORS: Record<string, SemanticCOLORS> = {
-  cancelled: "red"
+  cancelled: "red",
+  served: "purple"
 };
 
-function OrderState({ order }: { order: OrderDetails }) {
+function OrderStateLabel({ order }: { order: OrderDetails }) {
   return (
     <Label
       content={order.state.toUpperCase()}
@@ -16,4 +17,4 @@ function OrderState({ order }: { order: OrderDetails }) {
   );
 }
 
-export default OrderState;
+export default OrderStateLabel;

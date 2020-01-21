@@ -13,6 +13,7 @@ import NotFoundPage from "./NotFoundPage";
 import PrivateRoute from "./PrivateRoute";
 import KitchenPage from "/ordering/kitchen/KitchenPage";
 import DashboardPage from "/reports/DashboardPage";
+import WaitstaffPage from "/ordering/waitstaff/WaitstaffPage";
 
 const Routes = () => (
   <Fragment>
@@ -34,6 +35,9 @@ const Routes = () => (
       </PrivateRoute>
       <PrivateRoute path="/kitchen">
         <KitchenPage />
+      </PrivateRoute>
+      <PrivateRoute path="/waitstaff">
+        <WaitstaffPage />
       </PrivateRoute>
       <PrivateRoute path="/activity_feed" permission="get_activity_feed">
         <ActivityFeedPage />

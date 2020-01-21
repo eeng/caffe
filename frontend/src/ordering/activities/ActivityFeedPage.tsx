@@ -39,7 +39,8 @@ function ActivityFeedPage() {
             <ActivityFeed activities={data.activities} />
           ) : (
             <Result
-              header="No activities yet"
+              icon="ban"
+              header="No Activity"
               subheader="When events are fired (like placing an order) they should appear here after a few seconds."
             />
           )

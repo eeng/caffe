@@ -3,7 +3,8 @@ export interface OrderItem {
   menuItemId: string;
   menuItemName: string;
   price: number;
-  state?: "pending" | "preparing";
+  state?: "pending" | "preparing" | "prepared" | "served";
+  viewerCanServe?: boolean;
 }
 
 export interface Order {
@@ -14,7 +15,7 @@ export interface Order {
 export interface OrderDetails extends Order {
   id: string;
   orderAmount: number;
-  state: "pending" | "cancelled" | "paid";
+  state: "pending" | "cancelled" | "served" | "paid";
   orderDate: string;
   code: string;
   viewerCanCancel?: boolean;

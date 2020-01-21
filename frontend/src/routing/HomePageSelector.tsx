@@ -7,7 +7,7 @@ const HOME_ROUTE_BY_ROLE: Record<Role, string> = {
   ADMIN: "/dashboard",
   CHEF: "/kitchen",
   CASHIER: "/dashboard",
-  WAITSTAFF: "/orders",
+  WAITSTAFF: "/waitstaff",
   CUSTOMER: "/place_order"
 };
 

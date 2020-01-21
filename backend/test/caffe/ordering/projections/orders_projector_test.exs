@@ -14,6 +14,16 @@ defmodule Caffe.Ordering.Projections.OrdersProjectorTest do
     assert ["pending", "pending"] == item_states_of_order(order2)
   end
 
+  test "ItemsServed event should move the order to served state when all items were served" do
+    %{id: order} = insert!(:order, items: [%{menu_item_id: 1}, %{menu_item_id: 2}])
+
+    assert :ok = handle_event(%ItemsServed{order_id: order, item_ids: [1]})
+    assert %{state: "pending"} = Order |> Repo.get(order)
+
+    assert :ok = handle_event(%ItemsServed{order_id: order, item_ids: [2]})
+    assert %{state: "served"} = Order |> Repo.get(order)
+  end
+
   test "OrderPaid should update the tab state and amounts" do
     %{id: order_id} = insert!(:order)
 

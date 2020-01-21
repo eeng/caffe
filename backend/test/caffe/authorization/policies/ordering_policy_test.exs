@@ -53,10 +53,36 @@ defmodule Caffe.Authorization.Policies.OrderingPolicyTest do
   end
 
   describe "list_kitchen_orders" do
-    test "all employees can view the kitchen's orders" do
+    test "all employees except the waitstaff can view the kitchen's orders" do
       assert Authorizer.authorize?(:list_kitchen_orders, %User{role: "chef"})
       assert Authorizer.authorize?(:list_kitchen_orders, %User{role: "admin"})
       refute Authorizer.authorize?(:list_kitchen_orders, %User{role: "customer"})
+      refute Authorizer.authorize?(:list_kitchen_orders, %User{role: "waitstaff"})
+    end
+  end
+
+  describe "list_waitstaff_orders" do
+    test "all employees except the chefs can view the waitstaff's orders" do
+      refute Authorizer.authorize?(:list_waitstaff_orders, %User{role: "chef"})
+      assert Authorizer.authorize?(:list_waitstaff_orders, %User{role: "admin"})
+      refute Authorizer.authorize?(:list_waitstaff_orders, %User{role: "customer"})
+      assert Authorizer.authorize?(:list_waitstaff_orders, %User{role: "waitstaff"})
+    end
+  end
+
+  describe "serve_item" do
+    test "a drink can be served on pending state" do
+      user = %User{role: "waitstaff"}
+      assert Authorizer.authorize?(:serve_item, user, %{is_drink: true, state: "pending"})
+      refute Authorizer.authorize?(:serve_item, user, %{is_drink: true, state: "served"})
+    end
+
+    test "a food can be served on prepared state" do
+      user = %User{role: "waitstaff"}
+      assert Authorizer.authorize?(:serve_item, user, %{is_drink: false, state: "prepared"})
+      refute Authorizer.authorize?(:serve_item, user, %{is_drink: false, state: "preparing"})
+      refute Authorizer.authorize?(:serve_item, user, %{is_drink: false, state: "pending"})
+      refute Authorizer.authorize?(:serve_item, user, %{is_drink: false, state: "served"})
     end
   end
 
