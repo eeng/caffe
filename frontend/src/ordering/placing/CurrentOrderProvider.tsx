@@ -1,5 +1,6 @@
 import React, { useContext, useReducer } from "react";
-import { Action, NEW_ORDER, Order, reducer } from "./model";
+import { Action, NEW_ORDER, reducer } from "./model";
+import { Order } from "../model";
 
 export type CurrentOrderContextType = {
   order: Order;

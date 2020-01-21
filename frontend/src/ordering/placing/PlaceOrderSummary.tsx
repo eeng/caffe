@@ -10,14 +10,14 @@ import {
   TextArea,
   TextAreaProps
 } from "semantic-ui-react";
-import GoBackButton from "../shared/GoBackButton";
-import Page from "../shared/Page";
-import Result from "../shared/Result";
+import GoBackButton from "../../shared/GoBackButton";
+import Page from "../../shared/Page";
+import Result from "../../shared/Result";
 import {
   CurrentOrderContextType,
   useCurrentOrder
 } from "./CurrentOrderProvider";
-import { isOrderEmpty, Order, OrderItem, orderTotalAmount } from "./model";
+import { isOrderEmpty, Order, OrderItem, orderTotalAmount } from "../model";
 import "./PlaceOrderSummary.less";
 import { formatCurrency } from "/lib/format";
 

@@ -6,7 +6,7 @@ import LoginPage from "../accounts/LoginPage";
 import ConfigPage from "../configuration/ConfigPage";
 import OrderDetailsPage from "../ordering/OrderDetailsPage";
 import OrdersPage from "../ordering/OrdersPage";
-import PlaceOrderPage from "../ordering/PlaceOrderPage";
+import PlaceOrderPage from "../ordering/placing/PlaceOrderPage";
 import NotFoundPage from "./NotFoundPage";
 import PrivateRoute from "./PrivateRoute";
 import { useAuth } from "/accounts/AuthProvider";

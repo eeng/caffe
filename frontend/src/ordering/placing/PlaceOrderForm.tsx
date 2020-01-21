@@ -9,17 +9,18 @@ import {
   Segment,
   Transition
 } from "semantic-ui-react";
-import { Category, MenuItem } from "../configuration/model";
-import Page from "../shared/Page";
-import QueryResultWrapper from "../shared/QueryResultWrapper";
+import { Category, MenuItem } from "../../configuration/model";
+import Page from "../../shared/Page";
+import QueryResultWrapper from "../../shared/QueryResultWrapper";
 import {
   CurrentOrderContextType,
   useCurrentOrder
 } from "./CurrentOrderProvider";
-import { Action, Order, OrderItem, orderTotalQty } from "./model";
+import { Order, OrderItem, orderTotalQty } from "../model";
 import "./PlaceOrderForm.less";
 import { formatCurrency } from "/lib/format";
 import _ from "lodash";
+import { Action } from "./model";
 
 function PlaceOrderForm() {
   const state = useCurrentOrder();
