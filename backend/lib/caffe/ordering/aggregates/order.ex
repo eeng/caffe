@@ -34,12 +34,17 @@ defmodule Caffe.Ordering.Aggregates.Order do
   def execute(_, %PlaceOrder{}), do: {:error, :order_already_placed}
 
   def execute(%Order{id: order_id} = order, %MarkItemsServed{order_id: order_id} = cmd) do
-    execute_validating_multiple_items(
-      order,
-      cmd,
-      &validate_mark_item_served/1,
-      ItemsServed
-    )
+    result =
+      execute_validating_multiple_items(
+        order,
+        cmd,
+        &validate_mark_item_served/1,
+        ItemsServed
+      )
+
+    with %ItemsServed{} = event <- result do
+      %{event | order_fully_served: order_fully_served?(order, event)}
+    end
   end
 
   def execute(%Order{id: order_id} = order, %BeginFoodPreparation{order_id: order_id} = cmd) do
@@ -148,6 +153,10 @@ defmodule Caffe.Ordering.Aggregates.Order do
       end)
 
     %{command | order_amount: total}
+  end
+
+  defp order_fully_served?(%Order{items: items}, %ItemsServed{item_ids: item_ids}) do
+    items |> Enum.reject(&(&1.menu_item_id in item_ids)) |> Enum.all?(&(&1.state == "served"))
   end
 
   def apply(%Order{}, %OrderPlaced{order_id: id, items: items, order_amount: order_amount}) do

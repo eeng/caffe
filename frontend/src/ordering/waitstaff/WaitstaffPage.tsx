@@ -75,7 +75,7 @@ function WaitstaffOrder({ order }: { order: OrderDetails }) {
               <div className="price">{formatCurrency(item.price)}</div>
 
               <PreparingLabel item={item} />
-              <ToBePreparedLabel item={item} />
+              <RequiresCookingLabel item={item} />
               <ServedLabel item={item} />
             </div>
 
@@ -97,9 +97,9 @@ function WaitstaffOrder({ order }: { order: OrderDetails }) {
   );
 }
 
-const ToBePreparedLabel = ({ item }: { item: OrderItem }) =>
+const RequiresCookingLabel = ({ item }: { item: OrderItem }) =>
   item.state == "pending" && !item.viewerCanServe ? (
-    <Label content="To be prepared..." />
+    <Label content="Requires Cooking" />
   ) : null;
 
 const ServedLabel = ({ item }: { item: OrderItem }) =>

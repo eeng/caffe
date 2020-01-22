@@ -16,6 +16,7 @@ defmodule Caffe.Repo.Migrations.CreateOrders do
     end
 
     create index(:orders, [:order_date, :state])
+    create index(:orders, :state)
 
     create table(:order_items) do
       add :order_id, references(:orders, type: :uuid)

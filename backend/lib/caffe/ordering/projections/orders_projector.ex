@@ -67,18 +67,9 @@ defmodule Caffe.Ordering.Projections.OrdersProjector do
     Multi.update_all(multi, :update_order_state, query, set: [state: state])
   end
 
-  defp mark_order_as_served(multi, %{order_id: order_id, item_ids: item_ids}) do
-    all_served? =
-      from(i in Item,
-        where: i.order_id == ^order_id and i.menu_item_id not in ^item_ids,
-        select: i.state
-      )
-      |> Repo.all()
-      |> Enum.all?(&(&1 == "served"))
-
-    case all_served? do
-      true -> multi |> set_order_state(order_id, "served")
-      false -> multi
-    end
+  defp mark_order_as_served(multi, %{order_id: order_id, order_fully_served: true}) do
+    set_order_state(multi, order_id, "served")
   end
+
+  defp mark_order_as_served(multi, %{order_fully_served: false}), do: multi
 end

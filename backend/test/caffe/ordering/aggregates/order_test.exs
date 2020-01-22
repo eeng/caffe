@@ -99,7 +99,28 @@ defmodule Caffe.Ordering.Aggregates.OrderTest do
           %FoodPrepared{order_id: @order_id, item_ids: [fish.menu_item_id]}
         ],
         %MarkItemsServed{order_id: @order_id, item_ids: [fish.menu_item_id]},
-        %ItemsServed{order_id: @order_id, item_ids: [fish.menu_item_id]}
+        %ItemsServed{order_id: @order_id, item_ids: [fish.menu_item_id], order_fully_served: true}
+      )
+    end
+
+    test "the event should indicate when all items were served", %{wine: wine, beer: beer} do
+      assert_result(
+        %OrderPlaced{order_id: @order_id, items: [wine, beer]},
+        %MarkItemsServed{order_id: @order_id, item_ids: [wine.menu_item_id]},
+        %ItemsServed{
+          order_fully_served: false,
+          order_id: @order_id,
+          item_ids: [wine.menu_item_id]
+        }
+      )
+
+      assert_result(
+        [
+          %OrderPlaced{order_id: @order_id, items: [wine, beer]},
+          %ItemsServed{order_id: @order_id, item_ids: [wine.menu_item_id]}
+        ],
+        %MarkItemsServed{order_id: @order_id, item_ids: [beer.menu_item_id]},
+        %ItemsServed{order_fully_served: true, order_id: @order_id, item_ids: [beer.menu_item_id]}
       )
     end
 
