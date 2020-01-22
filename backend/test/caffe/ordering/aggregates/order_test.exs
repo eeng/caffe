@@ -58,7 +58,7 @@ defmodule Caffe.Ordering.Aggregates.OrderTest do
 
     test "should calculate the total amount" do
       {_, %OrderPlaced{order_amount: total}} =
-        execute2(%Order{}, %PlaceOrder{
+        execute(%Order{}, %PlaceOrder{
           items: [
             %OrderedItem{price: Decimal.new(10), quantity: 4},
             %OrderedItem{price: Decimal.new(30), quantity: 2}
@@ -175,7 +175,7 @@ defmodule Caffe.Ordering.Aggregates.OrderTest do
     end
 
     test "can't mark food not ordered", %{fish: fish, burger: burger} do
-      assert_error(
+      assert_result(
         %OrderPlaced{order_id: @order_id, items: [fish]},
         %MarkFoodPrepared{order_id: @order_id, item_ids: [burger.menu_item_id]},
         {:error, :item_not_ordered}

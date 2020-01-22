@@ -9,37 +9,6 @@ defmodule Caffe.AggregateCase do
     quote bind_quoted: [aggregate: aggregate] do
       @aggregate_module aggregate
 
-      # Assert that the expected events are returned when the given commands have been executed
-      defp assert_events(commands, expected_events) do
-        assert_events([], commands, expected_events)
-      end
-
-      defp assert_events(initial_events, commands, expected_events) do
-        {_aggregate, events, error} =
-          %@aggregate_module{}
-          |> evolve(initial_events)
-          |> execute(commands)
-
-        actual_events = List.wrap(events)
-        expected_events = List.wrap(expected_events)
-
-        assert error == nil
-        assert expected_events == actual_events
-      end
-
-      defp assert_error(commands, expected_error) do
-        assert_error([], commands, expected_error)
-      end
-
-      defp assert_error(initial_events, commands, expected_error) do
-        {_aggregate, _events, error} =
-          %@aggregate_module{}
-          |> evolve(initial_events)
-          |> execute(commands)
-
-        assert error == expected_error
-      end
-
       def assert_result(commands, expected_result) do
         assert_result([], commands, expected_result)
       end
@@ -48,32 +17,16 @@ defmodule Caffe.AggregateCase do
         {_aggregate, events_or_error} =
           %@aggregate_module{}
           |> evolve(initial_events)
-          |> execute2(commands)
+          |> execute(commands)
 
         assert expected_result == events_or_error
-      end
-
-      # Execute one or more commands against an aggregate
-      def execute(aggregate, commands) do
-        commands
-        |> List.wrap()
-        |> Enum.reduce({aggregate, [], nil}, fn
-          command, {aggregate, _events, nil} ->
-            case @aggregate_module.execute(aggregate, command) do
-              {:error, reason} = error -> {aggregate, nil, error}
-              events -> {evolve(aggregate, events), events, nil}
-            end
-
-          _command, {aggregate, _events, _error} = reply ->
-            reply
-        end)
       end
 
       @doc """
       Execute one o more commands against an aggregate.
       Returns a tuple with the new aggregate and the events or error produced.
       """
-      def execute2(aggregate, commands) do
+      def execute(aggregate, commands) do
         commands
         |> List.wrap()
         |> Enum.reduce({aggregate, nil}, fn
