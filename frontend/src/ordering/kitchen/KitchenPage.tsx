@@ -67,8 +67,12 @@ function KitchenOrder({ order }: { order: OrderDetails }) {
             <div className="description">
               <div className="quantity">{item.quantity} x</div>
               <div className="name">{item.menuItemName}</div>
+            </div>
+
+            <div className="labels">
               <PreparingLabel item={item} />
             </div>
+
             <div className="actions">
               <BeginPreparationButton item={item} order={order} />
               <MarkAsPreparedButton item={item} order={order} />

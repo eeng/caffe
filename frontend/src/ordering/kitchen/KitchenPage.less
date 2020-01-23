@@ -34,7 +34,6 @@
       flex: 1;
       display: flex;
       align-items: center;
-      margin-right: 1em;
       .quantity {
         color: #aaa;
         margin-right: 0.5em;
@@ -47,6 +46,13 @@
     .actions {
       button {
         margin: 0;
+      }
+    }
+
+    .actions,
+    .labels {
+      > :first-child {
+        margin-left: 1em;
       }
     }
   }

@@ -75,7 +75,9 @@ function WaitstaffOrder({ order }: { order: OrderDetails }) {
               <div className="quantity">{item.quantity} x</div>
               <div className="name">{item.menuItemName}</div>
               <div className="price">{formatCurrency(item.price)}</div>
+            </div>
 
+            <div className="labels">
               <PreparingLabel item={item} />
               <RequiresCookingLabel item={item} />
               <ServedLabel item={item} />
