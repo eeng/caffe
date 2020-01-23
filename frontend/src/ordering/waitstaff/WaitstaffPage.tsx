@@ -1,14 +1,15 @@
 import { gql, useQuery } from "@apollo/client";
 import React from "react";
-import { Header, Segment, Label, Message } from "semantic-ui-react";
+import { Header, Label, Message, Segment } from "semantic-ui-react";
 import { OrderDetails, OrderItem } from "../model";
+import MarkAsServedButton from "./MarkAsPreparedButton";
+import PayOrderButton from "./PayOrderButton";
 import PreparingLabel from "./PreparingLabel";
 import "./WaitstaffPage.less";
+import { formatCurrency } from "/lib/format";
 import Page from "/shared/Page";
 import QueryResultWrapper from "/shared/QueryResultWrapper";
 import Result from "/shared/Result";
-import MarkAsServedButton from "./MarkAsPreparedButton";
-import { formatCurrency } from "/lib/format";
 
 const WAITSTAFF_ORDERS_QUERY = gql`
   query WaitstaffOrders {
@@ -79,7 +80,7 @@ function WaitstaffOrder({ order }: { order: OrderDetails }) {
 
             <div className="labels">
               <PreparingLabel item={item} />
-              <RequiresCookingLabel item={item} />
+              <RequiresPreparationLabel item={item} />
               <ServedLabel item={item} />
             </div>
 
@@ -90,20 +91,25 @@ function WaitstaffOrder({ order }: { order: OrderDetails }) {
         ))}
       </Segment>
 
-      <Message attached="bottom" warning={isOrderServed}>
+      <Message attached="bottom" error={isOrderServed}>
         {isOrderServed && <Message.Header>Awaiting Payment</Message.Header>}
         <p>
           Total Amount:{" "}
           <span className="total">{formatCurrency(order.orderAmount)}</span>
+          <PayOrderButton
+            order={order}
+            floated="right"
+            refetchQueries={["WaitstaffOrders"]}
+          />
         </p>
       </Message>
     </div>
   );
 }
 
-const RequiresCookingLabel = ({ item }: { item: OrderItem }) =>
+const RequiresPreparationLabel = ({ item }: { item: OrderItem }) =>
   item.state == "pending" && !item.viewerCanServe ? (
-    <Label content="Requires Cooking" />
+    <Label content="Requires Preparation" />
   ) : null;
 
 const ServedLabel = ({ item }: { item: OrderItem }) =>

@@ -5,18 +5,21 @@ import { List, Table } from "semantic-ui-react";
 import GoBackButton from "../shared/GoBackButton";
 import Page from "../shared/Page";
 import QueryResultWrapper from "../shared/QueryResultWrapper";
+import CancelOrderButton from "./CancelOrderButton";
 import { Order, OrderDetails } from "./model";
 import OrderStateLabel from "./OrderStateLabel";
+import PayOrderButton from "./waitstaff/PayOrderButton";
 import { formatCurrency, formatDateTime } from "/lib/format";
-import CancelOrderButton from "./CancelOrderButton";
 
 export const GET_ORDER_QUERY = gql`
-  query($id: ID) {
+  query OrderDetails($id: ID) {
     order(id: $id) {
       id
       code
       state
       orderAmount
+      amountPaid
+      tipAmount
       orderDate
       notes
       viewerCanCancel
@@ -78,13 +81,30 @@ const OrderDetails = ({ order }: { order: OrderDetails }) => (
           </Table.Row>
         )}
         <Table.Row>
-          <Table.Cell>Total</Table.Cell>
+          <Table.Cell>Order Total</Table.Cell>
           <Table.Cell>{formatCurrency(order.orderAmount)}</Table.Cell>
         </Table.Row>
+        {order.amountPaid > 0 && (
+          <Table.Row>
+            <Table.Cell>Amount Paid</Table.Cell>
+            <Table.Cell>{formatCurrency(order.amountPaid)}</Table.Cell>
+          </Table.Row>
+        )}
+        {order.tipAmount > 0 && (
+          <Table.Row>
+            <Table.Cell>Tip</Table.Cell>
+            <Table.Cell>{formatCurrency(order.tipAmount)}</Table.Cell>
+          </Table.Row>
+        )}
       </Table.Body>
     </Table>
 
     <CancelOrderButton order={order} floated="right" />
+    <PayOrderButton
+      order={order}
+      floated="right"
+      refetchQueries={["OrderDetails"]}
+    />
   </>
 );
 

@@ -4,7 +4,8 @@ import { OrderDetails } from "./model";
 
 const STATE_COLORS: Record<string, SemanticCOLORS> = {
   cancelled: "red",
-  served: "purple"
+  served: "purple",
+  paid: "green"
 };
 
 function OrderStateLabel({ order }: { order: OrderDetails }) {

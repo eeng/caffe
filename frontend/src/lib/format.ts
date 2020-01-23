@@ -1,10 +1,10 @@
 import * as dateFns from "date-fns";
 
-export function formatCurrency(number: number) {
+export function formatCurrency(number: number | string) {
   return new Intl.NumberFormat("en", {
     style: "currency",
     currency: "USD"
-  }).format(number);
+  }).format(typeof number == "string" ? parseFloat(number) : number);
 }
 
 export function formatDate(value: string | Date) {

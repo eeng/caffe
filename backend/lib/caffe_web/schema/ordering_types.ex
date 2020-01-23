@@ -11,6 +11,8 @@ defmodule CaffeWeb.Schema.OrderingTypes do
     field :customer_id, :integer
     field :state, :string
     field :order_amount, :decimal
+    field :amount_paid, :decimal
+    field :tip_amount, :decimal
     field :items, list_of(:order_item)
     field :notes, :string
     field :order_date, :datetime

@@ -15,6 +15,8 @@ export interface Order {
 export interface OrderDetails extends Order {
   id: string;
   orderAmount: number;
+  tipAmount: number;
+  amountPaid: number;
   state: "pending" | "cancelled" | "served" | "paid";
   orderDate: string;
   code: string;

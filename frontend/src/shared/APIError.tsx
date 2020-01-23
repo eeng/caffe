@@ -2,7 +2,9 @@ import React from "react";
 import { ApolloError } from "@apollo/client";
 import { Message } from "semantic-ui-react";
 
-function APIError({ error }: { error: ApolloError }) {
+function APIError({ error }: { error: ApolloError | undefined }) {
+  if (!error) return null;
+
   const constainsError = (message: string) =>
     error.graphQLErrors.some(e => e.message == message);
 
