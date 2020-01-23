@@ -37,9 +37,11 @@ function KitchenPage() {
         result={result}
         render={data =>
           data.kitchenOrders.length ? (
-            data.kitchenOrders.map(order => (
-              <KitchenOrder order={order} key={order.id} />
-            ))
+            <div className="orders">
+              {data.kitchenOrders.map(order => (
+                <KitchenOrder order={order} key={order.id} />
+              ))}
+            </div>
           ) : (
             <Result
               icon="ban"

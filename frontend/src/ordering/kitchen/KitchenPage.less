@@ -1,9 +1,17 @@
 .KitchenPage {
-  .order {
-    margin-bottom: 1em;
-  }
-  .items {
-    padding: 0;
+  .orders {
+    display: flex;
+    flex-wrap: wrap;
+
+    .order {
+      margin-bottom: 1em;
+      margin-right: 1em;
+      min-width: 450px;
+
+      .items {
+        padding: 0;
+      }
+    }
   }
 
   .menu-item {
@@ -11,6 +19,7 @@
     align-items: center;
     padding: 0.7em 0.8em;
     height: 57px;
+    white-space: nowrap;
 
     &:not(:last-child) {
       border-bottom: 1px solid #ccc;
@@ -25,6 +34,7 @@
       flex: 1;
       display: flex;
       align-items: center;
+      margin-right: 1em;
       .quantity {
         color: #aaa;
         margin-right: 0.5em;

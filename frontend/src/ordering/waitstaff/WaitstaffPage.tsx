@@ -41,9 +41,11 @@ function WaitstaffPage() {
         result={result}
         render={data =>
           data.waitstaffOrders.length ? (
-            data.waitstaffOrders.map(order => (
-              <WaitstaffOrder order={order} key={order.id} />
-            ))
+            <div className="orders">
+              {data.waitstaffOrders.map(order => (
+                <WaitstaffOrder order={order} key={order.id} />
+              ))}
+            </div>
           ) : (
             <Result
               icon="ban"
