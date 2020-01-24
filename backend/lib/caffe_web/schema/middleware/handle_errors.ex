@@ -1,6 +1,5 @@
 defmodule CaffeWeb.Schema.Middleware.HandleErrors do
   @behaviour Absinthe.Middleware
-  @dialyzer :no_undefined_callbacks
 
   def call(resolution, _) do
     %{resolution | errors: Enum.map(resolution.errors, &transform_error/1)}

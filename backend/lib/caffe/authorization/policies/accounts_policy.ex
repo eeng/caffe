@@ -1,6 +1,5 @@
 defmodule Caffe.Authorization.Policies.AccountsPolicy do
   @behaviour Caffe.Authorization.Authorizer.Policy
-  @dialyzer :no_undefined_callbacks
 
   alias Caffe.Accounts.User
 

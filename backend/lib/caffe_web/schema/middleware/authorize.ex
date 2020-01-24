@@ -1,6 +1,5 @@
 defmodule CaffeWeb.Schema.Middleware.Authorize do
   @behaviour Absinthe.Middleware
-  @dialyzer :no_undefined_callbacks
 
   alias Caffe.Authorization.Authorizer
 
