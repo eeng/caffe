@@ -1,7 +1,4 @@
 defmodule Caffe.Menu do
-  @moduledoc """
-  The Menu bounded context boundary. Implemented with a CRUD approach.
-  """
   import Ecto.Query
 
   alias Caffe.Repo

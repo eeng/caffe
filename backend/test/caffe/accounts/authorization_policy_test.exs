@@ -1,4 +1,4 @@
-defmodule Caffe.Authorization.Policies.AccountsPolicyTest do
+defmodule Caffe.Accounts.AuthorizationPolicyTest do
   use ExUnit.Case, async: true
 
   alias Caffe.Authorization.Authorizer

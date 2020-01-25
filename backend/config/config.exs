@@ -25,6 +25,13 @@ config :logger, :console,
 # Use Jason for JSON parsing in Phoenix
 config :phoenix, :json_library, Jason
 
+config :caffe,
+  authorization_policies: [
+    Caffe.Accounts.AuthorizationPolicy,
+    Caffe.Menu.AuthorizationPolicy,
+    Caffe.Ordering.AuthorizationPolicy
+  ]
+
 config :caffe, event_stores: [Caffe.EventStore]
 
 config :commanded_ecto_projections,

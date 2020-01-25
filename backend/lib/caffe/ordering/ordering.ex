@@ -1,8 +1,4 @@
 defmodule Caffe.Ordering do
-  @moduledoc """
-  The Ordering bounded context boundary.
-  """
-
   alias Caffe.{Router, Repo, Menu}
   alias Caffe.Accounts.User
   alias Caffe.Ordering.Commands

@@ -1,5 +1,5 @@
-defmodule Caffe.Authorization.Policies.MenuPolicy do
-  @behaviour Caffe.Authorization.Authorizer.Policy
+defmodule Caffe.Menu.AuthorizationPolicy do
+  @behaviour Caffe.Authorization.Policy
 
   alias Caffe.Accounts.User
 

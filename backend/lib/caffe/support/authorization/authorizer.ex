@@ -1,12 +1,5 @@
 defmodule Caffe.Authorization.Authorizer do
-  alias Caffe.Authorization.Policies.{AccountsPolicy, MenuPolicy, OrderingPolicy}
-
-  @policies [AccountsPolicy, MenuPolicy, OrderingPolicy]
-
-  defmodule Policy do
-    @callback actions() :: list(atom)
-    @callback authorize(action :: atom, user :: any, params :: any) :: boolean
-  end
+  @policies Application.get_env(:caffe, :authorization_policies, [])
 
   def authorize?(action, user, params \\ nil) do
     if policy = Enum.find(@policies, &(action in &1.actions)) do

@@ -1,4 +1,4 @@
-defmodule Caffe.Authorization.Policies.OrderingPolicyTest do
+defmodule Caffe.Ordering.AuthorizationPolicyTest do
   use Caffe.DataCase, async: true
 
   alias Caffe.Authorization.Authorizer
