@@ -15,7 +15,7 @@ defmodule CaffeWeb.Schema.Context do
          {:ok, user} <- get_user(data) do
       %{current_user: user}
     else
-      _ -> %{}
+      _ -> %{current_user: nil}
     end
   end
 

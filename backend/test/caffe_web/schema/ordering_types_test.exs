@@ -48,12 +48,6 @@ defmodule CaffeWeb.Schema.OrderingTypesTest do
                ]
              } = json_response(conn, 200)
     end
-
-    test "the user must be authenticated" do
-      order = %{items: [%{menu_item_id: insert!(:drink).id, quantity: 1}]}
-      conn = build_conn() |> post("/api", query: @query, variables: order)
-      assert %{"errors" => [%{"message" => "unauthorized"}]} = json_response(conn, 200)
-    end
   end
 
   @query """
@@ -89,19 +83,11 @@ defmodule CaffeWeb.Schema.OrderingTypesTest do
       conn = build_conn(user) |> post("/api", query: @query, variables: %{orderId: order_id})
       assert %{"data" => %{"cancelOrder" => "ok"}} = json_response(conn, 200)
     end
+  end
 
-    test "the user should be authorized" do
-      [cust1, cust2] = insert!(2, :customer)
-      %{id: order_id} = place_order_as(cust1)
-
-      conn = build_conn(cust2) |> post("/api", query: @query, variables: %{orderId: order_id})
-      assert %{"errors" => [%{"message" => "unauthorized"}]} = json_response(conn, 200)
-    end
-
-    defp place_order_as(user, order_args \\ %{items: [%{menu_item_id: insert!(:drink).id}]}) do
-      {:ok, order} = Ordering.place_order(order_args, user)
-      order
-    end
+  defp place_order_as(user, order_args \\ %{items: [%{menu_item_id: insert!(:drink).id}]}) do
+    {:ok, order} = Ordering.place_order(order_args, user)
+    order
   end
 
   @query """

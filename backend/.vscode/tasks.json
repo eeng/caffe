@@ -7,17 +7,13 @@
       "label": "elixir: Run Elixir script",
       "command": "elixir",
       "type": "shell",
-      "args": [
-        "${file}"
-      ],
+      "args": ["${file}"],
       "presentation": {
         "reveal": "always",
         "panel": "dedicated",
         "showReuseMessage": false
       },
-      "problemMatcher": [
-        "$mixCompileError"
-      ]
+      "problemMatcher": ["$mixCompileError"]
     },
     {
       "label": "elixir: Launch IEx session",
@@ -54,9 +50,7 @@
         "showReuseMessage": false,
         "clear": true
       },
-      "problemMatcher": [
-        "$mixCompileError"
-      ]
+      "problemMatcher": ["$mixCompileError"]
     },
     {
       "label": "elixir: Ecto reset",
@@ -68,9 +62,7 @@
         "showReuseMessage": false,
         "clear": true
       },
-      "problemMatcher": [
-        "$mixCompileError"
-      ]
+      "problemMatcher": ["$mixCompileError"]
     },
     {
       "label": "elixir: DB reset",
@@ -82,9 +74,7 @@
         "showReuseMessage": false,
         "clear": true
       },
-      "problemMatcher": [
-        "$mixCompileError"
-      ]
+      "problemMatcher": ["$mixCompileError"]
     },
     {
       "label": "elixir: Ecto migrate",
@@ -96,9 +86,7 @@
         "showReuseMessage": false,
         "clear": true
       },
-      "problemMatcher": [
-        "$mixCompileError"
-      ]
+      "problemMatcher": ["$mixCompileError"]
     },
     {
       "label": "elixir: Get dependencies",
@@ -110,9 +98,7 @@
         "showReuseMessage": false,
         "clear": true
       },
-      "problemMatcher": [
-        "$mixCompileError"
-      ]
+      "problemMatcher": ["$mixCompileError"]
     },
     {
       "label": "elixir: Run all tests",
@@ -124,9 +110,7 @@
         "showReuseMessage": false,
         "clear": true
       },
-      "problemMatcher": [
-        "$mixCompileError"
-      ]
+      "problemMatcher": ["$mixCompileError"]
     },
     {
       "label": "elixir: Run tests in current file",
@@ -138,9 +122,7 @@
         "showReuseMessage": false,
         "clear": true
       },
-      "problemMatcher": [
-        "$mixCompileError"
-      ]
+      "problemMatcher": ["$mixCompileError"]
     },
     {
       "label": "elixir: Run test under cursor",
@@ -152,13 +134,11 @@
         "showReuseMessage": false,
         "clear": true
       },
-      "problemMatcher": [
-        "$mixCompileError"
-      ]
+      "problemMatcher": ["$mixCompileError"]
     },
     {
       "label": "elixir: Run test watcher",
-      "command": "mix test.watch --stale",
+      "command": "mix test.watch --stale --max-failures 1",
       "type": "shell",
       "presentation": {
         "reveal": "always",
@@ -167,9 +147,7 @@
         "clear": true,
         "group": "dev"
       },
-      "problemMatcher": [
-        "$mixCompileError"
-      ]
+      "problemMatcher": ["$mixCompileError"]
     }
   ]
 }

@@ -3,7 +3,6 @@ defmodule CaffeWeb.Schema.MenuTypes do
   import Absinthe.Resolution.Helpers, only: [dataloader: 1]
   alias Caffe.Menu
   alias CaffeWeb.Resolvers
-  alias CaffeWeb.Schema.Middleware
 
   object :menu_item do
     field :id, :id
@@ -51,7 +50,6 @@ defmodule CaffeWeb.Schema.MenuTypes do
       arg :price, non_null(:decimal)
       arg :is_drink, :boolean
       arg :category_id, non_null(:id)
-      middleware Middleware.Authorize, :create_menu_item
       resolve &Resolvers.Menu.create_item/3
     end
 
@@ -62,13 +60,11 @@ defmodule CaffeWeb.Schema.MenuTypes do
       arg :price, :decimal
       arg :is_drink, :boolean
       arg :category_id, :id
-      middleware Middleware.Authorize, :update_menu_item
       resolve &Resolvers.Menu.update_item/3
     end
 
     field :delete_menu_item, :menu_item do
       arg :id, non_null(:id)
-      middleware Middleware.Authorize, :delete_menu_item
       resolve &Resolvers.Menu.delete_item/3
     end
   end

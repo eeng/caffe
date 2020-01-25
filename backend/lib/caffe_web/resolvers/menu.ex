@@ -13,16 +13,16 @@ defmodule CaffeWeb.Resolvers.Menu do
     {:ok, Menu.list_categories()}
   end
 
-  def create_item(_parent, params, _resolution) do
-    Menu.create_item(params)
+  def create_item(_parent, params, %{context: %{current_user: user}}) do
+    Menu.create_item(params, user)
   end
 
-  def update_item(_parent, params, _resolution) do
-    Menu.update_item(params)
+  def update_item(_parent, params, %{context: %{current_user: user}}) do
+    Menu.update_item(params, user)
   end
 
-  def delete_item(_parent, %{id: id}, _resolution) do
-    Menu.delete_item(id)
+  def delete_item(_parent, %{id: id}, %{context: %{current_user: user}}) do
+    Menu.delete_item(id, user)
   end
 
   def image_url(menu_item, _params, _resolution) do

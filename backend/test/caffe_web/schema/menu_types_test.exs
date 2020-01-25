@@ -114,17 +114,6 @@ defmodule CaffeWeb.Schema.MenuTypesTest do
       conn = build_conn() |> post("/api", query: @query, variables: menu_item)
       assert %{"errors" => [_]} = json_response(conn, 200)
     end
-
-    test "should authorize request", %{desserts: desserts} do
-      menu_item = %{
-        "name" => "Ice Cream",
-        "price" => "10.99",
-        "categoryId" => desserts.id
-      }
-
-      conn = build_conn() |> post("/api", query: @query, variables: menu_item)
-      assert %{"errors" => [%{"message" => "unauthorized"}]} = json_response(conn, 200)
-    end
   end
 
   describe "updateMenuItem mutation" do

@@ -3,28 +3,32 @@ defmodule Caffe.Menu do
 
   alias Caffe.Repo
   alias Caffe.Menu.{Item, Category}
+  alias Caffe.Authorization.Authorizer
 
-  def create_item(attrs) do
-    %Item{}
-    |> Item.changeset(attrs)
-    |> Repo.insert()
-  end
-
-  def update_item(attrs) do
-    case get_item(attrs[:id]) do
-      {:ok, item} ->
-        item
-        |> Item.changeset(attrs)
-        |> Repo.update()
-
-      error ->
-        error
+  def create_item(attrs, user) do
+    with :ok <- Authorizer.authorize(:create_menu_item, user) do
+      %Item{}
+      |> Item.changeset(attrs)
+      |> Repo.insert()
     end
   end
 
-  def delete_item(id) do
-    case get_item(id) do
-      {:ok, item} -> Repo.delete(item)
+  def update_item(attrs, user) do
+    with :ok <- Authorizer.authorize(:update_menu_item, user),
+         {:ok, item} <- get_item(attrs[:id]) do
+      item
+      |> Item.changeset(attrs)
+      |> Repo.update()
+    else
+      error -> error
+    end
+  end
+
+  def delete_item(id, user) do
+    with :ok <- Authorizer.authorize(:delete_menu_item, user),
+         {:ok, item} <- get_item(id) do
+      Repo.delete(item)
+    else
       error -> error
     end
   end

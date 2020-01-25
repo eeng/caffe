@@ -31,18 +31,21 @@ defmodule Caffe.Ordering.Queries.KitchenOrdersQueryTest do
         items: [%{fish | state: "preparing"}, %{burger | state: "preparing"}]
       )
 
-    assert [o1.id, o4.id] == Ordering.kitchen_orders() |> Enum.map(& &1.id)
+    assert [o1.id, o4.id] == kitchen_orders() |> Enum.map(& &1.id)
   end
 
   test "preloads the filtered items as well", %{fish: fish, burger: burger, wine: wine} do
     insert!(:order, items: [fish, burger, wine])
 
-    assert [%{items: [%{menu_item_name: "Burger"}, %{menu_item_name: "Fish"}]}] =
-             Ordering.kitchen_orders()
+    assert [%{items: [%{menu_item_name: "Burger"}, %{menu_item_name: "Fish"}]}] = kitchen_orders()
   end
 
   test "only open orders are fetched", %{fish: fish} do
     insert!(:order, state: "cancelled", items: [fish])
-    assert [] == Ordering.kitchen_orders()
+    assert [] == kitchen_orders()
+  end
+
+  defp kitchen_orders do
+    Ordering.list_kitchen_orders(build(:admin))
   end
 end

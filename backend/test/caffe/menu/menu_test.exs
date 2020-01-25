@@ -6,28 +6,35 @@ defmodule Caffe.MenuTest do
   describe "create_item" do
     test "should insert and return the item" do
       dishes = insert!(:category)
-      {:ok, item} = Menu.create_item(%{name: "Salmon", category: dishes, price: 10})
+
+      {:ok, item} =
+        Menu.create_item(%{name: "Salmon", category: dishes, price: 10}, build(:admin))
+
       assert item.id
       assert item.price == Decimal.new(10)
     end
 
     test "should validate the attributes" do
-      {:error, changeset} = Menu.create_item(%{})
+      {:error, changeset} = Menu.create_item(%{}, build(:admin))
       refute changeset.valid?
+    end
+
+    test "should authorize the command" do
+      {:error, :unauthorized} = Menu.create_item(%{}, nil)
     end
   end
 
   describe "update_item" do
     test "with id should update the item" do
       original = insert!(:menu_item, name: "Salmo")
-      {:ok, updated} = Menu.update_item(%{id: original.id, name: "Salmon"})
+      {:ok, updated} = Menu.update_item(%{id: original.id, name: "Salmon"}, build(:admin))
       assert original.id == updated.id
       assert "Salmon" == updated.name
     end
 
     test "with non-existent id" do
       assert {:error, :not_found} =
-               params_for(:menu_item) |> Map.put(:id, -1) |> Menu.update_item()
+               params_for(:menu_item) |> Map.put(:id, -1) |> Menu.update_item(build(:admin))
     end
   end
 

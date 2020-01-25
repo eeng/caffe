@@ -42,6 +42,10 @@ defmodule Caffe.OrderingTest do
 
       assert %Order{customer_id: nil, customer_name: "Mary", items: [_]} = order
     end
+
+    test "authorizes the command" do
+      assert {:error, :unauthorized} = Ordering.place_order(%{}, nil)
+    end
   end
 
   test "cooking, serving and paying an order" do
@@ -68,5 +72,21 @@ defmodule Caffe.OrderingTest do
       Ordering.pay_order(%{order_id: order_id, amount_paid: 29}, cashier)
 
     :ok = Ordering.pay_order(%{order_id: order_id, amount_paid: 30}, cashier)
+  end
+
+  describe "cancel_order" do
+    test "must authorize the command" do
+      [cust1, cust2] = insert!(2, :customer)
+      %{id: order_id} = insert!(:order, customer_id: cust1.id)
+      assert {:error, :unauthorized} = Ordering.cancel_order(%{order_id: order_id}, cust2)
+    end
+  end
+
+  describe "get_order" do
+    test "must authorize the command" do
+      [cust1, cust2] = insert!(2, :customer)
+      %{id: order_id} = insert!(:order, customer_id: cust1.id)
+      assert {:error, :unauthorized} = Ordering.get_order(order_id, cust2)
+    end
   end
 end

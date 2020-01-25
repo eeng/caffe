@@ -3,7 +3,6 @@ defmodule Caffe.Ordering.AuthorizationPolicy do
 
   alias Caffe.Accounts.User
   alias Caffe.Ordering.Projections.Order
-  alias Caffe.Repo
 
   def actions do
     [
@@ -33,30 +32,21 @@ defmodule Caffe.Ordering.AuthorizationPolicy do
   def authorize(:mark_food_prepared, %User{role: role}, _), do: role in ~w[chef admin]
   def authorize(:pay_order, %User{}, _), do: true
 
-  def authorize(:cancel_order, %User{role: "customer", id: user_id}, %Order{
-        customer_id: cust_id,
-        state: state
-      }),
-      do: cust_id == user_id && state == "pending"
+  def authorize(:cancel_order, %User{role: "customer", id: user_id}, %Order{} = order) do
+    %{customer_id: cust_id, state: state} = order
+    cust_id == user_id && state == "pending"
+  end
 
   def authorize(:cancel_order, %User{}, %Order{state: state}),
     do: state == "pending"
 
   def authorize(:cancel_order, _, %Order{}), do: false
 
-  def authorize(:cancel_order, user, %{order_id: order_id}) do
-    authorize(:cancel_order, user, Repo.get(Order, order_id))
-  end
-
   def authorize(:get_order, %User{role: "customer", id: user_id}, %Order{customer_id: cust_id}),
     do: user_id == cust_id
 
   def authorize(:get_order, _, %Order{}), do: true
   def authorize(:get_order, _, nil), do: true
-
-  def authorize(:get_order, user, %{id: id}) do
-    authorize(:get_order, user, Repo.get(Order, id))
-  end
 
   def authorize(:list_orders, %User{}, _), do: true
 

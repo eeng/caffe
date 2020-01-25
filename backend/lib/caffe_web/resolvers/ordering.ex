@@ -25,31 +25,28 @@ defmodule CaffeWeb.Resolvers.Ordering do
     Ordering.cancel_order(params, user) |> ok_result
   end
 
-  def get_order(_parent, %{id: id}, _resolution) do
-    case Ordering.get_order(id) do
-      nil -> {:error, :not_found}
-      order -> {:ok, order}
-    end
+  def get_order(_parent, %{id: id}, %{context: %{current_user: user}}) do
+    Ordering.get_order(id, user)
   end
 
   def list_orders(_parent, params, %{context: %{current_user: user}}) do
     {:ok, Ordering.list_orders(user, params)}
   end
 
-  def list_kitchen_orders(_parent, _params, _resolution) do
-    {:ok, Ordering.kitchen_orders()}
+  def list_kitchen_orders(_parent, _params, %{context: %{current_user: user}}) do
+    {:ok, Ordering.list_kitchen_orders(user)}
   end
 
-  def list_waitstaff_orders(_parent, _params, _resolution) do
-    {:ok, Ordering.waitstaff_orders()}
+  def list_waitstaff_orders(_parent, _params, %{context: %{current_user: user}}) do
+    {:ok, Ordering.list_waitstaff_orders(user)}
   end
 
-  def get_stats(_parent, params, _resolution) do
-    {:ok, Ordering.get_stats(params)}
+  def get_stats(_parent, params, %{context: %{current_user: user}}) do
+    {:ok, Ordering.get_stats(params, user)}
   end
 
-  def get_activity_feed(_parent, _params, _resolution) do
-    {:ok, Ordering.get_activity_feed()}
+  def get_activity_feed(_parent, _params, %{context: %{current_user: user}}) do
+    {:ok, Ordering.get_activity_feed(user)}
   end
 
   def order_code(%{id: id}, _params, _resolution) do

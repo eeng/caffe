@@ -15,14 +15,14 @@ defmodule CaffeWeb.Resolvers.Accounts do
   end
 
   def me(_parent, _params, %{context: %{current_user: user}}) do
-    Accounts.get_user(user.id)
+    Accounts.me(user)
+  end
+
+  def list_users(_parent, _params, %{context: %{current_user: user}}) do
+    Accounts.list_users(user)
   end
 
   def permissions(user, _params, _resolution) do
     {:ok, Authorizer.authorized_actions(user)}
-  end
-
-  def list_users(_parent, _params, _resolution) do
-    {:ok, Accounts.list_users()}
   end
 end

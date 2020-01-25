@@ -15,7 +15,7 @@ defmodule Caffe.Ordering.Queries.WaitstaffOrdersQueryTest do
     insert!(:order, state: "paid", items: [fish])
     insert!(:order, state: "cancelled", items: [fish])
     o4 = insert!(:order, state: "served", items: [fish])
-    assert [o1.id, o4.id] == Ordering.waitstaff_orders() |> Enum.map(& &1.id)
+    assert [o1.id, o4.id] == waitstaff_orders() |> Enum.map(& &1.id)
   end
 
   test "sorts the items putting drinks first and then the food", %{fish: fish, wine: wine} do
@@ -25,6 +25,10 @@ defmodule Caffe.Ordering.Queries.WaitstaffOrdersQueryTest do
     assert [
              %{items: [%{menu_item_name: "Wine"}, %{menu_item_name: "Fish"}]},
              %{items: [%{menu_item_name: "Wine"}, %{menu_item_name: "Fish"}]}
-           ] = Ordering.waitstaff_orders()
+           ] = waitstaff_orders()
+  end
+
+  defp waitstaff_orders do
+    Ordering.list_waitstaff_orders(build(:admin))
   end
 end

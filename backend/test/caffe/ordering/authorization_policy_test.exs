@@ -1,6 +1,6 @@
 defmodule Caffe.Ordering.AuthorizationPolicyTest do
-  use Caffe.DataCase, async: true
-
+  use ExUnit.Case, async: true
+  import Caffe.Factory
   alias Caffe.Authorization.Authorizer
   alias Caffe.Accounts.User
   alias Caffe.Ordering.Projections.Order
@@ -30,12 +30,6 @@ defmodule Caffe.Ordering.AuthorizationPolicyTest do
     test "employees can cancel all orders" do
       user = %User{role: "waitstaff", id: 1}
       assert Authorizer.authorize?(:cancel_order, user, %Order{customer_id: 2})
-    end
-
-    test "if params is a map with the order_id it should retrieve the order from the DB" do
-      user = insert!(:customer)
-      %{id: order_id} = insert!(:order, customer_id: user.id)
-      assert Authorizer.authorize?(:cancel_order, user, %{order_id: order_id})
     end
 
     test "only pending orders can be cancelled" do

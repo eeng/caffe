@@ -44,16 +44,7 @@ defmodule CaffeWeb.Schema.AccountsTypesTest do
     { users { name role } }
   """
   describe "users query" do
-    test "admins can list users" do
-      user = insert!(:admin, name: "Max")
-      conn = build_conn() |> auth_user(user) |> post("/api", query: @query)
-
-      assert %{
-               "data" => %{"users" => [%{"name" => "Max", "role" => "ADMIN"}]}
-             } == json_response(conn, 200)
-    end
-
-    test "other users are not authorized" do
+    test "non-admin users are not authorized" do
       user = insert!(:customer)
 
       conn = build_conn() |> auth_user(user) |> post("/api", query: @query)

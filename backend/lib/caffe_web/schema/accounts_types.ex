@@ -1,7 +1,6 @@
 defmodule CaffeWeb.Schema.AccountsTypes do
   use Absinthe.Schema.Notation
   alias CaffeWeb.Resolvers
-  alias CaffeWeb.Schema.Middleware
 
   object :user do
     field :id, :id
@@ -29,12 +28,10 @@ defmodule CaffeWeb.Schema.AccountsTypes do
 
   object :accounts_queries do
     field :me, :user do
-      middleware Middleware.Authorize, :me
       resolve &Resolvers.Accounts.me/3
     end
 
     field :users, list_of(:user) do
-      middleware Middleware.Authorize, :list_users
       resolve &Resolvers.Accounts.list_users/3
     end
   end
