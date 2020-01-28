@@ -24,6 +24,10 @@ config :caffe, Caffe.Commanded.Application,
 
 config :caffe, Caffe.EventStore, serializer: Commanded.Serialization.JsonSerializer
 
+# Otherwise there were some random background errors in tests where the projector
+# would try to access the connection after the test had finished.
+config :commanded, default_consistency: :strong
+
 config :argon2_elixir,
   t_cost: 1,
   m_cost: 8
