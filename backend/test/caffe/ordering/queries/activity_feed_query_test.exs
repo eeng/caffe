@@ -4,10 +4,10 @@ defmodule Caffe.Ordering.Queries.ActivityFeedQueryTest do
   alias Caffe.Ordering
 
   test "returns the activities sorted by published desc" do
-    %{published: d3} = insert!(:activity, published: ~U[2016-05-24 13:26:08Z])
-    %{published: d1} = insert!(:activity, published: ~U[2016-05-24 13:26:06Z])
-    %{published: d2} = insert!(:activity, published: ~U[2016-05-24 13:26:07Z])
+    a3 = insert!(:activity, published: ~U[2016-05-24 13:26:08Z])
+    a1 = insert!(:activity, published: ~U[2016-05-24 13:26:06Z])
+    a2 = insert!(:activity, published: ~U[2016-05-24 13:26:07Z])
 
-    assert [d3, d2, d1] == Ordering.get_activity_feed(build(:admin)) |> Enum.map(& &1.published)
+    assert_lists_equal [a3, a2, a1], Ordering.get_activity_feed(build(:admin)), by: :published
   end
 end

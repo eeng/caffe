@@ -16,22 +16,12 @@ defmodule Caffe.Ordering.Queries.KitchenOrdersQueryTest do
     burger: burger,
     wine: wine
   } do
-    o1 =
-      insert!(:order,
-        order_date: ~U[2020-01-01 00:00:00Z],
-        items: [%{fish | state: "pending"}, %{burger | state: "served"}]
-      )
-
+    o1 = insert!(:order, items: [%{fish | state: "pending"}, %{burger | state: "served"}])
     _o2 = insert!(:order, items: [%{burger | state: "served"}])
     _o3 = insert!(:order, items: [%{wine | state: "pending"}])
+    o4 = insert!(:order, items: [%{fish | state: "preparing"}, %{burger | state: "preparing"}])
 
-    o4 =
-      insert!(:order,
-        order_date: ~U[2020-01-01 00:00:01Z],
-        items: [%{fish | state: "preparing"}, %{burger | state: "preparing"}]
-      )
-
-    assert [o1.id, o4.id] == kitchen_orders() |> Enum.map(& &1.id)
+    assert_contain_exactly [o1, o4], kitchen_orders(), by: :id
   end
 
   test "preloads the filtered items as well", %{fish: fish, burger: burger, wine: wine} do

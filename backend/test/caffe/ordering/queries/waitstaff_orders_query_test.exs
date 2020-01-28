@@ -15,7 +15,7 @@ defmodule Caffe.Ordering.Queries.WaitstaffOrdersQueryTest do
     insert!(:order, state: "paid", items: [fish])
     insert!(:order, state: "cancelled", items: [fish])
     o4 = insert!(:order, state: "served", items: [fish])
-    assert [o1.id, o4.id] |> Enum.sort() == waitstaff_orders() |> Enum.map(& &1.id) |> Enum.sort()
+    assert_contain_exactly [o1, o4], waitstaff_orders(), by: :id
   end
 
   test "sorts the items putting drinks first and then the food", %{fish: fish, wine: wine} do

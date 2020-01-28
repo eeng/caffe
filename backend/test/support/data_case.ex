@@ -24,6 +24,7 @@ defmodule Caffe.DataCase do
       import Caffe.DataCase
       import Caffe.Factory
       import Caffe.Support.Validation
+      import Caffe.Support.CustomAssertions
     end
   end
 
