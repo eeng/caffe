@@ -8,7 +8,8 @@ import {
   Form,
   Table,
   TextArea,
-  TextAreaProps
+  TextAreaProps,
+  Container
 } from "semantic-ui-react";
 import GoBackButton from "../../shared/GoBackButton";
 import Page from "../../shared/Page";
@@ -41,17 +42,21 @@ function PlaceOrderSummary() {
 
 function OrderDetails({ order, dispatch }: CurrentOrderContextType) {
   return (
-    <>
+    <Container>
       <Table>
         <Table.Body>
           {order.items.map(item => (
             <Table.Row key={item.menuItemId}>
-              <Table.Cell>{item.menuItemName}</Table.Cell>
-              <Table.Cell collapsing textAlign="right">
+              <Table.Cell collapsing>
+                <span className="quantity">{item.quantity} x </span>
+                <span className="item-name">{item.menuItemName}</span>
+              </Table.Cell>
+              <Table.Cell className="item-actions">
                 <Button
                   icon="add"
                   compact
                   basic
+                  circular
                   size="small"
                   onClick={() =>
                     dispatch({
@@ -64,6 +69,7 @@ function OrderDetails({ order, dispatch }: CurrentOrderContextType) {
                   icon="minus"
                   compact
                   basic
+                  circular
                   size="small"
                   disabled={item.quantity == 1}
                   onClick={() =>
@@ -77,6 +83,7 @@ function OrderDetails({ order, dispatch }: CurrentOrderContextType) {
                   icon="remove"
                   compact
                   basic
+                  circular
                   size="small"
                   color="red"
                   onClick={() =>
@@ -87,18 +94,18 @@ function OrderDetails({ order, dispatch }: CurrentOrderContextType) {
                   }
                 />
               </Table.Cell>
-              <Table.Cell textAlign="right" collapsing>
-                {item.quantity} x {formatCurrency(item.price)}
+              <Table.Cell textAlign="right" collapsing className="price">
+                {formatCurrency(item.price * item.quantity)}
               </Table.Cell>
             </Table.Row>
           ))}
         </Table.Body>
         <Table.Footer>
           <Table.Row>
-            <Table.HeaderCell className="TotalLabel" colSpan="2">
+            <Table.HeaderCell className="total-label" colSpan="2">
               Total
             </Table.HeaderCell>
-            <Table.HeaderCell className="TotalAmount">
+            <Table.HeaderCell className="total-amount">
               {formatCurrency(orderTotalAmount(order))}
             </Table.HeaderCell>
           </Table.Row>
@@ -116,8 +123,9 @@ function OrderDetails({ order, dispatch }: CurrentOrderContextType) {
       </Form>
 
       <Divider hidden />
+      <Button content="Modify Order" icon="edit" as={Link} to="/place_order" />
       <ConfirmOrderButton order={order} dispatch={dispatch} />
-    </>
+    </Container>
   );
 }
 
@@ -161,6 +169,7 @@ function ConfirmOrderButton({ order, dispatch }: CurrentOrderContextType) {
       loading={loading}
       disabled={loading}
       onClick={() => placeOrder()}
+      icon="check"
     />
   );
 }

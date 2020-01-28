@@ -1,6 +1,26 @@
+@import "/shared/variables.less";
+
 .PlaceOrderSummary {
-  .TotalLabel,
-  .TotalAmount {
+  .ui.container {
+    width: 600px;
+  }
+
+  .quantity {
+    color: @mutedTextColor;
+    padding-right: 0.3em;
+  }
+
+  .item-name,
+  .price {
+    font-size: 1.2em;
+  }
+
+  td.item-actions {
+    padding-left: 2em;
+  }
+
+  .total-label,
+  .total-amount {
     font-weight: bold !important;
     font-size: 1.5em;
   }
