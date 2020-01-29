@@ -47,58 +47,11 @@ function OrderDetails({ order, dispatch }: CurrentOrderContextType) {
       <Table>
         <Table.Body>
           {order.items.map(item => (
-            <Table.Row key={item.menuItemId}>
-              <Table.Cell collapsing>
-                <span className="quantity">{item.quantity} x </span>
-                <span className="item-name">{item.menuItemName}</span>
-              </Table.Cell>
-              <Table.Cell className="item-actions">
-                <Button
-                  icon="add"
-                  compact
-                  basic
-                  circular
-                  size="small"
-                  onClick={() =>
-                    dispatch({
-                      type: "INCREMENT_QTY",
-                      menuItemId: item.menuItemId
-                    })
-                  }
-                />
-                <Button
-                  icon="minus"
-                  compact
-                  basic
-                  circular
-                  size="small"
-                  disabled={item.quantity == 1}
-                  onClick={() =>
-                    dispatch({
-                      type: "DECREMENT_QTY",
-                      menuItemId: item.menuItemId
-                    })
-                  }
-                />
-                <Button
-                  icon="remove"
-                  compact
-                  basic
-                  circular
-                  size="small"
-                  color="red"
-                  onClick={() =>
-                    dispatch({
-                      type: "REMOVE_ITEM",
-                      menuItemId: item.menuItemId
-                    })
-                  }
-                />
-              </Table.Cell>
-              <Table.Cell textAlign="right" collapsing className="price">
-                {formatCurrency(item.price * item.quantity)}
-              </Table.Cell>
-            </Table.Row>
+            <OrderItemRow
+              item={item}
+              dispatch={dispatch}
+              key={item.menuItemId}
+            />
           ))}
         </Table.Body>
         <Table.Footer>
@@ -128,6 +81,69 @@ function OrderDetails({ order, dispatch }: CurrentOrderContextType) {
       <EmptyOrderButton dispatch={dispatch} />
       <ConfirmOrderButton order={order} dispatch={dispatch} />
     </Container>
+  );
+}
+
+function OrderItemRow({
+  item,
+  dispatch
+}: {
+  item: OrderItem;
+  dispatch: React.Dispatch<Action>;
+}) {
+  return (
+    <Table.Row>
+      <Table.Cell collapsing>
+        <span className="quantity">{item.quantity} x </span>
+        <span className="item-name">{item.menuItemName}</span>
+      </Table.Cell>
+      <Table.Cell className="item-actions">
+        <Button
+          icon="add"
+          compact
+          basic
+          circular
+          size="small"
+          onClick={() =>
+            dispatch({
+              type: "INCREMENT_QTY",
+              menuItemId: item.menuItemId
+            })
+          }
+        />
+        <Button
+          icon="minus"
+          compact
+          basic
+          circular
+          size="small"
+          disabled={item.quantity == 1}
+          onClick={() =>
+            dispatch({
+              type: "DECREMENT_QTY",
+              menuItemId: item.menuItemId
+            })
+          }
+        />
+        <Button
+          icon="remove"
+          compact
+          basic
+          circular
+          size="small"
+          color="red"
+          onClick={() =>
+            dispatch({
+              type: "REMOVE_ITEM",
+              menuItemId: item.menuItemId
+            })
+          }
+        />
+      </Table.Cell>
+      <Table.Cell textAlign="right" collapsing className="price">
+        {formatCurrency(item.price * item.quantity)}
+      </Table.Cell>
+    </Table.Row>
   );
 }
 
