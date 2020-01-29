@@ -1,0 +1,56 @@
+@import "/shared/variables.less";
+
+.OrderDetailsPage {
+  .order {
+    max-width: 450px;
+
+    .ui.header .ui.label {
+      float: right;
+    }
+
+    .field-name {
+      .muted;
+      margin-right: 0.5em;
+    }
+
+    .order-item {
+      display: flex;
+      &:not(:last-child) {
+        padding-bottom: 0.7em;
+      }
+
+      .quantity {
+        .muted;
+        margin-right: 0.5em;
+      }
+      .name {
+        font-size: 1.2em;
+        flex: 1;
+      }
+      .price {
+        font-size: 1.1em;
+      }
+    }
+
+    .order-total,
+    .amount-paid,
+    .tip-amount {
+      display: flex;
+      .field-name {
+        flex: 1;
+      }
+    }
+    .order-total {
+      font-size: 1.2em;
+      .amount {
+        font-weight: bold;
+      }
+    }
+    .amount-paid {
+      margin-top: 0.7em;
+    }
+    .tip-amount {
+      margin-top: 0.2em;
+    }
+  }
+}

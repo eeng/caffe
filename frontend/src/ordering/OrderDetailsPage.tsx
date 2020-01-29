@@ -1,12 +1,13 @@
 import { gql, useQuery } from "@apollo/client";
 import React from "react";
 import { useParams } from "react-router-dom";
-import { List, Table } from "semantic-ui-react";
+import { Header, List, Segment } from "semantic-ui-react";
 import GoBackButton from "../shared/GoBackButton";
 import Page from "../shared/Page";
 import QueryResultWrapper from "../shared/QueryResultWrapper";
 import CancelOrderButton from "./CancelOrderButton";
 import { Order, OrderDetails } from "./model";
+import "./OrderDetailsPage.less";
 import OrderStateLabel from "./OrderStateLabel";
 import PayOrderButton from "./waitstaff/PayOrderButton";
 import { formatCurrency, formatDateTime } from "/lib/format";
@@ -41,7 +42,11 @@ function OrderDetailsPage() {
   });
 
   return (
-    <Page title="Order Details" actions={[<GoBackButton to="/orders" />]}>
+    <Page
+      title="Order Details"
+      className="OrderDetailsPage"
+      actions={[<GoBackButton to="/orders" />]}
+    >
       <QueryResultWrapper
         result={result}
         render={data => <OrderDetails order={data.order} />}
@@ -51,53 +56,52 @@ function OrderDetailsPage() {
 }
 
 const OrderDetails = ({ order }: { order: OrderDetails }) => (
-  <>
-    <Table definition>
-      <Table.Body>
-        <Table.Row>
-          <Table.Cell>Code</Table.Cell>
-          <Table.Cell>{order.code}</Table.Cell>
-        </Table.Row>
-        <Table.Row>
-          <Table.Cell>Date</Table.Cell>
-          <Table.Cell>{formatDateTime(order.orderDate)}</Table.Cell>
-        </Table.Row>
-        <Table.Row>
-          <Table.Cell>State</Table.Cell>
-          <Table.Cell>
-            <OrderStateLabel order={order} />
-          </Table.Cell>
-        </Table.Row>
-        <Table.Row>
-          <Table.Cell>Items</Table.Cell>
-          <Table.Cell>
-            <OrderItems order={order} />
-          </Table.Cell>
-        </Table.Row>
-        {order.notes && (
-          <Table.Row>
-            <Table.Cell>Notes</Table.Cell>
-            <Table.Cell>{order.notes}</Table.Cell>
-          </Table.Row>
-        )}
-        <Table.Row>
-          <Table.Cell>Order Total</Table.Cell>
-          <Table.Cell>{formatCurrency(order.orderAmount)}</Table.Cell>
-        </Table.Row>
+  <div className="order">
+    <Segment.Group>
+      <Header attached="top" inverted>
+        Order {order.code}
+        <OrderStateLabel order={order} />
+      </Header>
+      <Segment>
+        <span className="field-name">Created on</span>
+        {formatDateTime(order.orderDate)}
+      </Segment>
+      {order.notes && (
+        <Segment>
+          <span className="field-name">Notes</span>
+          {order.notes}
+        </Segment>
+      )}
+      <Segment>
+        {order.items.map(item => (
+          <div className="order-item" key={item.menuItemId}>
+            <div className="quantity">{item.quantity} x </div>
+            <div className="name">{item.menuItemName}</div>
+            <div className="price">
+              {formatCurrency(item.quantity * item.price)}
+            </div>
+          </div>
+        ))}
+      </Segment>
+      <Segment>
+        <div className="order-total">
+          <div className="field-name">Order Total</div>
+          <div className="amount">{formatCurrency(order.orderAmount)}</div>
+        </div>
         {order.amountPaid > 0 && (
-          <Table.Row>
-            <Table.Cell>Amount Paid</Table.Cell>
-            <Table.Cell>{formatCurrency(order.amountPaid)}</Table.Cell>
-          </Table.Row>
+          <div className="amount-paid">
+            <div className="field-name">Amount Paid</div>
+            <div className="amount">{formatCurrency(order.amountPaid)}</div>
+          </div>
         )}
         {order.tipAmount > 0 && (
-          <Table.Row>
-            <Table.Cell>Tip</Table.Cell>
-            <Table.Cell>{formatCurrency(order.tipAmount)}</Table.Cell>
-          </Table.Row>
+          <div className="tip-amount">
+            <div className="field-name">Tip</div>
+            <div className="amount">{formatCurrency(order.tipAmount)}</div>
+          </div>
         )}
-      </Table.Body>
-    </Table>
+      </Segment>
+    </Segment.Group>
 
     <CancelOrderButton order={order} floated="right" />
     <PayOrderButton
@@ -105,7 +109,7 @@ const OrderDetails = ({ order }: { order: OrderDetails }) => (
       floated="right"
       refetchQueries={["OrderDetails"]}
     />
-  </>
+  </div>
 );
 
 const OrderItems = ({ order }: { order: Order }) => (

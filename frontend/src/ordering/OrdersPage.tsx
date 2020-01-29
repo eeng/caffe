@@ -63,7 +63,9 @@ function OrderList({ orders }: { orders: OrderDetails[] }) {
           <Table.HeaderCell>Date</Table.HeaderCell>
           <Table.HeaderCell textAlign="center">State</Table.HeaderCell>
           <Table.HeaderCell textAlign="right">Amount</Table.HeaderCell>
-          <Table.HeaderCell collapsing>Actions</Table.HeaderCell>
+          <Table.HeaderCell textAlign="center" collapsing>
+            Actions
+          </Table.HeaderCell>
         </Table.Row>
       </Table.Header>
       <Table.Body>

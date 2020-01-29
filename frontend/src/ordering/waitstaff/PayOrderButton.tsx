@@ -101,6 +101,9 @@ function ModalBody({
             autoFocus
             value={formData.amountPaid}
             onChange={(_, { value }) => setFormData({ amountPaid: value })}
+            onFocus={(e: React.FocusEvent<HTMLInputElement>) =>
+              e.target.select()
+            }
             error={isInvalid}
           />
           <Form.Input
@@ -108,6 +111,8 @@ function ModalBody({
             readOnly
             value={formatCurrency(tipAmount)}
           />
+          {/* Makes the ENTER key trigger the form onSubmit handler */}
+          <Button style={{ display: "none" }} />
         </Form>
       </Modal.Content>
 
