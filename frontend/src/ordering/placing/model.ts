@@ -32,13 +32,19 @@ interface ResetOrder {
   type: "RESET_ORDER";
 }
 
+interface RestoreOrder {
+  type: "RESTORE_ORDER";
+  order: Order;
+}
+
 export type Action =
   | AddItem
   | RemoveItem
   | IncrementQty
   | DecrementQty
   | FieldChange
-  | ResetOrder;
+  | ResetOrder
+  | RestoreOrder;
 
 function changeQty(items: OrderItem[], menuItemId: string, by: number) {
   return items.map(item =>
@@ -97,5 +103,7 @@ export function reducer(order: Order, action: Action): Order {
       };
     case "RESET_ORDER":
       return NEW_ORDER;
+    case "RESTORE_ORDER":
+      return action.order;
   }
 }

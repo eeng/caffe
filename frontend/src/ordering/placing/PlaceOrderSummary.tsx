@@ -4,23 +4,24 @@ import React, { useEffect } from "react";
 import { Link, useHistory } from "react-router-dom";
 import {
   Button,
+  Container,
   Divider,
   Form,
   Table,
   TextArea,
-  TextAreaProps,
-  Container
+  TextAreaProps
 } from "semantic-ui-react";
 import GoBackButton from "../../shared/GoBackButton";
 import Page from "../../shared/Page";
 import Result from "../../shared/Result";
+import { isOrderEmpty, Order, OrderItem, orderTotalAmount } from "../model";
 import {
   CurrentOrderContextType,
   useCurrentOrder
 } from "./CurrentOrderProvider";
-import { isOrderEmpty, Order, OrderItem, orderTotalAmount } from "../model";
 import "./PlaceOrderSummary.less";
 import { formatCurrency } from "/lib/format";
+import { Action } from "./model";
 
 function PlaceOrderSummary() {
   const state = useCurrentOrder();
@@ -123,7 +124,8 @@ function OrderDetails({ order, dispatch }: CurrentOrderContextType) {
       </Form>
 
       <Divider hidden />
-      <Button content="Modify Order" icon="edit" as={Link} to="/place_order" />
+      <Button content="Modify" icon="edit" as={Link} to="/place_order" />
+      <EmptyOrderButton dispatch={dispatch} />
       <ConfirmOrderButton order={order} dispatch={dispatch} />
     </Container>
   );
@@ -170,6 +172,25 @@ function ConfirmOrderButton({ order, dispatch }: CurrentOrderContextType) {
       disabled={loading}
       onClick={() => placeOrder()}
       icon="check"
+    />
+  );
+}
+
+function EmptyOrderButton({ dispatch }: { dispatch: React.Dispatch<Action> }) {
+  const history = useHistory();
+
+  function handleCancelOrder() {
+    dispatch({ type: "RESET_ORDER" });
+    history.replace("/place_order");
+  }
+
+  return (
+    <Button
+      content="Cancel"
+      icon="trash"
+      negative
+      basic
+      onClick={handleCancelOrder}
     />
   );
 }
