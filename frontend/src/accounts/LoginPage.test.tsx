@@ -27,7 +27,7 @@ test("invalid credentials", async () => {
   expect(r.getByText("Sign In")).toBeInTheDocument();
 });
 
-test.skip("network errors", async () => {
+test("network errors", async () => {
   const mockMutation = factory
     .mockQuery(LOGIN_MUTATION, {
       variables: { email: "bob@acme.com", password: "secret" }
@@ -46,6 +46,6 @@ test.skip("network errors", async () => {
   fire.fill(r.getByPlaceholderText("Password"), "secret");
   fire.click(r.getByText("Login"));
 
-  await r.findByText(/Network error/);
+  await r.findByText(/Network Error/);
   expect(r.getByText("Sign In")).toBeInTheDocument();
 });

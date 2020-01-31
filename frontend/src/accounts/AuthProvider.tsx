@@ -2,6 +2,7 @@ import { ApolloError, gql, useApolloClient } from "@apollo/client";
 import React, { useContext, useEffect, useState } from "react";
 import FullScreenSpinner from "../shared/FullScreenSpinner";
 import { User, Permission } from "./model";
+import { toast } from "react-semantic-toasts";
 
 export type Credentials = {
   email: string;
@@ -107,7 +108,16 @@ function AuthProvider({ children }: any) {
           setState({ status: AuthStatus.LoggingFailed });
         else {
           setState({ status: AuthStatus.NotLoggedIn });
-          throw error;
+          if (error.networkError)
+            toast({
+              title: "Network Error",
+              type: "error",
+              description:
+                "There seems to be a problem with the connection to our servers. Please try again later.",
+              icon: "wifi",
+              time: 5000
+            });
+          else throw error;
         }
       });
   };
