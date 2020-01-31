@@ -4,7 +4,7 @@ import { toast } from "react-semantic-toasts";
 import { Button } from "semantic-ui-react";
 import { OrderDetails, OrderItem } from "../model";
 
-const BEGIN_PREPARATION_MUTATION = gql`
+export const BEGIN_PREPARATION_MUTATION = gql`
   mutation($orderId: ID!, $itemIds: [ID!]) {
     beginFoodPreparation(orderId: $orderId, itemIds: $itemIds)
   }

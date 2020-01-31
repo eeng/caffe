@@ -12,7 +12,7 @@ import PreparingLabel from "../waitstaff/PreparingLabel";
 import SearchInput from "/shared/SearchInput";
 import Fuse from "fuse.js";
 
-const KITCHEN_ORDERS_QUERY = gql`
+export const KITCHEN_ORDERS_QUERY = gql`
   query KitchenOrders {
     kitchenOrders {
       id
