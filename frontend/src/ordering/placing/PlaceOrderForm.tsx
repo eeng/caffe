@@ -35,7 +35,7 @@ function PlaceOrderForm() {
   );
 }
 
-const MENU_QUERY = gql`
+export const MENU_QUERY = gql`
   query PlaceOrderMenu {
     categories {
       name

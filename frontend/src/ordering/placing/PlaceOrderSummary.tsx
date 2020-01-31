@@ -152,7 +152,7 @@ type OrderItemInput = Pick<OrderItem, "menuItemId" | "quantity"> & {
 };
 type PlaceOrderInput = Omit<Order, "items"> & { items: OrderItemInput[] };
 
-const PLACE_ORDER_MUTATION = gql`
+export const PLACE_ORDER_MUTATION = gql`
   mutation($items: [OrderItemInput], $notes: String) {
     placeOrder(items: $items, notes: $notes) {
       id

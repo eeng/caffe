@@ -3,6 +3,7 @@ import { DocumentNode } from "@apollo/client";
 import { User } from "../accounts/model";
 import { Order, OrderItem } from "../ordering/model";
 import { MenuItem } from "../configuration/model";
+import _ from "lodash";
 
 function sequenceGen() {
   let n = 1;
@@ -79,6 +80,16 @@ export function menuItem(fields?: Partial<MenuItem>): MenuItem {
     category: { name: "Food" },
     ...fields
   };
+}
+
+export function orderMenuItem(fields?: Partial<MenuItem>): Partial<MenuItem> {
+  return _.pick(
+    menuItem({
+      imageUrl: "",
+      ...fields
+    }),
+    ["id", "name", "description", "price", "imageUrl"]
+  );
 }
 
 export function order(fields?: Partial<Order>): Order {
