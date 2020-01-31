@@ -1,5 +1,5 @@
 import { gql, useQuery } from "@apollo/client";
-import React from "react";
+import React, { useState } from "react";
 import { Header, Label, Message, Segment } from "semantic-ui-react";
 import { OrderDetails, OrderItem } from "../model";
 import MarkAsServedButton from "./MarkAsPreparedButton";
@@ -10,6 +10,8 @@ import { formatCurrency } from "/lib/format";
 import Page from "/shared/Page";
 import QueryResultWrapper from "/shared/QueryResultWrapper";
 import Result from "/shared/Result";
+import Fuse from "fuse.js";
+import SearchInput from "/shared/SearchInput";
 
 const WAITSTAFF_ORDERS_QUERY = gql`
   query WaitstaffOrders {
@@ -42,11 +44,7 @@ function WaitstaffPage() {
         result={result}
         render={data =>
           data.waitstaffOrders.length ? (
-            <div className="orders">
-              {data.waitstaffOrders.map(order => (
-                <WaitstaffOrder order={order} key={order.id} />
-              ))}
-            </div>
+            <WaitstaffOrders orders={data.waitstaffOrders} />
           ) : (
             <Result
               icon="ban"
@@ -57,6 +55,33 @@ function WaitstaffPage() {
         }
       />
     </Page>
+  );
+}
+
+function WaitstaffOrders({ orders }: { orders: OrderDetails[] }) {
+  const [search, setSearch] = useState("");
+
+  const filteredOrders = search
+    ? new Fuse(orders, { keys: ["code"], threshold: 0.1 }).search(search)
+    : orders;
+
+  return (
+    <>
+      <div className="filters">
+        <SearchInput
+          search={search}
+          onSearch={setSearch}
+          autoFocus
+          placeholder="Search by order code"
+        />
+      </div>
+
+      <div className="orders">
+        {filteredOrders.map(order => (
+          <WaitstaffOrder order={order} key={order.id} />
+        ))}
+      </div>
+    </>
   );
 }
 

@@ -1,5 +1,5 @@
 import { gql, useQuery } from "@apollo/client";
-import React from "react";
+import React, { useState } from "react";
 import { Header, Icon, Label, Segment } from "semantic-ui-react";
 import { OrderDetails } from "../model";
 import BeginPreparationButton from "./BeginPreparationButton";
@@ -9,6 +9,8 @@ import Page from "/shared/Page";
 import QueryResultWrapper from "/shared/QueryResultWrapper";
 import Result from "/shared/Result";
 import PreparingLabel from "../waitstaff/PreparingLabel";
+import SearchInput from "/shared/SearchInput";
+import Fuse from "fuse.js";
 
 const KITCHEN_ORDERS_QUERY = gql`
   query KitchenOrders {
@@ -37,11 +39,7 @@ function KitchenPage() {
         result={result}
         render={data =>
           data.kitchenOrders.length ? (
-            <div className="orders">
-              {data.kitchenOrders.map(order => (
-                <KitchenOrder order={order} key={order.id} />
-              ))}
-            </div>
+            <KitchenOrders orders={data.kitchenOrders} />
           ) : (
             <Result
               icon="ban"
@@ -52,6 +50,33 @@ function KitchenPage() {
         }
       />
     </Page>
+  );
+}
+
+function KitchenOrders({ orders }: { orders: OrderDetails[] }) {
+  const [search, setSearch] = useState("");
+
+  const filteredOrders = search
+    ? new Fuse(orders, { keys: ["code"], threshold: 0.1 }).search(search)
+    : orders;
+
+  return (
+    <>
+      <div className="filters">
+        <SearchInput
+          search={search}
+          onSearch={setSearch}
+          autoFocus
+          placeholder="Search by order code"
+        />
+      </div>
+
+      <div className="orders">
+        {filteredOrders.map(order => (
+          <KitchenOrder order={order} key={order.id} />
+        ))}
+      </div>
+    </>
   );
 }
 

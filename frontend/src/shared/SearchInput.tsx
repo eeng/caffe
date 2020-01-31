@@ -27,7 +27,7 @@ function SearchInput({ search, onSearch, ...rest }: Props) {
         )
       }
       ref={searchRef}
-      placeholder="Search..."
+      placeholder="Search"
       value={search}
       onChange={(_, { value }) => onSearch(value)}
       {...rest}
