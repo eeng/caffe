@@ -4,12 +4,12 @@ defmodule Caffe.Ordering.Queries.StatsQueryTest do
   alias Caffe.Ordering
   import Caffe.Sigils
 
-  test "calculates the order count and amount earned" do
-    assert %{order_count: 0, amount_earned: ~d(0)} == get_stats()
+  test "calculates the order count, amount and tip earned" do
+    assert %{order_count: 0, amount_earned: ~d(0), tip_earned: ~d(0)} == get_stats()
 
-    insert!(:order, order_amount: 10)
-    insert!(:order, order_amount: 5.25)
-    assert %{order_count: 2, amount_earned: ~d(15.25)} == get_stats()
+    insert!(:order, order_amount: 10, tip_amount: 3)
+    insert!(:order, order_amount: 5.25, tip_amount: 1)
+    assert %{order_count: 2, amount_earned: ~d(15.25), tip_earned: ~d(4)} == get_stats()
   end
 
   test "can be filtered by order date" do

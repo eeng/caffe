@@ -31,6 +31,7 @@ defmodule CaffeWeb.Schema.OrderingTypes do
   object :stats do
     field :order_count, :integer
     field :amount_earned, :decimal
+    field :tip_earned, :decimal
   end
 
   object :activity do

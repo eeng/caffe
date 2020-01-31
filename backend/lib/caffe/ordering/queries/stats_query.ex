@@ -7,7 +7,11 @@ defmodule Caffe.Ordering.Queries.StatsQuery do
     query =
       from o in Order,
         where: o.state != "cancelled",
-        select: %{order_count: count(o.id), amount_earned: sum(o.order_amount) |> coalesce(0)}
+        select: %{
+          order_count: count(o.id),
+          amount_earned: sum(o.order_amount) |> coalesce(0),
+          tip_earned: sum(o.tip_amount) |> coalesce(0)
+        }
 
     Enum.reduce(filters, query, &filter_by/2)
   end

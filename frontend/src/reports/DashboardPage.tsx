@@ -10,13 +10,15 @@ import QueryResultWrapper from "/shared/QueryResultWrapper";
 type Stats = {
   orderCount: number;
   amountEarned: number;
+  tipEarned: number;
 };
 
 const STATS_QUERY = gql`
   query($since: String) {
     stats(since: $since) {
-      amountEarned
       orderCount
+      amountEarned
+      tipEarned
     }
   }
 `;
@@ -69,6 +71,12 @@ function DashboardPage() {
             <Statistic
               label="Amount Earned"
               value={formatCurrency(stats.amountEarned)}
+              as={Segment}
+              padded="very"
+            />
+            <Statistic
+              label="Tips"
+              value={formatCurrency(stats.tipEarned)}
               as={Segment}
               padded="very"
             />
