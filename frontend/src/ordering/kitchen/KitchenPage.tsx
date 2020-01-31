@@ -1,16 +1,16 @@
 import { gql, useQuery } from "@apollo/client";
+import Fuse from "fuse.js";
 import React, { useState } from "react";
-import { Header, Icon, Label, Segment } from "semantic-ui-react";
+import { Header, Segment } from "semantic-ui-react";
 import { OrderDetails } from "../model";
+import PreparingLabel from "../waitstaff/PreparingLabel";
 import BeginPreparationButton from "./BeginPreparationButton";
 import "./KitchenPage.less";
 import MarkAsPreparedButton from "./MarkAsPreparedButton";
 import Page from "/shared/Page";
 import QueryResultWrapper from "/shared/QueryResultWrapper";
 import Result from "/shared/Result";
-import PreparingLabel from "../waitstaff/PreparingLabel";
 import SearchInput from "/shared/SearchInput";
-import Fuse from "fuse.js";
 
 export const KITCHEN_ORDERS_QUERY = gql`
   query KitchenOrders {

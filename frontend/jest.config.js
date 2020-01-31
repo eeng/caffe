@@ -1,3 +1,6 @@
+// To prevent problems related to timezones (on the DashboardPage test for example)
+process.env.TZ = "GMT";
+
 module.exports = {
   roots: ["<rootDir>/src"],
   testMatch: [

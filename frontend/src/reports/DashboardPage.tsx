@@ -13,7 +13,7 @@ type Stats = {
   tipEarned: number;
 };
 
-const STATS_QUERY = gql`
+export const STATS_QUERY = gql`
   query($since: String) {
     stats(since: $since) {
       orderCount
@@ -32,20 +32,20 @@ const SINCE_FILTER_OPTS = {
 
 type SinceValue = keyof typeof SINCE_FILTER_OPTS;
 
-const convertSinceValueToDate = (value: SinceValue) =>
-  SINCE_FILTER_OPTS[value].fn(new Date());
+const convertSinceValueToDate = (value: SinceValue, now: Date) =>
+  SINCE_FILTER_OPTS[value].fn(now);
 
 type Filters = {
   since: SinceValue;
 };
 
-function DashboardPage() {
+function DashboardPage({ now = new Date() }) {
   const [filters, setFilters] = useState<Filters>({
     since: "today"
   });
 
   const result = useQuery<{ stats: Stats }>(STATS_QUERY, {
-    variables: { since: convertSinceValueToDate(filters.since) }
+    variables: { since: convertSinceValueToDate(filters.since, now) }
   });
 
   return (
@@ -67,12 +67,14 @@ function DashboardPage() {
               value={stats.orderCount}
               as={Segment}
               padded="very"
+              data-testid="ordersPlaced"
             />
             <Statistic
               label="Amount Earned"
               value={formatCurrency(stats.amountEarned)}
               as={Segment}
               padded="very"
+              data-testid="amountEarned"
             />
             <Statistic
               label="Tips"
