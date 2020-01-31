@@ -24,7 +24,7 @@ test("allows to search menu items", async () => {
   expect(r.getByText("Burger")).toBeInTheDocument();
   expect(r.getByText("Fish")).toBeInTheDocument();
 
-  fire.fill(r.getByPlaceholderText("Search..."), "burg");
+  fire.fill(r.getByPlaceholderText("Search"), "burg");
   expect(r.queryAllByText(/Food/)).toHaveLength(1);
 
   fire.click(r.getByTitle("Clear Search"));
