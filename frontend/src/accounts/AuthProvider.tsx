@@ -1,7 +1,7 @@
 import { ApolloError, gql, useApolloClient } from "@apollo/client";
 import React, { useContext, useEffect, useState } from "react";
 import FullScreenSpinner from "../shared/FullScreenSpinner";
-import { User } from "./model";
+import { User, Permission } from "./model";
 
 export type Credentials = {
   email: string;
@@ -24,7 +24,7 @@ interface State {
 interface Auth extends State {
   login: (credentials: Credentials) => void;
   logout: () => void;
-  can: (permission: string) => boolean;
+  can: (permission: Permission) => boolean;
 }
 
 export const AUTH_TOKEN = "token";
@@ -117,7 +117,7 @@ function AuthProvider({ children }: any) {
     setState({ status: AuthStatus.NotLoggedIn });
   };
 
-  const can = (permission: string) =>
+  const can = (permission: Permission) =>
     state.user != null && state.user.permissions.includes(permission);
 
   const auth: Auth = {

@@ -1,9 +1,10 @@
 import React, { useRef, useEffect } from "react";
 import { Route, Redirect, RouteProps } from "react-router-dom";
 import { useAuth, AuthStatus } from "../accounts/AuthProvider";
+import { Permission } from "/accounts/model";
 
 interface Props extends RouteProps {
-  permission?: string;
+  permission?: Permission;
 }
 
 // A wrapper for <Route> that redirects to the login screen if you're not yet authenticated,
