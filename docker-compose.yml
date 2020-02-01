@@ -8,6 +8,7 @@ services:
       context: ./backend
     depends_on:
       - db
+    command: sh -c './wait-for db:5432 -t 60 -- mix db.setup && mix phx.server'
   db:
     image: postgres:11.6-alpine
     volumes:
