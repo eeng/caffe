@@ -29,10 +29,11 @@ function LoginPage() {
       history.replace(from);
     } else if (status == AuthStatus.LoggingFailed) {
       toast({
-        title: "Oops",
-        description: "Invalid email or password",
+        title: "Invalid Credentials",
+        description: "Please verify the email and password are correct.",
         type: "error",
-        icon: "lock"
+        icon: "lock",
+        time: 4000
       });
     }
   }, [status]);

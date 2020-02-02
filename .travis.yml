@@ -4,4 +4,4 @@ sudo: required
 services:
   - docker
 
-script: ./scripts/run-tests.sh
+script: make ci

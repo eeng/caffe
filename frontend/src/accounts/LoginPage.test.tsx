@@ -23,7 +23,7 @@ test("invalid credentials", async () => {
   fire.fill(r.getByPlaceholderText("Password"), "secret");
   fire.click(r.getByText("Login"));
 
-  await r.findByText(/Invalid email or password/);
+  await r.findByText(/Invalid Credentials/);
   expect(r.getByText("Sign In")).toBeInTheDocument();
 });
 

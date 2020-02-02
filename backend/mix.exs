@@ -70,6 +70,7 @@ defmodule Caffe.MixProject do
       "event_store.reset": ["event_store.drop", "event_store.setup"],
       "db.setup": ["event_store.setup", "ecto.setup"],
       "db.reset": ["event_store.reset", "ecto.reset"],
+      "db.migrate": ["event_store.init", "ecto.migrate"],
       test: ["ecto.create --quiet", "ecto.migrate", "test"]
     ]
   end
