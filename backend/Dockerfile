@@ -9,7 +9,7 @@ WORKDIR /code
 RUN mix local.hex --force && mix local.rebar --force
 
 ARG MIX_ENV
-ENV MIX_ENV=${MIX_ENV:-dev}
+ENV MIX_ENV=$MIX_ENV
 
 # Install mix dependencies
 COPY mix.exs mix.lock ./
@@ -18,7 +18,11 @@ RUN mix deps.get
 RUN mix deps.compile
 
 # Compile the app
-COPY . .
+COPY lib lib
+COPY priv priv
+COPY test test
 RUN mix compile
+
+ADD wait-for wait-for
 
 CMD [ "mix", "phx.server" ]

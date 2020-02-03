@@ -3,3 +3,4 @@ _build
 .vscode
 deps
 .git*
+priv/uploads

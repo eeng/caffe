@@ -5,6 +5,6 @@ defmodule Caffe.Menu.Image do
   @versions [:original]
 
   def storage_dir(_version, {_file, scope}) do
-    "priv/static/uploads/menu/items/#{scope.id}"
+    "priv/uploads/menu/items/#{scope.id}"
   end
 end

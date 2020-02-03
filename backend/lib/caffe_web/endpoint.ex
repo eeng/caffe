@@ -8,15 +8,11 @@ defmodule CaffeWeb.Endpoint do
 
   plug CORSPlug
 
-  # Serve at "/" the static files from "priv/static" directory.
-  #
-  # You should set gzip to true if you are running phx.digest
-  # when deploying your static files in production.
+  # Serve at "/uploads" the arc files from "priv/uploads" directory
   plug Plug.Static,
-    at: "/",
-    from: :caffe,
-    gzip: false,
-    only: ~w(css fonts images js uploads favicon.ico robots.txt)
+    at: "/uploads",
+    from: "priv/uploads",
+    gzip: false
 
   # Code reloading can be explicitly enabled under the
   # :code_reloader configuration of your endpoint.

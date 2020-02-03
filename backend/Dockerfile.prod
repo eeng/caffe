@@ -1,0 +1,44 @@
+FROM elixir:1.9-alpine as build
+
+# Install build dependencies
+RUN apk update && apk add build-base
+
+WORKDIR /code
+
+# Install hex + rebar
+RUN mix local.hex --force && mix local.rebar --force
+
+ENV MIX_ENV=prod
+
+# Install mix dependencies
+COPY mix.exs mix.lock ./
+COPY config config
+RUN mix deps.get
+RUN mix deps.compile
+
+# Compile the app
+COPY lib lib
+COPY priv priv
+RUN mix compile
+RUN mix release
+
+# Prepare release image
+FROM alpine:3.11 AS app
+RUN apk add --update bash openssl
+
+RUN mkdir /app
+WORKDIR /app
+
+COPY --from=build /code/_build/prod/rel/caffe ./
+
+# Needed for the initial seed of the images
+COPY priv/repo/fixtures priv/repo/fixtures
+
+RUN chown -R nobody: /app
+USER nobody
+
+ENV HOME=/app
+
+ADD wait-for wait-for
+
+CMD ["bin/caffe", "start"]

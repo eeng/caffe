@@ -26,7 +26,7 @@ defmodule CaffeWeb.Resolvers.Menu do
   end
 
   def image_url(menu_item, _params, _resolution) do
-    with "/priv/static" <> public_path <- Menu.Image.url({menu_item.image, menu_item}) do
+    with "/priv" <> public_path <- Menu.Image.url({menu_item.image, menu_item}) do
       {:ok, CaffeWeb.Endpoint.url() <> public_path}
     else
       _ -> {:ok, nil}

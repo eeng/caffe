@@ -8,3 +8,18 @@ services:
         NODE_ENV: production
     command: npm run serve
     tty: true
+  backend:
+    build:
+      dockerfile: Dockerfile.prod
+    ports:
+      - 4000:4000
+    environment:
+      DATABASE_URL: ecto://postgres:postgres@db/caffe_prod
+      EVENTSTORE_DATABASE_URL: ecto://postgres:postgres@db/caffe_eventstore_prod
+      SECRET_KEY_BASE: TGJ8cFuZcssatAONwZe6hM4hUwYxvGPUyUZfOe94up2t/h3TG9NjTsosCPL0fy94
+    command: sh -c './wait-for db:5432 -t 60 -- bin/caffe eval "Caffe.Release.migrate" && bin/caffe start'
+  db:
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_MULTIPLE_DATABASES: caffe_prod,caffe_eventstore_prod
