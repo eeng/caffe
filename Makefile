@@ -1,5 +1,6 @@
 DEV_COMPOSE_OPTS = -f docker-compose.yml -f docker-compose.dev.yml
 CI_COMPOSE_OPTS = -f docker-compose.yml -f docker-compose.ci.yml -p caffe_ci
+PROD_COMPOSE_OPTS = -f docker-compose.yml -f docker-compose.prod.yml -p caffe_prod
 
 dev:
 	docker-compose ${DEV_COMPOSE_OPTS} up ${ARGS}
@@ -15,3 +16,6 @@ ci:
 	docker-compose ${CI_COMPOSE_OPTS} exec frontend npm test
 	docker-compose ${CI_COMPOSE_OPTS} exec db /bin/sh -c "until pg_isready -q; do echo 'db unavailable. sleeping'; sleep 1; done"
 	docker-compose ${CI_COMPOSE_OPTS} exec backend mix do ecto.reset, test
+
+prod:
+	docker-compose ${PROD_COMPOSE_OPTS} up ${ARGS}

@@ -5,7 +5,8 @@
   "private": true,
   "scripts": {
     "start": "node scripts/start.js",
-    "build": "parcel build src/index.html",
+    "build": "rm -rf dist && parcel build src/index.html",
+    "serve": "node scripts/serve.js",
     "test": "jest",
     "test-watch": "jest --watch --onlyChanged",
     "watch": "tsc --watch --noEmit --project ."
@@ -29,6 +30,7 @@
     "parcel-bundler": "^1.12.4",
     "prettier": "1.19.1",
     "react-hot-loader": "^4.12.19",
+    "serve": "^11.3.0",
     "ts-jest": "^25.0.0",
     "typescript": "^3.7.5"
   },

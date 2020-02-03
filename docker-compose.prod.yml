@@ -1,0 +1,10 @@
+version: "3"
+services:
+  frontend:
+    ports:
+      - 4001:4001
+    build:
+      args:
+        NODE_ENV: production
+    command: npm run serve
+    tty: true

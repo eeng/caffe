@@ -7,6 +7,9 @@ RUN npm install
 
 COPY . .
 
-EXPOSE 4001
+ARG NODE_ENV
+ENV NODE_ENV=${NODE_ENV:-development}
+
+RUN if [ "$NODE_ENV" == "production" ]; then npm run build; fi
 
 CMD [ "npm", "start" ]

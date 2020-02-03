@@ -9,7 +9,7 @@ WORKDIR /code
 RUN mix local.hex --force && mix local.rebar --force
 
 ARG MIX_ENV
-ENV MIX_ENV=$MIX_ENV
+ENV MIX_ENV=${MIX_ENV:-dev}
 
 # Install mix dependencies
 COPY mix.exs mix.lock ./

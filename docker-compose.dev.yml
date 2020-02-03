@@ -9,7 +9,7 @@ services:
     environment:
       NODE_ENV: development
       HMR_PORT: 4999
-    tty: true # for the webpack colors
+    tty: true
   backend:
     # This is forcing mix to recompile everytime
     # volumes:
