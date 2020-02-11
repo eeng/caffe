@@ -15,6 +15,6 @@ defmodule CaffeWeb.Router do
       socket: CaffeWeb.UserSocket,
       interface: :playground
 
-    forward "/", Absinthe.Plug, schema: CaffeWeb.Schema
+    forward "/", Absinthe.Plug, schema: CaffeWeb.Schema, log_level: :info
   end
 end
