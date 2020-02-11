@@ -3,6 +3,7 @@ import React from "react";
 import { toast } from "react-semantic-toasts";
 import { Button } from "semantic-ui-react";
 import { OrderDetails, OrderItem } from "../model";
+import { isServerError } from "/lib/errors";
 
 const MARK_AS_PREPARED_MUTATION = gql`
   mutation($orderId: ID!, $itemIds: [ID!]) {
@@ -29,14 +30,24 @@ function MarkAsPreparedButton({
   );
 
   function handleClick() {
-    markFoodPrepared().then(() =>
-      toast({
-        title: "Perfect!",
-        description: `The "${item.menuItemName}" is ready to be served.`,
-        type: "success",
-        time: 5000
-      })
-    );
+    markFoodPrepared()
+      .then(() =>
+        toast({
+          title: "Perfect!",
+          description: `The "${item.menuItemName}" is ready to be served.`,
+          type: "success",
+          time: 5000
+        })
+      )
+      .catch(
+        e =>
+          isServerError("item_already_prepared", e) &&
+          toast({
+            title: "Command already processed",
+            description: "This item has already been prepared.",
+            type: "error"
+          })
+      );
   }
 
   return (

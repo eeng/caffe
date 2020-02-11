@@ -2,7 +2,7 @@ import { gql, useQuery } from "@apollo/client";
 import React, { useState } from "react";
 import { Header, Label, Message, Segment } from "semantic-ui-react";
 import { OrderDetails, OrderItem } from "../model";
-import MarkAsServedButton from "./MarkAsPreparedButton";
+import MarkAsServedButton from "./MarkAsServedButton";
 import PayOrderButton from "./PayOrderButton";
 import PreparingLabel from "./PreparingLabel";
 import "./WaitstaffPage.less";

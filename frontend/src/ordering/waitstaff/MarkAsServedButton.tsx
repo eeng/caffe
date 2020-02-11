@@ -3,6 +3,7 @@ import React from "react";
 import { toast } from "react-semantic-toasts";
 import { Button } from "semantic-ui-react";
 import { OrderDetails, OrderItem } from "../model";
+import { isServerError } from "/lib/errors";
 
 const MARK_AS_SERVED_MUTATION = gql`
   mutation($orderId: ID!, $itemIds: [ID!]) {
@@ -26,14 +27,24 @@ function MarkAsServedButton({
   });
 
   function handleClick() {
-    markItemsServed().then(() =>
-      toast({
-        title: "Perfect!",
-        description: `The "${item.menuItemName}" was served.`,
-        type: "success",
-        time: 5000
-      })
-    );
+    markItemsServed()
+      .then(() =>
+        toast({
+          title: "Perfect!",
+          description: `The "${item.menuItemName}" was served.`,
+          type: "success",
+          time: 5000
+        })
+      )
+      .catch(
+        e =>
+          isServerError("item_already_served", e) &&
+          toast({
+            title: "Command already processed",
+            description: "This item has already been served.",
+            type: "error"
+          })
+      );
   }
 
   return (
