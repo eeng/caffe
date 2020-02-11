@@ -64,7 +64,10 @@ defmodule Caffe.Ordering do
   """
   def mark_items_served(params, user) do
     authorize user do
-      params |> assign_user(user) |> Commands.MarkItemsServed.new() |> Router.dispatch()
+      params
+      |> assign_user(user)
+      |> Commands.MarkItemsServed.new()
+      |> Router.dispatch(consistency: :strong)
     end
   end
 
@@ -75,7 +78,10 @@ defmodule Caffe.Ordering do
   """
   def begin_food_preparation(params, user) do
     authorize user do
-      params |> assign_user(user) |> Commands.BeginFoodPreparation.new() |> Router.dispatch()
+      params
+      |> assign_user(user)
+      |> Commands.BeginFoodPreparation.new()
+      |> Router.dispatch(consistency: :strong)
     end
   end
 
@@ -86,7 +92,10 @@ defmodule Caffe.Ordering do
   """
   def mark_food_prepared(params, user) do
     authorize user do
-      params |> assign_user(user) |> Commands.MarkFoodPrepared.new() |> Router.dispatch()
+      params
+      |> assign_user(user)
+      |> Commands.MarkFoodPrepared.new()
+      |> Router.dispatch(consistency: :strong)
     end
   end
 
@@ -97,7 +106,10 @@ defmodule Caffe.Ordering do
   """
   def pay_order(params, user) do
     authorize user do
-      params |> assign_user(user) |> Commands.PayOrder.new() |> Router.dispatch()
+      params
+      |> assign_user(user)
+      |> Commands.PayOrder.new()
+      |> Router.dispatch(consistency: :strong)
     end
   end
 
@@ -109,7 +121,10 @@ defmodule Caffe.Ordering do
   def cancel_order(%{order_id: id} = params, user) do
     with {:ok, order} <- Repo.fetch(Order, id),
          :ok <- Authorizer.authorize(:cancel_order, user, order) do
-      params |> assign_user(user) |> Commands.CancelOrder.new() |> Router.dispatch()
+      params
+      |> assign_user(user)
+      |> Commands.CancelOrder.new()
+      |> Router.dispatch(consistency: :strong)
     end
   end
 
