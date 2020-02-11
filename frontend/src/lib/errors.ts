@@ -12,3 +12,5 @@ export const isServerError = (
 ) =>
   apolloError.graphQLErrors.length &&
   apolloError.graphQLErrors.some(gqlError => gqlError.message == serverError);
+
+export const isNetworkError = (error: ApolloError) => error.networkError;
