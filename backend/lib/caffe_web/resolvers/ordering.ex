@@ -30,23 +30,23 @@ defmodule CaffeWeb.Resolvers.Ordering do
   end
 
   def list_orders(_parent, params, %{context: %{current_user: user}}) do
-    {:ok, Ordering.list_orders(user, params)}
+    Ordering.list_orders(user, params)
   end
 
   def list_kitchen_orders(_parent, _params, %{context: %{current_user: user}}) do
-    {:ok, Ordering.list_kitchen_orders(user)}
+    Ordering.list_kitchen_orders(user)
   end
 
   def list_waitstaff_orders(_parent, _params, %{context: %{current_user: user}}) do
-    {:ok, Ordering.list_waitstaff_orders(user)}
+    Ordering.list_waitstaff_orders(user)
   end
 
   def get_stats(_parent, params, %{context: %{current_user: user}}) do
-    {:ok, Ordering.get_stats(params, user)}
+    Ordering.get_stats(params, user)
   end
 
   def get_activity_feed(_parent, _params, %{context: %{current_user: user}}) do
-    {:ok, Ordering.get_activity_feed(user)}
+    Ordering.get_activity_feed(user)
   end
 
   def order_code(%{id: id}, _params, _resolution) do

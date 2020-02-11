@@ -36,6 +36,8 @@ defmodule Caffe.Ordering.Queries.KitchenOrdersQueryTest do
   end
 
   defp kitchen_orders do
-    Ordering.list_kitchen_orders(build(:admin))
+    with {:ok, orders} <- Ordering.list_kitchen_orders(build(:admin)) do
+      orders
+    end
   end
 end

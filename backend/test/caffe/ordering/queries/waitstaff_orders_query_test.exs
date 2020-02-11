@@ -29,6 +29,8 @@ defmodule Caffe.Ordering.Queries.WaitstaffOrdersQueryTest do
   end
 
   defp waitstaff_orders do
-    Ordering.list_waitstaff_orders(build(:admin))
+    with {:ok, orders} <- Ordering.list_waitstaff_orders(build(:admin)) do
+      orders
+    end
   end
 end

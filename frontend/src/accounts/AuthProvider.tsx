@@ -3,6 +3,7 @@ import React, { useContext, useEffect, useState } from "react";
 import FullScreenSpinner from "../shared/FullScreenSpinner";
 import { User, Permission } from "./model";
 import { toast } from "react-semantic-toasts";
+import { isServerError } from "/lib/errors";
 
 export type Credentials = {
   email: string;
@@ -101,10 +102,7 @@ function AuthProvider({ children }: any) {
         client.resetStore();
       })
       .catch((error: ApolloError) => {
-        if (
-          error.graphQLErrors.length &&
-          error.graphQLErrors[0].message == "invalid_credentials"
-        )
+        if (isServerError("invalid_credentials", error))
           setState({ status: AuthStatus.LoggingFailed });
         else {
           setState({ status: AuthStatus.NotLoggedIn });

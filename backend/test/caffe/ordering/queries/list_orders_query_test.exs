@@ -20,6 +20,8 @@ defmodule Caffe.Ordering.Queries.ListOrdersQueryTest do
   end
 
   defp list_orders(user \\ build(:admin), params \\ %{}) do
-    Caffe.Ordering.list_orders(user, params)
+    with {:ok, orders} <- Caffe.Ordering.list_orders(user, params) do
+      orders
+    end
   end
 end

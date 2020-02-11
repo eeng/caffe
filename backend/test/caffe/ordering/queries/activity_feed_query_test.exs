@@ -8,6 +8,12 @@ defmodule Caffe.Ordering.Queries.ActivityFeedQueryTest do
     a1 = insert!(:activity, published: ~U[2016-05-24 13:26:06Z])
     a2 = insert!(:activity, published: ~U[2016-05-24 13:26:07Z])
 
-    assert_lists_equal [a3, a2, a1], Ordering.get_activity_feed(build(:admin)), by: :published
+    assert_lists_equal [a3, a2, a1], activity_feed(), by: :published
+  end
+
+  def activity_feed do
+    with {:ok, activities} <- Ordering.get_activity_feed(build(:admin)) do
+      activities
+    end
   end
 end

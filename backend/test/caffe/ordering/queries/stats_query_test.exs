@@ -26,6 +26,8 @@ defmodule Caffe.Ordering.Queries.StatsQueryTest do
   end
 
   defp get_stats(params \\ %{}) do
-    Ordering.get_stats(params, build(:admin))
+    with {:ok, stats} <- Ordering.get_stats(params, build(:admin)) do
+      stats
+    end
   end
 end

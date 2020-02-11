@@ -1,6 +1,6 @@
 import { QueryResult } from "@apollo/client";
 import React from "react";
-import APIError from "./APIError";
+import APIErrorMessage from "./APIErrorMessage";
 import SectionLoader from "./SectionLoader";
 
 type Props<TData> = {
@@ -15,7 +15,7 @@ function QueryResultWrapper<TData>({ result, render }: Props<TData>) {
   return (
     <>
       {loading && !data && <SectionLoader />}
-      {error && <APIError error={error} />}
+      {error && <APIErrorMessage error={error} />}
       {data && render(data)}
     </>
   );

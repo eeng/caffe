@@ -1,14 +1,12 @@
 import React from "react";
 import { ApolloError } from "@apollo/client";
 import { Message } from "semantic-ui-react";
+import { isServerError } from "/lib/errors";
 
-function APIError({ error }: { error: ApolloError | undefined }) {
+function APIErrorMessage({ error }: { error: ApolloError | undefined }) {
   if (!error) return null;
 
-  const constainsError = (message: string) =>
-    error.graphQLErrors.some(e => e.message == message);
-
-  if (constainsError("unauthorized"))
+  if (isServerError("unauthorized", error))
     return (
       <Message
         header="Access Denied"
@@ -27,4 +25,4 @@ function APIError({ error }: { error: ApolloError | undefined }) {
     );
 }
 
-export default APIError;
+export default APIErrorMessage;

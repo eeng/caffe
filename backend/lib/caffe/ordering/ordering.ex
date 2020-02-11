@@ -128,31 +128,31 @@ defmodule Caffe.Ordering do
 
   def list_orders(user, params) do
     authorize user do
-      ListOrdersQuery.new(user, params) |> Repo.all()
+      {:ok, ListOrdersQuery.new(user, params) |> Repo.all()}
     end
   end
 
   def list_kitchen_orders(user) do
     authorize user do
-      KitchenOrdersQuery.new() |> Repo.all()
+      {:ok, KitchenOrdersQuery.new() |> Repo.all()}
     end
   end
 
   def list_waitstaff_orders(user) do
     authorize user do
-      WaitstaffOrdersQuery.new() |> Repo.all()
+      {:ok, WaitstaffOrdersQuery.new() |> Repo.all()}
     end
   end
 
   def get_stats(params, user) do
     authorize user do
-      StatsQuery.new(params) |> Repo.one()
+      {:ok, StatsQuery.new(params) |> Repo.one()}
     end
   end
 
   def get_activity_feed(user) do
     authorize user do
-      ActivityFeedQuery.new() |> Repo.all()
+      {:ok, ActivityFeedQuery.new() |> Repo.all()}
     end
   end
 end
