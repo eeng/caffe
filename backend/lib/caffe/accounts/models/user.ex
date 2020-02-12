@@ -8,6 +8,8 @@ defmodule Caffe.Accounts.User do
     use Exnumerator, values: ~w[admin chef waitstaff cashier customer]
   end
 
+  @derive {Inspect, only: [:id, :role]}
+
   schema "users" do
     field :name, :string
     field :email, :string

@@ -9,7 +9,7 @@ export function Sidebar() {
   return (
     <div className="Sidebar">
       <Menu secondary vertical fluid>
-        {can("get_stats") && (
+        {can("calculate_stats") && (
           <Menu.Item
             content="Dashboard"
             icon="line graph"
@@ -33,10 +33,10 @@ export function Sidebar() {
             to="/orders"
           />
         )}
-        {can("list_kitchen_orders") && (
+        {can("get_kitchen_orders") && (
           <Menu.Item content="Kitchen" icon="food" as={NavLink} to="/kitchen" />
         )}
-        {can("list_waitstaff_orders") && (
+        {can("get_waitstaff_orders") && (
           <Menu.Item
             content="Waitstaff"
             icon="coffee"

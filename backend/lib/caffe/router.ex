@@ -4,7 +4,6 @@ defmodule Caffe.Router do
   alias Caffe.Ordering.Commands
   alias Caffe.Ordering.Aggregates.Order
 
-  middleware Caffe.Middleware.Logger
   middleware Caffe.Middleware.Validator
 
   dispatch(

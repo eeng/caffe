@@ -2,7 +2,7 @@ defmodule CaffeWeb.Resolvers.Menu do
   alias Caffe.Menu
 
   def list_items(_parent, _params, _resolution) do
-    {:ok, Menu.list_items()}
+    Menu.list_items()
   end
 
   def find_item(_parent, %{id: id}, _resolution) do

@@ -2,47 +2,32 @@ defmodule Caffe.Menu do
   import Ecto.Query
 
   alias Caffe.Repo
-  alias Caffe.Menu.{Item, Category}
-  alias Caffe.Authorization.Authorizer
+  alias Caffe.Mediator
+  alias Caffe.Menu.UseCases.{CreateItem, UpdateItem, DeleteItem, ListItems, GetItem}
+  alias Caffe.Menu.Category
 
-  def create_item(attrs, user) do
-    with :ok <- Authorizer.authorize(:create_menu_item, user) do
-      %Item{}
-      |> Item.changeset(attrs)
-      |> Repo.insert()
-    end
+  def create_item(params, user) do
+    %CreateItem{user: user, params: params} |> Mediator.dispatch()
   end
 
-  def update_item(attrs, user) do
-    with :ok <- Authorizer.authorize(:update_menu_item, user),
-         {:ok, item} <- get_item(attrs[:id]) do
-      item
-      |> Item.changeset(attrs)
-      |> Repo.update()
-    else
-      error -> error
-    end
+  def update_item(params, user) do
+    %UpdateItem{user: user, params: params} |> Mediator.dispatch()
   end
 
   def delete_item(id, user) do
-    with :ok <- Authorizer.authorize(:delete_menu_item, user),
-         {:ok, item} <- get_item(id) do
-      Repo.delete(item)
-    else
-      error -> error
-    end
+    %DeleteItem{user: user, id: id} |> Mediator.dispatch()
   end
 
   def list_items do
-    Item |> order_by(asc: :name) |> Repo.all()
+    %ListItems{} |> Mediator.dispatch()
   end
 
   def get_item(id) do
-    Repo.fetch(Item, id)
+    %GetItem{id: id} |> Mediator.dispatch()
   end
 
   def list_categories do
-    Repo.all(Category)
+    Category |> order_by(asc: :position) |> Repo.all()
   end
 
   def data() do

@@ -1,35 +1,23 @@
 defmodule Caffe.Accounts do
   alias Caffe.Repo
-  import Caffe.Authorization.Macros, only: [authorize: 2]
-  alias Caffe.Accounts.{User, Password}
+  alias Caffe.Mediator
+  alias Caffe.Accounts.UseCases.{Authenticate, CreateUser, ListUsers, Me}
+  alias Caffe.Accounts.User
 
   def authenticate(email, password) do
-    user = Repo.get_by(User, email: email)
-
-    with %{password: digest} <- user,
-         true <- Password.valid?(password, digest) do
-      {:ok, user}
-    else
-      _ -> {:error, :invalid_credentials}
-    end
+    %Authenticate{email: email, password: password} |> Mediator.dispatch()
   end
 
   def create_user(params, user) do
-    authorize user do
-      %User{} |> User.changeset(params) |> Repo.insert()
-    end
+    %CreateUser{user: user, params: params} |> Mediator.dispatch()
   end
 
   def list_users(user) do
-    authorize user do
-      {:ok, Repo.all(User)}
-    end
+    %ListUsers{user: user} |> Mediator.dispatch()
   end
 
   def me(user) do
-    authorize user do
-      get_user(user.id)
-    end
+    %Me{user: user} |> Mediator.dispatch()
   end
 
   def get_user(id) do

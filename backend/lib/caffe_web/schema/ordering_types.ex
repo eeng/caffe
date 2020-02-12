@@ -3,6 +3,7 @@ defmodule CaffeWeb.Schema.OrderingTypes do
 
   alias CaffeWeb.Resolvers
   alias Caffe.Authorization.Authorizer
+  alias Caffe.Ordering.UseCases.{CancelOrder, ServeItem}
 
   object :order do
     field :id, :id
@@ -16,7 +17,7 @@ defmodule CaffeWeb.Schema.OrderingTypes do
     field :notes, :string
     field :order_date, :datetime
     field :code, :string, resolve: &Resolvers.Ordering.order_code/3
-    field :viewer_can_cancel, :boolean, resolve: can?(:cancel_order)
+    field :viewer_can_cancel, :boolean, resolve: can?(CancelOrder)
   end
 
   object :order_item do
@@ -25,7 +26,7 @@ defmodule CaffeWeb.Schema.OrderingTypes do
     field :quantity, :integer
     field :price, :decimal
     field :state, :string
-    field :viewer_can_serve, :boolean, resolve: can?(:serve_item)
+    field :viewer_can_serve, :boolean, resolve: can?(ServeItem)
   end
 
   object :stats do
@@ -127,10 +128,10 @@ defmodule CaffeWeb.Schema.OrderingTypes do
     end
   end
 
-  defp can?(action) do
+  defp can?(use_case) do
     fn
       parent, _, %{context: %{current_user: user}} ->
-        {:ok, Authorizer.authorize?(action, user, parent)}
+        {:ok, Authorizer.authorize?(struct(use_case, user: user, order: parent))}
 
       _, _, _ ->
         {:ok, false}

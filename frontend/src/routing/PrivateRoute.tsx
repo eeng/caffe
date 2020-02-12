@@ -2,6 +2,7 @@ import React, { useRef, useEffect } from "react";
 import { Route, Redirect, RouteProps } from "react-router-dom";
 import { useAuth, AuthStatus } from "../accounts/AuthProvider";
 import { Permission } from "/accounts/model";
+import NotFoundPage from "./NotFoundPage";
 
 interface Props extends RouteProps {
   permission?: Permission;
@@ -25,7 +26,7 @@ function PrivateRoute({ permission, children, ...rest }: Props) {
           !permission || can(permission) ? (
             children
           ) : (
-            <Redirect to="/" />
+            <NotFoundPage />
           )
         ) : (
           <Redirect

@@ -21,7 +21,7 @@ const Routes = () => (
       <PrivateRoute exact path="/">
         <HomePageSelector />
       </PrivateRoute>
-      <PrivateRoute path="/dashboard" permission="get_stats">
+      <PrivateRoute path="/dashboard" permission="calculate_stats">
         <DashboardPage />
       </PrivateRoute>
       <PrivateRoute path="/place_order">
@@ -33,10 +33,10 @@ const Routes = () => (
       <PrivateRoute path="/orders">
         <OrdersPage />
       </PrivateRoute>
-      <PrivateRoute path="/kitchen">
+      <PrivateRoute path="/kitchen" permission="get_kitchen_orders">
         <KitchenPage />
       </PrivateRoute>
-      <PrivateRoute path="/waitstaff">
+      <PrivateRoute path="/waitstaff" permission="get_waitstaff_orders">
         <WaitstaffPage />
       </PrivateRoute>
       <PrivateRoute path="/activity_feed" permission="get_activity_feed">

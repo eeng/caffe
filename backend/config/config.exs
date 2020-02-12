@@ -28,7 +28,6 @@ config :phoenix, :json_library, Jason
 config :caffe,
   authorization_policies: [
     Caffe.Accounts.AuthorizationPolicy,
-    Caffe.Menu.AuthorizationPolicy,
     Caffe.Ordering.AuthorizationPolicy
   ]
 

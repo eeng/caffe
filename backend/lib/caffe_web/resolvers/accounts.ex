@@ -23,6 +23,6 @@ defmodule CaffeWeb.Resolvers.Accounts do
   end
 
   def permissions(user, _params, _resolution) do
-    {:ok, Authorizer.authorized_actions(user)}
+    {:ok, Authorizer.authorized_use_cases(user)}
   end
 end
