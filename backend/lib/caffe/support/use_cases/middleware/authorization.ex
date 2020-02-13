@@ -3,9 +3,13 @@ defmodule Caffe.Mediator.Middleware.Authorization do
 
   def build(next) do
     fn use_case ->
-      case Authorizer.authorize(use_case) do
-        :ok -> next.(use_case)
-        error -> error
+      if use_case.__struct__.skip_authorization do
+        next.(use_case)
+      else
+        case Authorizer.authorize(use_case) do
+          :ok -> next.(use_case)
+          error -> error
+        end
       end
     end
   end

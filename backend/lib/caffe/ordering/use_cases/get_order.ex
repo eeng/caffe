@@ -1,20 +1,18 @@
 defmodule Caffe.Ordering.UseCases.GetOrder do
-  use Caffe.Mediator.UseCase
+  use Caffe.Mediator.UseCase, skip_authorization: true
+
   alias Caffe.Ordering.Projections.Order
   alias Caffe.Accounts.User
+  alias Caffe.Authorization.Authorizer
 
   defstruct [:user, :id, :order]
 
   @impl true
-  def init(%GetOrder{id: id} = use_case) do
-    with {:ok, order} <- Repo.fetch(Order, id) do
-      {:ok, %{use_case | order: order}}
+  def execute(%GetOrder{id: id} = use_case) do
+    with {:ok, order} <- Repo.fetch(Order, id),
+         :ok <- Authorizer.authorize(%{use_case | order: order}) do
+      {:ok, order |> Repo.preload(:items)}
     end
-  end
-
-  @impl true
-  def execute(%GetOrder{order: order}) do
-    {:ok, order |> Repo.preload(:items)}
   end
 
   @impl true

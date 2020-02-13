@@ -1,24 +1,22 @@
 defmodule Caffe.Ordering.UseCases.CancelOrder do
-  use Caffe.Mediator.UseCase
+  use Caffe.Mediator.UseCase, skip_authorization: true
+
   alias Caffe.Ordering.Commands
   alias Caffe.Ordering.Projections.Order
   alias Caffe.Accounts.User
+  alias Caffe.Authorization.Authorizer
 
   # The order is fetched from DB for authorization
   defstruct [:user, :id, :order]
 
   @impl true
-  def init(%CancelOrder{id: id} = use_case) do
-    with {:ok, order} <- Repo.fetch(Order, id) do
-      {:ok, %{use_case | order: order}}
+  def execute(%CancelOrder{id: id, user: user} = use_case) do
+    with {:ok, order} <- Repo.fetch(Order, id),
+         :ok <- Authorizer.authorize(%{use_case | order: order}) do
+      Commands.CancelOrder.new(order_id: id, user_id: user.id)
+      |> Router.dispatch(consistency: :strong)
+      |> wrap_ok_result
     end
-  end
-
-  @impl true
-  def execute(%CancelOrder{id: id, user: user}) do
-    Commands.CancelOrder.new(order_id: id, user_id: user.id)
-    |> Router.dispatch(consistency: :strong)
-    |> wrap_ok_result
   end
 
   @impl true

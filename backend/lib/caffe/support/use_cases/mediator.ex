@@ -1,7 +1,7 @@
 defmodule Caffe.Mediator do
   alias Caffe.Mediator.Middleware
 
-  @middleware [Middleware.Logging, Middleware.Init, Middleware.Authorization]
+  @middleware [Middleware.Logging, Middleware.Authorization]
 
   def dispatch(request) do
     handler = &request.__struct__.execute/1

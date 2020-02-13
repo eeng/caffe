@@ -31,7 +31,7 @@ defmodule Caffe.Ordering.UseCases.CancelOrderTest do
     end
   end
 
-  describe "authorization" do
+  describe "authorize" do
     test "a customer can only cancel its orders" do
       user = %User{role: "customer", id: 1}
       assert Authorizer.authorize?(%CancelOrder{user: user, order: %Order{customer_id: 1}})

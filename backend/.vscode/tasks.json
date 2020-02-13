@@ -138,7 +138,7 @@
     },
     {
       "label": "elixir: Run test watcher",
-      "command": "mix test.watch --stale --max-failures 1",
+      "command": "mix test.watch --stale",
       "type": "shell",
       "presentation": {
         "reveal": "always",

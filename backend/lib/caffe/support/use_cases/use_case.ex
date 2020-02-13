@@ -2,11 +2,12 @@ defmodule Caffe.Mediator.UseCase do
   @type use_case :: struct
   @type result :: {:ok, term} | {:error, term}
 
-  @callback init(use_case) :: {:ok, use_case} | {:error, term}
   @callback authorize(use_case) :: boolean
   @callback execute(use_case) :: result
 
-  defmacro __using__(_) do
+  defmacro __using__(opts \\ []) do
+    skip_authorization = Keyword.get(opts, :skip_authorization, false)
+
     quote do
       @behaviour unquote(__MODULE__)
 
@@ -16,8 +17,7 @@ defmodule Caffe.Mediator.UseCase do
 
       @before_compile unquote(__MODULE__)
 
-      def init(use_case), do: {:ok, use_case}
-      defoverridable init: 1
+      def skip_authorization, do: unquote(skip_authorization)
 
       def wrap_ok_result(:ok), do: {:ok, "ok"}
       def wrap_ok_result(result), do: result

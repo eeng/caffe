@@ -1,5 +1,6 @@
 defmodule Caffe.Ordering.AuthorizationPolicyTest do
   use ExUnit.Case, async: true
+
   import Caffe.Factory
   alias Caffe.Authorization.Authorizer
   alias Caffe.Accounts.User
