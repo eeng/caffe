@@ -1,7 +1,7 @@
 defmodule Caffe.Ordering.UseCases.ServeItem do
   use Caffe.Mediator.UseCase
 
-  defstruct [:order]
+  defstruct [:resource]
 
   @impl true
   def execute(_) do
@@ -9,6 +9,6 @@ defmodule Caffe.Ordering.UseCases.ServeItem do
   end
 
   @impl true
-  def authorize(%ServeItem{order: %{is_drink: true, state: "pending"}}), do: true
-  def authorize(%ServeItem{order: %{is_drink: false, state: "prepared"}}), do: true
+  def authorize(%ServeItem{resource: %{is_drink: true, state: "pending"}}), do: true
+  def authorize(%ServeItem{resource: %{is_drink: false, state: "prepared"}}), do: true
 end

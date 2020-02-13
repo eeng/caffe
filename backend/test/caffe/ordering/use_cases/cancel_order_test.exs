@@ -34,19 +34,19 @@ defmodule Caffe.Ordering.UseCases.CancelOrderTest do
   describe "authorize" do
     test "a customer can only cancel its orders" do
       user = %User{role: "customer", id: 1}
-      assert Authorizer.authorize?(%CancelOrder{user: user, order: %Order{customer_id: 1}})
-      refute Authorizer.authorize?(%CancelOrder{user: user, order: %Order{customer_id: 2}})
+      assert Authorizer.authorize?(%CancelOrder{user: user, resource: %Order{customer_id: 1}})
+      refute Authorizer.authorize?(%CancelOrder{user: user, resource: %Order{customer_id: 2}})
     end
 
     test "employees can cancel all orders" do
       user = %User{role: "waitstaff", id: 1}
-      assert Authorizer.authorize?(%CancelOrder{user: user, order: %Order{customer_id: 2}})
+      assert Authorizer.authorize?(%CancelOrder{user: user, resource: %Order{customer_id: 2}})
     end
 
     test "only pending orders can be cancelled" do
       user = build(:admin)
-      refute Authorizer.authorize?(%CancelOrder{user: user, order: %Order{state: "cancelled"}})
-      refute Authorizer.authorize?(%CancelOrder{user: user, order: %Order{state: "paid"}})
+      refute Authorizer.authorize?(%CancelOrder{user: user, resource: %Order{state: "cancelled"}})
+      refute Authorizer.authorize?(%CancelOrder{user: user, resource: %Order{state: "paid"}})
     end
   end
 end

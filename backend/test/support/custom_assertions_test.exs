@@ -39,4 +39,14 @@ defmodule Caffe.Support.CustomAssertionsTest do
       end
     end
   end
+
+  describe "assert_contain_all" do
+    test "should assert that the list contains all elements of the sublist" do
+      assert_contain_all([1, 3], [1, 2, 3])
+
+      assert_raise ExUnit.AssertionError, fn ->
+        assert_contain_all([1, 4], [1, 2, 3])
+      end
+    end
+  end
 end

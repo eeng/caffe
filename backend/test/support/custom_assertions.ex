@@ -37,4 +37,24 @@ defmodule Caffe.Support.CustomAssertions do
       {:in_any_order, false}, list -> list
     end)
   end
+
+  @doc """
+  Asserts that list contains all elements in sublist
+  """
+  defmacro assert_contain_all(sublist, list) do
+    quote do
+      sublist = unquote(sublist)
+      list = unquote(list)
+
+      if Enum.all?(sublist, &(&1 in list)) do
+        true
+      else
+        raise ExUnit.AssertionError,
+          message: "Not all elements were present on the list",
+          left: sublist |> Enum.sort(),
+          right: list |> Enum.sort(),
+          args: [sublist, list]
+      end
+    end
+  end
 end

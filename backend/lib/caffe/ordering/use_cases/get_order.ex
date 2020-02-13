@@ -5,12 +5,12 @@ defmodule Caffe.Ordering.UseCases.GetOrder do
   alias Caffe.Accounts.User
   alias Caffe.Authorization.Authorizer
 
-  defstruct [:user, :id, :order]
+  defstruct [:user, :id, :resource]
 
   @impl true
   def execute(%GetOrder{id: id} = use_case) do
     with {:ok, order} <- Repo.fetch(Order, id),
-         :ok <- Authorizer.authorize(%{use_case | order: order}) do
+         :ok <- Authorizer.authorize(%{use_case | resource: order}) do
       {:ok, order |> Repo.preload(:items)}
     end
   end
@@ -18,7 +18,7 @@ defmodule Caffe.Ordering.UseCases.GetOrder do
   @impl true
   def authorize(%GetOrder{
         user: %User{role: "customer", id: user_id},
-        order: %Order{customer_id: cust_id}
+        resource: %Order{customer_id: cust_id}
       }),
       do: user_id == cust_id
 

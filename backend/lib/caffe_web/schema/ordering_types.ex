@@ -2,8 +2,7 @@ defmodule CaffeWeb.Schema.OrderingTypes do
   use Absinthe.Schema.Notation
 
   alias CaffeWeb.Resolvers
-  alias Caffe.Authorization.Authorizer
-  alias Caffe.Ordering.UseCases.{CancelOrder, ServeItem}
+  alias Caffe.Authorization.Permission
 
   object :order do
     field :id, :id
@@ -17,7 +16,7 @@ defmodule CaffeWeb.Schema.OrderingTypes do
     field :notes, :string
     field :order_date, :datetime
     field :code, :string, resolve: &Resolvers.Ordering.order_code/3
-    field :viewer_can_cancel, :boolean, resolve: can?(CancelOrder)
+    field :viewer_can_cancel, :boolean, resolve: can?(:cancel_order)
   end
 
   object :order_item do
@@ -26,7 +25,7 @@ defmodule CaffeWeb.Schema.OrderingTypes do
     field :quantity, :integer
     field :price, :decimal
     field :state, :string
-    field :viewer_can_serve, :boolean, resolve: can?(ServeItem)
+    field :viewer_can_serve, :boolean, resolve: can?(:serve_item)
   end
 
   object :stats do
@@ -128,10 +127,10 @@ defmodule CaffeWeb.Schema.OrderingTypes do
     end
   end
 
-  defp can?(use_case) do
+  defp can?(permission) do
     fn
       parent, _, %{context: %{current_user: user}} ->
-        {:ok, Authorizer.authorize?(struct(use_case, user: user, order: parent))}
+        {:ok, Permission.can?(user, permission, parent)}
 
       _, _, _ ->
         {:ok, false}

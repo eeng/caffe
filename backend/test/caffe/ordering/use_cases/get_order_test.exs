@@ -21,8 +21,8 @@ defmodule Caffe.Ordering.UseCases.GetOrderTest do
   describe "authorize" do
     test "customers can only view their orders" do
       user = %User{role: "customer", id: 1}
-      assert Authorizer.authorize?(%GetOrder{user: user, order: %Order{customer_id: 1}})
-      refute Authorizer.authorize?(%GetOrder{user: user, order: %Order{customer_id: 2}})
+      assert Authorizer.authorize?(%GetOrder{user: user, resource: %Order{customer_id: 1}})
+      refute Authorizer.authorize?(%GetOrder{user: user, resource: %Order{customer_id: 2}})
     end
   end
 end
