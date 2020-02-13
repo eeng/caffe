@@ -3,7 +3,7 @@ defmodule Caffe.Ordering.UseCases.PlaceOrder do
   alias Caffe.Ordering.Commands
   alias Caffe.Ordering.Projections.Order
   alias Caffe.Accounts.User
-  alias Caffe.Menu
+  alias Caffe.Menu.Item
 
   defstruct [:user, :params]
 
@@ -29,7 +29,7 @@ defmodule Caffe.Ordering.UseCases.PlaceOrder do
   end
 
   defp fetch_item_details(%{menu_item_id: id} = item) do
-    {:ok, menu_item} = Menu.get_item(id)
+    menu_item = Repo.get(Item, id)
 
     Map.merge(item, %{
       menu_item_name: menu_item.name,
