@@ -1,23 +1,6 @@
 defmodule Caffe.Authorization.Authorizer do
   @type use_case :: Caffe.Mediator.UseCase.use_case()
 
-  @policies Application.get_env(:caffe, :authorization_policies, [])
-
-  def authorize?(action, user, params \\ nil) do
-    if policy = Enum.find(@policies, &(action in &1.actions)) do
-      policy.authorize(action, user, params)
-    else
-      raise "Could not found a policy for action '#{action}'."
-    end
-  end
-
-  def authorize(action, user, params \\ nil) do
-    case authorize?(action, user, params) do
-      true -> :ok
-      false -> {:error, :unauthorized}
-    end
-  end
-
   @spec authorize?(use_case) :: boolean
   def authorize?(use_case) do
     use_case.__struct__.authorize(use_case)
