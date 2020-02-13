@@ -1,10 +1,15 @@
 defmodule Caffe.Menu do
-  import Ecto.Query
-
   alias Caffe.Repo
   alias Caffe.Mediator
-  alias Caffe.Menu.UseCases.{CreateItem, UpdateItem, DeleteItem, ListItems, GetItem}
-  alias Caffe.Menu.Category
+
+  alias Caffe.Menu.UseCases.{
+    CreateItem,
+    UpdateItem,
+    DeleteItem,
+    ListItems,
+    GetItem,
+    ListCategories
+  }
 
   def create_item(params, user) do
     %CreateItem{user: user, params: params} |> Mediator.dispatch()
@@ -27,7 +32,7 @@ defmodule Caffe.Menu do
   end
 
   def list_categories do
-    Category |> order_by(asc: :position) |> Repo.all()
+    %ListCategories{} |> Mediator.dispatch()
   end
 
   def data() do

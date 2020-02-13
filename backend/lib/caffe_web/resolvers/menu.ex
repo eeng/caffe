@@ -10,7 +10,7 @@ defmodule CaffeWeb.Resolvers.Menu do
   end
 
   def list_categories(_parent, _params, _resolution) do
-    {:ok, Menu.list_categories()}
+    Menu.list_categories()
   end
 
   def create_item(_parent, params, %{context: %{current_user: user}}) do
