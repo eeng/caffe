@@ -5,10 +5,10 @@ defmodule Caffe.Menu.UseCases.GetItem do
   defstruct [:id]
 
   @impl true
-  def authorize(%GetItem{}), do: true
-
-  @impl true
   def execute(%GetItem{id: id}) do
     Repo.fetch(Item, id)
   end
+
+  @impl true
+  def authorize(%GetItem{}), do: true
 end

@@ -7,10 +7,6 @@ defmodule Caffe.Ordering.UseCases.GetWaitstaffOrders do
   defstruct [:user]
 
   @impl true
-  def authorize(%GetWaitstaffOrders{user: %User{role: role}}),
-    do: role in ~w[waitstaff cashier admin]
-
-  @impl true
   def execute(%GetWaitstaffOrders{}) do
     {:ok, query() |> Repo.all()}
   end
@@ -22,4 +18,8 @@ defmodule Caffe.Ordering.UseCases.GetWaitstaffOrders do
       order_by: [o.order_date, not i.is_drink, i.menu_item_name],
       preload: [items: i]
   end
+
+  @impl true
+  def authorize(%GetWaitstaffOrders{user: %User{role: role}}),
+    do: role in ~w[waitstaff cashier admin]
 end

@@ -8,9 +8,6 @@ defmodule Caffe.Ordering.UseCases.PlaceOrder do
   defstruct [:user, :params]
 
   @impl true
-  def authorize(%PlaceOrder{user: %User{}}), do: true
-
-  @impl true
   def execute(%PlaceOrder{user: user, params: params}) do
     id = UUID.uuid4()
 
@@ -46,4 +43,7 @@ defmodule Caffe.Ordering.UseCases.PlaceOrder do
   end
 
   defp assign_customer_id(command, _), do: command
+
+  @impl true
+  def authorize(%PlaceOrder{user: %User{}}), do: true
 end

@@ -7,9 +7,6 @@ defmodule Caffe.Ordering.UseCases.ListOrders do
   defstruct [:user, :params]
 
   @impl true
-  def authorize(%ListOrders{user: %User{}}), do: true
-
-  @impl true
   def execute(%ListOrders{user: user, params: params}) do
     {:ok, query(user, params) |> Repo.all()}
   end
@@ -29,4 +26,7 @@ defmodule Caffe.Ordering.UseCases.ListOrders do
     do: Map.put(params, :customer_id, id)
 
   defp add_customer_filter(params, _), do: params
+
+  @impl true
+  def authorize(%ListOrders{user: %User{}}), do: true
 end

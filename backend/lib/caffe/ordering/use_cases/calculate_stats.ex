@@ -7,9 +7,6 @@ defmodule Caffe.Ordering.UseCases.CalculateStats do
   defstruct [:user, :params]
 
   @impl true
-  def authorize(%CalculateStats{user: %User{role: role}}), do: role != "customer"
-
-  @impl true
   def execute(%CalculateStats{params: params}) do
     {:ok, query(params) |> Repo.one()}
   end
@@ -30,4 +27,7 @@ defmodule Caffe.Ordering.UseCases.CalculateStats do
   defp filter_by({:since, since}, query) do
     query |> where([o], o.order_date >= ^since)
   end
+
+  @impl true
+  def authorize(%CalculateStats{user: %User{role: role}}), do: role != "customer"
 end

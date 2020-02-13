@@ -15,6 +15,13 @@ defmodule Caffe.Ordering.UseCases.CancelOrder do
   end
 
   @impl true
+  def execute(%CancelOrder{id: id, user: user}) do
+    Commands.CancelOrder.new(order_id: id, user_id: user.id)
+    |> Router.dispatch(consistency: :strong)
+    |> wrap_ok_result
+  end
+
+  @impl true
   def authorize(%CancelOrder{user: %User{role: "customer", id: user_id}, order: %Order{} = order}) do
     %{customer_id: cust_id, state: state} = order
     cust_id == user_id && state == "pending"
@@ -22,11 +29,4 @@ defmodule Caffe.Ordering.UseCases.CancelOrder do
 
   def authorize(%CancelOrder{user: %User{}, order: %Order{state: state}}),
     do: state == "pending"
-
-  @impl true
-  def execute(%CancelOrder{id: id, user: user}) do
-    Commands.CancelOrder.new(order_id: id, user_id: user.id)
-    |> Router.dispatch(consistency: :strong)
-    |> wrap_ok_result
-  end
 end

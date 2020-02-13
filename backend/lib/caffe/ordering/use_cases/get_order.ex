@@ -13,6 +13,11 @@ defmodule Caffe.Ordering.UseCases.GetOrder do
   end
 
   @impl true
+  def execute(%GetOrder{order: order}) do
+    {:ok, order |> Repo.preload(:items)}
+  end
+
+  @impl true
   def authorize(%GetOrder{
         user: %User{role: "customer", id: user_id},
         order: %Order{customer_id: cust_id}
@@ -20,9 +25,4 @@ defmodule Caffe.Ordering.UseCases.GetOrder do
       do: user_id == cust_id
 
   def authorize(%GetOrder{user: %User{}}), do: true
-
-  @impl true
-  def execute(%GetOrder{order: order}) do
-    {:ok, order |> Repo.preload(:items)}
-  end
 end

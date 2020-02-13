@@ -5,12 +5,12 @@ defmodule Caffe.Menu.UseCases.CreateItem do
   defstruct [:user, :params]
 
   @impl true
-  def authorize(%CreateItem{user: %{role: "admin"}}), do: true
-
-  @impl true
   def execute(%CreateItem{params: params}) do
     %Item{}
     |> Item.changeset(params)
     |> Repo.insert()
   end
+
+  @impl true
+  def authorize(%CreateItem{user: %{role: "admin"}}), do: true
 end

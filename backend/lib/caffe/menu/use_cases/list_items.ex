@@ -5,10 +5,10 @@ defmodule Caffe.Menu.UseCases.ListItems do
   defstruct []
 
   @impl true
-  def authorize(%ListItems{}), do: true
-
-  @impl true
   def execute(%ListItems{}) do
     {:ok, Item |> order_by(asc: :name) |> Repo.all()}
   end
+
+  @impl true
+  def authorize(%ListItems{}), do: true
 end

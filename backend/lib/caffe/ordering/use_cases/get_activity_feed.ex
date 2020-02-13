@@ -7,9 +7,6 @@ defmodule Caffe.Ordering.UseCases.GetActivityFeed do
   defstruct [:user]
 
   @impl true
-  def authorize(%GetActivityFeed{user: %User{role: role}}), do: role != "customer"
-
-  @impl true
   def execute(%GetActivityFeed{}) do
     {:ok, query() |> Repo.all()}
   end
@@ -17,4 +14,7 @@ defmodule Caffe.Ordering.UseCases.GetActivityFeed do
   def query do
     from o in Activity, order_by: [desc: o.published], preload: [:actor], limit: 100
   end
+
+  @impl true
+  def authorize(%GetActivityFeed{user: %User{role: role}}), do: role != "customer"
 end

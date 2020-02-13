@@ -5,9 +5,6 @@ defmodule Caffe.Ordering.UseCases.MarkFoodPrepared do
   defstruct [:user, :params]
 
   @impl true
-  def authorize(%MarkFoodPrepared{user: %{role: role}}), do: role in ~w[chef admin]
-
-  @impl true
   def execute(%MarkFoodPrepared{user: user, params: params}) do
     params
     |> Map.put(:user_id, user.id)
@@ -15,4 +12,7 @@ defmodule Caffe.Ordering.UseCases.MarkFoodPrepared do
     |> Router.dispatch(consistency: :strong)
     |> wrap_ok_result
   end
+
+  @impl true
+  def authorize(%MarkFoodPrepared{user: %{role: role}}), do: role in ~w[chef admin]
 end

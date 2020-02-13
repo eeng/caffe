@@ -5,9 +5,6 @@ defmodule Caffe.Accounts.UseCases.Authenticate do
   defstruct [:email, :password]
 
   @impl true
-  def authorize(%Authenticate{}), do: true
-
-  @impl true
   def execute(%Authenticate{email: email, password: password}) do
     user = Repo.get_by(User, email: email)
 
@@ -18,4 +15,7 @@ defmodule Caffe.Accounts.UseCases.Authenticate do
       _ -> {:error, :invalid_credentials}
     end
   end
+
+  @impl true
+  def authorize(%Authenticate{}), do: true
 end
