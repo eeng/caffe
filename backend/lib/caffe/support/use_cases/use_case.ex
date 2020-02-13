@@ -1,5 +1,10 @@
 defmodule Caffe.Mediator.UseCase do
-  @type use_case :: %{optional(:user) => any, optional(:resource) => any}
+  @type use_case :: %{
+          :__struct__ => atom(),
+          optional(:user) => any,
+          optional(:resource) => any,
+          atom => any
+        }
   @type result :: {:ok, term} | {:error, term}
 
   @callback authorize(use_case) :: boolean

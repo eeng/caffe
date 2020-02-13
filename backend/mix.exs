@@ -51,7 +51,8 @@ defmodule Caffe.MixProject do
       {:dataloader, "~> 1.0.0"},
       {:argon2_elixir, "~> 2.0"},
       {:arc_ecto, "~> 0.11.3"},
-      {:mix_test_watch, "~> 1.0", only: :dev, runtime: false}
+      {:mix_test_watch, "~> 1.0", only: :dev, runtime: false},
+      {:dialyxir, "~> 1.0.0-rc.7", only: :dev, runtime: false}
     ]
   end
 
